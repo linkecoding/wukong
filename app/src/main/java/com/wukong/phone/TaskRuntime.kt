@@ -29,6 +29,7 @@ object TaskRuntime {
     @Volatile var displayId = 0; private set
     @Volatile private var activeTrace: RunLog? = null
     @Volatile private var activeDriver: AndroidDriver? = null
+    @Volatile private var scriptSession: com.wukong.phone.script.JsSession? = null
     @Volatile private var shellSession: ShellSession? = null
     private val canceller = Executors.newSingleThreadExecutor { Thread(it, "wukong-task-cancel") }
     @Volatile private var worker: Thread? = null
@@ -111,6 +112,8 @@ object TaskRuntime {
                         if (runCatching { val pkg = driver.observe().packageName; pkg.isNotBlank() && (initialPackage == null || control.epoch > 0 || pkg == initialPackage) }.getOrDefault(false)) { ready = true; break }
                     }
                     require(ready) { "未能读取界面，请确认手机已解锁" }
+                    val scripts = com.wukong.phone.script.JsSession(appContext, token, control, trace)
+                    scriptSession = scripts
                     result = Agent(model, driver, Approval { action, screen ->
                         trace?.record("approval_requested", JSONObject().put("action", action.toJson()).put("package", screen.packageName))
                         val request = PendingApproval(action, screen)
@@ -119,7 +122,7 @@ object TaskRuntime {
                         try { request.answer.get(120, TimeUnit.SECONDS).also { trace?.record("approval_result", JSONObject().put("allowed", it)) } }
                         catch (_: java.util.concurrent.TimeoutException) { false }
                         finally { pending = null; notifyChanged() }
-                    }, control = control, completionVerifier = CompletionVerifier(model::verifyCompletion)).run(goal, token) { value ->
+                    }, control = control, completionVerifier = CompletionVerifier(model::verifyCompletion), scriptRunner = scripts).run(goal, token) { value ->
                         trace?.record("agent_event", JSONObject().put("step", value.step).put("phase", value.phase.name).put("message", value.message))
                         publish(value)
                     }
@@ -130,6 +133,7 @@ object TaskRuntime {
                 } finally {
                     Thread.interrupted()
                     trace?.record("end", JSONObject().put("phase", result.phase.name).put("message", result.message))
+                    runCatching { scriptSession?.close() }; scriptSession = null
                     runCatching { shellSession?.close() }
                     shellSession = null
                     displayId = 0; activeTrace = null; activeDriver = null
@@ -155,6 +159,7 @@ object TaskRuntime {
         if (!active || displayId == 0) return
         control.pause(value)
         activeDriver?.invalidateVisual()
+        scriptSession?.cancelCell()
         pending?.answer?.complete(false)
         activeTrace?.record("control_changed", JSONObject().put("manual", value))
         publish(AgentEvent(if (value) Phase.PAUSED else Phase.RUNNING, if (value) "你已接管，Agent 已暂停" else "已交还 Agent，正在重新读取界面"))
@@ -170,6 +175,7 @@ object TaskRuntime {
         // Do not cancel a queued Future before its finally runs: wait for the worker to clean up.
         worker?.interrupt()
         client?.cancel()
+        scriptSession?.cancelCell()
         notifyChanged()
     }
 }

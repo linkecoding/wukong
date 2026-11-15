@@ -6,3 +6,7 @@
 -keep class org.opencv.android.Utils { *; }
 -keep class org.conscrypt.** { *; }
 -keep class io.github.muntashirakon.crypto.spake2.** { *; }
+
+# JNI string bridge. No Java reflection/proxy API is exposed to scripts.
+-keep class com.wukong.phone.script.QuickJsEngine { *; }
+-keep class com.wukong.phone.script.JsRuntimeService$Bridge { public *; }

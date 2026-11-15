@@ -3,6 +3,7 @@ import java.util.Properties
 plugins { id("com.android.application"); kotlin("android") }
 android {
     namespace = "com.wukong.phone"
+    buildFeatures { aidl = true }
     compileSdk = 35
     ndkVersion = "28.2.13676358"
     defaultConfig {
@@ -43,6 +44,7 @@ android {
 dependencies {
     implementation("androidx.core:core:1.15.0")
     implementation(project(":agent-core"))
+    implementation(project(":quickjs"))
     implementation(project(":adb-transport"))
     implementation("org.conscrypt:conscrypt-android:2.9.0")
     implementation("org.bouncycastle:bcprov-jdk15to18:1.81")

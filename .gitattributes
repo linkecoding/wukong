@@ -7,3 +7,5 @@
 *.onnx binary
 *.zip binary
 *.png binary
+# Keep pinned upstream QuickJS sources byte-for-byte, including upstream whitespace.
+third_party/quickjs/src/main/cpp/vendor/** -whitespace linguist-vendored=true

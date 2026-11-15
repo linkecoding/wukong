@@ -619,6 +619,8 @@ class MainActivity : LocalizedActivity() {
                     "observation_error" -> R.string.ui_observation_failed; "model_request" -> R.string.ui_model_request
                     "model_response" -> R.string.ui_model_response_tokens; "model_error" -> R.string.ui_model_error
                     "tool_call" -> R.string.ui_tool_call; "device_action" -> R.string.ui_device_action; "device_result" -> R.string.ui_result
+                    "script_started", "script_call" -> R.string.ui_script_execution
+                    "script_completed", "script_call_result" -> R.string.ui_result; "script_error" -> R.string.ui_device_error
                     "inspection_result" -> R.string.ui_inspection_result; "inspection_error" -> R.string.ui_observation_failed
                     "completion_verification", "completion_review_started", "completion_review" -> R.string.ui_completion_verification
                     "device_error" -> R.string.ui_device_error; "approval_requested" -> R.string.ui_approval_requested
@@ -636,7 +638,7 @@ class MainActivity : LocalizedActivity() {
                     }, LinearLayout.LayoutParams(dp(18), dp(18)).apply { marginEnd = dp(12) })
                     addView(column().apply {
                         addView(text(getString(label), 14f, bold = true))
-                        val tool = data.optString("name").ifBlank { data.optJSONObject("action")?.optString("kind").orEmpty() }
+                        val tool = data.optString("name").ifBlank { data.optString("method") }.ifBlank { data.optJSONObject("action")?.optString("kind").orEmpty() }
                         val timing = if (data.has("durationMs")) " · ${data.optLong("durationMs")} ms" else ""
                         addView(text(format.format(Date(record.optLong("time"))) + (if (tool.isBlank()) "" else " · $tool") + timing, 11f, muted = true))
                     }, LinearLayout.LayoutParams(0, -2, 1f))

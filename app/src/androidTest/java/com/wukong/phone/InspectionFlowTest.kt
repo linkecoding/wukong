@@ -29,7 +29,8 @@ class InspectionFlowTest {
         assumeTrue(InstrumentationRegistry.getArguments().getString("live_model") == "true")
         fixture(true)
     }
-    private fun fixture(live: Boolean) {
+    @Test fun jsScriptQueriesWaitsListensAndOperatesTheRealFixture() = fixture(false, true)
+    private fun fixture(live: Boolean, scripted: Boolean = false) {
         val i = InstrumentationRegistry.getInstrumentation(); val c = i.targetContext
         assumeTrue(!TaskRuntime.active)
         val previousVirtual = VirtualScreenState.enabled(c)
@@ -67,14 +68,50 @@ class InspectionFlowTest {
             val trace = RunLogStore(c).start("validation", "只在测试页面查询蓝牙耳机", settings)
             ShellSession(c).use { session ->
                 val control = ExecutionControl(); val driver = AndroidDriver(session, trace = trace, control = control)
-                if (live) {
+                if (scripted) {
+                    i.runOnMainSync { handler.postDelayed({ query.isEnabled = true }, 400) }
+                    com.wukong.phone.script.JsSession(c, Cancellation(), control, trace).use { scripts ->
+                        val code = """
+                            state.keyword = '蓝牙耳机';
+                            phone.waitUntil({resourceId:'android:id/button1', enabled:true});
+                            phone.input({resourceId:'android:id/edit'}, state.keyword);
+                            phone.tap({resourceId:'android:id/button1'});
+                            const before = phone.observe();
+                            let events = 0;
+                            const unsubscribe = phone.events.onChange(() => events++);
+                            phone.events.next({after:before,timeoutMs:2000});
+                            unsubscribe();
+                            const ready = phone.waitUntil({textContains:'蓝牙耳机，找到 3 件商品'});
+                            if (ready.verification.state !== 'met') throw new Error('结果未出现');
+                            state.events = events;
+                            return phone.query({textContains:'蓝牙耳机，找到 3 件商品'});
+                        """.trimIndent()
+                        var rounds = 0
+                        val outcome = Agent(Model { _, _, history ->
+                            if (++rounds == 1) Action.Script(code) else {
+                                assertTrue(history.last().result, !history.last().result.contains("脚本已停止"))
+                                Action.Finish("找到 3 件商品", evidence = listOf(ScreenCondition(NodeSelector(textContains = "蓝牙耳机，找到 3 件商品"))))
+                            }
+                        }, driver, Approval { _, _ -> false }, control = control, scriptRunner = scripts).run("查询蓝牙耳机商品数量", Cancellation()) {}
+                        assertEquals(outcome.message, Phase.COMPLETED, outcome.phase); assertEquals(1, clicks.get())
+                        assertEquals("1", scripts.run("return state.events;", object : ScriptHost {
+                            override fun observe() = driver.observeNow()
+                            override fun execute(action: Action, expected: Screen) = error("No mutation")
+                        }))
+                    }
+                } else if (live) {
                     i.runOnMainSync { handler.postDelayed({ query.isEnabled = true }, 500) }
                     val model = ChatModel(settings, trace = trace)
-                    val outcome = Agent(model, driver, Approval { _, _ -> false }, maxSteps = 15, control = control, completionVerifier = CompletionVerifier(model::verifyCompletion))
-                        .run("只在当前商品查询测试页面操作：查找商品关键词输入框，等查询商品按钮可用后，输入蓝牙耳机并查询。确认出现蓝牙耳机的商品查询结果，告诉我找到多少件商品。不要打开其他应用。", Cancellation()) {}
+                    val scripts = com.wukong.phone.script.JsSession(c, Cancellation(), control, trace)
+                    val outcome = try { Agent(model, driver, Approval { _, _ -> false }, maxSteps = 15, control = control, completionVerifier = CompletionVerifier(model::verifyCompletion), scriptRunner = scripts)
+                        .run("请使用 phone_run_js 编写一个短流程，只在当前商品查询测试页面操作：查找商品关键词输入框，等查询商品按钮可用后，输入蓝牙耳机并查询。确认出现蓝牙耳机的商品查询结果，告诉我找到多少件商品。不要打开其他应用。", Cancellation()) {} } finally { scripts.close() }
                     assertEquals(outcome.message, Phase.COMPLETED, outcome.phase)
                     assertTrue(outcome.message.contains("3") || outcome.message.contains("三"))
                     assertEquals("Never replay a successful query", 1, clicks.get())
+                    trace?.let { log ->
+                        val records = RunLogStore(c).read(log.name)
+                        assertTrue("Real model must complete a JS cell", records.any { it.optString("type") == "script_completed" })
+                    }
                     val finalScreen = driver.observe()
                     driver.execute(Action.Screenshot, finalScreen)
                     val evidence = driver.observe()

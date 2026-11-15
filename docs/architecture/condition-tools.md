@@ -50,7 +50,7 @@ Query/condition results and completion evidence appear in the existing task's ti
 
 The App requires shell capabilities `uiEvents` and `inspection` and directs older engines to reactivate. The protocol remains version 2 with additive fields. Existing approvals, protected-input checks, exact capture/node validation and manual-control handling remain outside model control.
 
-Persistent code execution, progress checkpoints, and an external Codex skill/MCP adapter remain future work. The new core selector/condition types are platform-independent foundations for those interfaces, not an externally exposed API.
+Bounded JavaScript workflows now use these same selectors and conditions: see [embedded QuickJS](javascript-runtime.md). Long-lived progress checkpoints and an external Codex skill/MCP adapter remain future work. Core contracts are platform-independent foundations, not an externally exposed API.
 
 ## Validation on Pixel 6
 

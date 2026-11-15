@@ -18,3 +18,6 @@ project(":paddleocr").projectDir = file("third_party/paddleocr")
 
 include(":ocr-native")
 project(":ocr-native").projectDir = file("third_party/ocr-native")
+
+include(":quickjs")
+project(":quickjs").projectDir = file("third_party/quickjs")

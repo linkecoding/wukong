@@ -17,6 +17,7 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
         cancellation.check()
         return (session.request("observe") as JSONObject).toScreen().also { cancellation.check() }
     }
+    override fun observeNow(): Screen = readNow().also { if (it.fingerprint != visualFingerprint) invalidateVisual() }.let { it.copy(visual = visual) }
     override fun verify(conditions: List<ScreenCondition>, screen: Screen): ConditionReport = super.verify(conditions, screen).also {
         trace?.record("completion_verification", it.toJson())
     }

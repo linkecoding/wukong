@@ -18,7 +18,7 @@ class ProviderCompatibilityTest {
             candidate.validate()
             val request = ChatModel(candidate).buildRequest(JSONArray())
             assertEquals(candidate.model, request.getString("model"))
-            assertEquals(9, request.getJSONArray("tools").length())
+            assertEquals(10, request.getJSONArray("tools").length())
             when (preset.id) {
                 "deepseek" -> { assertEquals("disabled", request.getJSONObject("thinking").getString("type")); assertEquals("required", request.getString("tool_choice")) }
                 "qwen" -> { assertFalse(request.getBoolean("enable_thinking")); assertFalse(request.has("thinking")) }

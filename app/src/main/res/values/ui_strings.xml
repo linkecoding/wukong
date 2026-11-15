@@ -247,4 +247,5 @@
     <string name="ui_preparation">Preparation</string>
     <string name="ui_inspection_result">Query / condition result</string>
     <string name="ui_completion_verification">Completion verification</string>
+    <string name="ui_script_execution">JavaScript workflow</string>
 </resources>

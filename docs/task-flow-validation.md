@@ -70,3 +70,7 @@ The fixed post-action 650 ms sleep is replaced by UI-event-assisted snapshot set
 ## Target conditions and completion evidence (2026-11-15)
 
 Implemented `phone_query`, `phone_wait_until`, and `phone_verify`, compact/focused observations and paginated source queries. Successful finish checks fresh conditions or uses a separate screenshot/OCR review; incomplete tasks no longer receive COMPLETED. Failed finishes return evidence to the model without replaying device effects. Details, limits and current validation are in [condition tools](architecture/condition-tools.md).
+
+## Programmable phone workflows (2026-11-15)
+
+Added `phone_run_js` with the existing selectors/waits/actions and cooperative change listeners, executed in an isolated Android service. After comparing a local V8 build, the shipped implementation uses source-built QuickJS: arm64 production APK 27.45 MiB, versus 86.57 MiB with V8 and 26.82 MiB before scripts. The same trusted approvals, exact snapshot checks, cancellation and completion evidence remain outside JS. Runtime contracts, native limits, size measurements and device validation are in [JavaScript runtime](architecture/javascript-runtime.md).

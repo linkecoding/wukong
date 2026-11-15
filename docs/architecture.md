@@ -58,3 +58,7 @@ shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 
 ## 条件工具与完成验证
 
 模型新增 `phone_query`、`phone_wait_until`、`phone_verify`。通过已有 `observe` 接口获取带资源 ID、类型、父节点与控件状态的快照，在 App 工作线程筛选、分页和检查条件。默认只向模型展示最多 60 个节点的概览，可按需查询较大的底层快照。等待不要求整个页面停止变化。缺失且来源不完整的内容返回 unknown。成功结束前重新核对页面条件；未提供条件时用最新截图/OCR 单独复核，并在复核后检查页面是否变化。详情见 [查询、等待与完成证据](architecture/condition-tools.md)。
+
+## JS 短流程
+
+模型可通过 `phone_run_js` 调用内置 QuickJS。JS 在独立 isolated UID 的 Service 中运行，Binder 只转发有限的手机 API；可信任务工作线程逐次校验、审批，再调用原有 shell。支持同步查询、条件等待、变化监听、操作及任务内 JSON state。脚本返回后仍需独立完成验证。详见 [JS 执行架构](architecture/javascript-runtime.md)。

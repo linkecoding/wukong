@@ -1,6 +1,6 @@
 # Browser-use lessons for Wukong
 
-Reviewed 2026-11-15 after completing/testing the event-assisted observation changes. The initial recommendations below distinguish research from implementation. Target queries/condition waits, fresh completion evidence, and compact on-demand observations have since been implemented: see [condition tools](condition-tools.md). Programmable execution, checkpoints and external adapters remain planned.
+Reviewed 2026-11-15 after completing/testing the event-assisted observation changes. The initial recommendations below distinguish research from implementation. Target queries/condition waits, fresh completion evidence, and compact on-demand observations have since been implemented: see [condition tools](condition-tools.md). Bounded embedded QuickJS workflows have also been implemented: see [JavaScript runtime](javascript-runtime.md). Durable checkpoints and external adapters remain planned.
 
 ## Sources and version
 

@@ -257,4 +257,5 @@
     <string name="export_failed">日志导出失败</string>
     <string name="ui_inspection_result">查询与条件结果</string>
     <string name="ui_completion_verification">任务完成验证</string>
+    <string name="ui_script_execution">JS 短流程</string>
 </resources>

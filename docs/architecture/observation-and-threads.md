@@ -85,3 +85,7 @@ Provider compatibility tests and a real-model virtual-display task with manual t
 ## Condition-based tools
 
 The task loop now also exposes read-only query/wait/verify tools on the same worker. Condition waits sample fresh trees without global quiet settling, and cancellation/control epochs are checked between reads. The default model overview is compact; queries access the larger bounded source. Successful finish requires fresh deterministic evidence or a separate fresh screenshot/OCR review. See [condition tools](condition-tools.md) for contracts and limitations.
+
+## Embedded QuickJS workflow threads
+
+A lazy task-local JsSession now binds an isolated Android service on the first script. Its Binder callbacks enqueue work for the existing App task worker; phone API/approval work does not move to the App main thread. The isolated process adds one `wukong-quickjs` worker plus Android Binder/framework threads; no extra engine compiler/GC worker pool. Native input remains in the existing shell process. See [JS runtime](javascript-runtime.md).

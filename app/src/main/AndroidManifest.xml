@@ -27,6 +27,7 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/log_export_paths" />
         </provider>
         <provider android:name=".BootstrapProvider" android:authorities="com.wukong.phone.bootstrap" android:exported="true" android:permission="android.permission.DUMP" />
+        <service android:name=".script.JsRuntimeService" android:process=":javascript" android:isolatedProcess="true" android:exported="false" />
         <service android:name=".WukongService" android:exported="false" android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User initiated phone automation with visible approval and stop controls" />
         </service>
