@@ -85,3 +85,12 @@ The small errors are bounded by integer physical-input rounding and normalized-c
 The real gesture stream exposed two resize issues: truncating fractional movement on every MotionEvent and omitting the final ACTION_UP delta. Both were fixed for sizing/movement. Back and Home are now icon buttons; `FloatingGeometryTest` checks both icons actually return from Settings, as well as geometry persistence/bounds. That regression and the live-model takeover/close/handoff regression passed. App/test builds and lintDebug passed. Test surfaces and instrumentation are excluded from release builds.
 
 To reproduce after installing debug App/test APKs and activating the shell engine: `python3 scripts/test-floating-input.py SERIAL --adb /path/to/adb`.
+
+
+## Empty virtual-display task startup repair — 2026-11-15
+
+The reported Settings-opening task failed before any model request: its first observation had no readable application root on the virtual display. The original startup path tried to obtain that snapshot before executing Home, so an empty virtual display could not recover itself. Finishing the virtual launcher's last task reproduced the same failure on the Pixel 6 (`VirtualStartupTest`, before-fix failure).
+
+Startup observation now requests task-scoped virtual-content recovery after a read failure. The shell recreates VirtualHome only when that task's virtual display has no application window. Existing application windows are preserved; physical-display recovery and recovery during human ownership are rejected. The trace records `startup_recovery` before a fresh observation and normal planning. Back at the virtual launcher is consumed on both legacy and predictive Back paths, keeping the display's base content present.
+
+After-fix `VirtualStartupTest` passed with the saved real model: readable content remains unchanged; physical/manual recovery is rejected; Back leaves Home present; a deliberately empty display is restored once; the Settings-opening task completes on the same virtual display and the physical Wukong UI stays in place. The existing two-turn live conversation regression also passed, including keeping the current page for a follow-up. App/test/runtime builds and lintDebug passed. The installed test device's App and shell runtime were both updated.

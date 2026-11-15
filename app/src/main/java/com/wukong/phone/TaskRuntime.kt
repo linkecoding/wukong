@@ -105,11 +105,21 @@ object TaskRuntime {
                     controls.onMain { controls.showControls() }
                     val driver = AndroidDriver(session, token, trace, control)
                     activeDriver = driver
+                    fun observeStartup(): Screen = try { driver.observe() } catch (error: IllegalStateException) {
+                        // An empty virtual display has no snapshot to authorize normal Home execution.
+                        // Recovery can only recreate our launcher when the shell finds no app window.
+                        if (displayId <= 0 || control.epoch != 0L) throw error
+                        val recovery = session.request("recoverVirtualContent") as JSONObject
+                        if (!recovery.getBoolean("recovered")) throw error
+                        trace?.record("startup_recovery",JSONObject().put("displayId",displayId).put("reason","no_application_window"))
+                        token.check()
+                        driver.observe()
+                    }
                     // Follow-ups keep the current display; earlier summaries never replay actions.
                     val followUp = priorContext != null && JSONArray(priorContext).length() > 0
                     if (control.epoch == 0L && (!followUp || initialPackage != null)) {
                         try {
-                            val startScreen = driver.observe()
+                            val startScreen = observeStartup()
                             if (control.epoch == 0L) driver.execute(initialPackage?.let { Action.Launch(it) } ?: Action.Home, startScreen)
                         } catch (error: IllegalStateException) { if (control.epoch == 0L) throw error }
                     }
@@ -118,7 +128,7 @@ object TaskRuntime {
                         token.check()
                         control.awaitAgent(token)
                         Thread.sleep(250)
-                        if (runCatching { val pkg = driver.observe().packageName; pkg.isNotBlank() && (initialPackage == null || control.epoch > 0 || pkg == initialPackage) }.getOrDefault(false)) { ready = true; break }
+                        if (runCatching { val pkg = observeStartup().packageName; pkg.isNotBlank() && (initialPackage == null || control.epoch > 0 || pkg == initialPackage) }.getOrDefault(false)) { ready = true; break }
                     }
                     require(ready) { "未能读取界面，请确认手机已解锁" }
                     val scripts = com.wukong.phone.script.JsSession(appContext, token, control, trace)

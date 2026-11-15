@@ -8,8 +8,12 @@ import android.widget.*
 
 /** Safe launcher content for our independent display, without moving the physical launcher. */
 class VirtualHomeActivity : LocalizedActivity() {
+    @Deprecated("The virtual launcher remains open")
+    override fun onBackPressed() { /* Like a physical launcher, stay on Home. */ }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // A launcher is the floor of this display; Back must not leave a frozen, windowless screen.
+        if(android.os.Build.VERSION.SDK_INT>=33)onBackInvokedDispatcher.registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT) { }
         val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(WukongUi.dp(this@VirtualHomeActivity, 24), WukongUi.dp(this@VirtualHomeActivity, 48), WukongUi.dp(this@VirtualHomeActivity, 24), WukongUi.dp(this@VirtualHomeActivity, 24)); setBackgroundColor(getColor(R.color.paper)) }
         column.addView(TextView(this).apply { text = getString(R.string.ui_wukong_virtual_display); textSize = 24f })
         @Suppress("DEPRECATION") val apps = packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0)

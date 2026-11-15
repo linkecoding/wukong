@@ -139,6 +139,20 @@ public final class Main {
             checkTask(taskId);
             targetDisplay.set(taskDisplays.getOrDefault(taskId, 0));
             if (targetDisplay.get() != 0 && virtualScreen != null && virtualScreen.manual) throw new IllegalStateException("用户正在接管，Agent 已暂停");
+            if (method.equals("recoverVirtualContent")) {
+                if (targetDisplay.get() == 0 || virtualScreen == null || virtualScreen.id != targetDisplay.get())
+                    throw new IllegalStateException("只能恢复当前任务的虚拟屏");
+                @SuppressWarnings("unchecked") SparseArray<List<AccessibilityWindowInfo>> all = (SparseArray<List<AccessibilityWindowInfo>>)
+                    UiAutomation.class.getMethod("getWindowsOnAllDisplays").invoke(automation);
+                // Never replace an existing app, protected window or a follow-up's readable page.
+                for (AccessibilityWindowInfo window : all.get(targetDisplay.get(), Collections.emptyList()))
+                    if (window.getType() == AccessibilityWindowInfo.TYPE_APPLICATION) return new JSONObject().put("recovered", false);
+                checkTask(taskId);
+                String result = command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
+                if (result.contains("Error:")) throw new IllegalStateException("无法恢复虚拟桌面");
+                frames.remove(taskId);
+                return new JSONObject().put("recovered", true);
+            }
             if (method.equals("observe")) {
                 try (Tree tree = read()) { return tree.json; }
             }
