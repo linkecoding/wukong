@@ -1,0 +1,68 @@
+{
+  "baseline": {
+    "completedCalls": {
+      "query": 90,
+      "tap": 27,
+      "input": 32,
+      "waitUntil": 13,
+      "sleep": 51,
+      "observe": 1
+    },
+    "durationMs": {
+      "query": 5482,
+      "tap": 2439,
+      "input": 2575,
+      "waitUntil": 11815,
+      "sleep": 24151,
+      "observe": 23
+    },
+    "waitTimeouts": 1,
+    "structuredErrors": {
+      "UNSTRUCTURED": 3
+    },
+    "cellsUsingApis": {
+      "cells": 30,
+      "waitAny": 0,
+      "setText": 0,
+      "setChecked": 0,
+      "id": 0,
+      "text": 0,
+      "textContains": 0
+    }
+  },
+  "current": {
+    "completedCalls": {
+      "input": 9,
+      "tap": 22,
+      "waitAny": 16,
+      "sleep": 15,
+      "query": 38,
+      "setText": 23,
+      "setChecked": 4,
+      "waitUntil": 4,
+      "ocr": 1
+    },
+    "durationMs": {
+      "input": 766,
+      "tap": 1999,
+      "waitAny": 3818,
+      "sleep": 6015,
+      "query": 1763,
+      "setText": 2385,
+      "setChecked": 366,
+      "waitUntil": 1238,
+      "ocr": 878
+    },
+    "waitTimeouts": 0,
+    "structuredErrors": {},
+    "cellsUsingApis": {
+      "cells": 27,
+      "waitAny": 16,
+      "setText": 15,
+      "setChecked": 4,
+      "id": 27,
+      "text": 0,
+      "textContains": 18
+    }
+  }
+}

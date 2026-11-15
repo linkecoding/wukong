@@ -1,0 +1,180 @@
+{"time":1794739243195,"type":"start","data":{"kind":"benchmark","goal":"只操作当前测试页面，不打开其他应用。依次查询蓝牙耳机、充电器、数据线，等待每次结果，读出商品件数，分别填入对应件数输入框；成功的查询不得重复，失败时只点重试当前查询重试一次。最后点校验结果，看到校验通过后总结三个关键词各找到多少件商品。","model":"deepseek-flash","thinking":false}}
+{"time":1794739243203,"type":"benchmark_config","data":{"case":"retry","mode":"TOOLS_ONLY","repetition":0,"systemPromptSha256":"0782436958c979e49915dc689c18d5b223f2e91e060c32d502b6443f545dbbad","step":0}}
+{"time":1794739243203,"type":"agent_event","data":{"phase":"RUNNING","message":"正在读取目标应用","step":0}}
+{"time":1794739243629,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":425,"settled":true,"samples":4,"uiEvents":true,"uiRevision":360,"uiQuietMs":388,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":0}}
+{"time":1794739243630,"type":"observation","data":{"step":1,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739243640,"type":"model_request","data":{"step":1,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739244774,"type":"model_response","data":{"step":1,"httpStatus":200,"durationMs":1134,"usage":{"prompt_tokens":4681,"completion_tokens":69,"total_tokens":4750,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":1481}}}
+{"time":1794739244775,"type":"tool_call","data":{"step":1,"name":"phone_action","arguments":{"action":"tap","nodeId":7,"summary":"点击商品关键词输入框"}}}
+{"time":1794739244776,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 7","step":1}}
+{"time":1794739244777,"type":"device_action","data":{"action":{"kind":"tap","nodeId":7},"package":"com.wukong.phone","step":1}}
+{"time":1794739244966,"type":"device_result","data":{"action":{"kind":"tap","nodeId":7},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":189,"step":1}}
+{"time":1794739245744,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":778,"settled":true,"samples":6,"uiEvents":true,"uiRevision":365,"uiQuietMs":465,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":1}}
+{"time":1794739245746,"type":"observation","data":{"step":2,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739245756,"type":"model_request","data":{"step":2,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739246721,"type":"model_response","data":{"step":2,"httpStatus":200,"durationMs":964,"usage":{"prompt_tokens":4798,"completion_tokens":84,"total_tokens":4882,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":1598}}}
+{"time":1794739246722,"type":"tool_call","data":{"step":2,"name":"phone_action","arguments":{"action":"input","nodeId":7,"text":"蓝牙耳机","summary":"输入蓝牙耳机"}}}
+{"time":1794739246724,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 7 输入文本","step":2}}
+{"time":1794739246725,"type":"device_action","data":{"action":{"kind":"input","nodeId":7,"text":"蓝牙耳机"},"package":"com.wukong.phone","step":2}}
+{"time":1794739246800,"type":"device_result","data":{"action":{"kind":"input","nodeId":7,"text":"蓝牙耳机"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":75,"step":2}}
+{"time":1794739247303,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":501,"settled":true,"samples":4,"uiEvents":true,"uiRevision":368,"uiQuietMs":346,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":2}}
+{"time":1794739247304,"type":"observation","data":{"step":3,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739247306,"type":"model_request","data":{"step":3,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739248155,"type":"model_response","data":{"step":3,"httpStatus":200,"durationMs":849,"usage":{"prompt_tokens":4938,"completion_tokens":67,"total_tokens":5005,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":1738}}}
+{"time":1794739248158,"type":"tool_call","data":{"step":3,"name":"phone_action","arguments":{"action":"tap","nodeId":8,"summary":"查询蓝牙耳机"}}}
+{"time":1794739248161,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 8","step":3}}
+{"time":1794739248162,"type":"device_action","data":{"action":{"kind":"tap","nodeId":8},"package":"com.wukong.phone","step":3}}
+{"time":1794739248276,"type":"device_result","data":{"action":{"kind":"tap","nodeId":8},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":114,"step":3}}
+{"time":1794739248655,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":378,"settled":true,"samples":3,"uiEvents":true,"uiRevision":370,"uiQuietMs":379,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":3}}
+{"time":1794739248656,"type":"observation","data":{"step":4,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739248666,"type":"model_request","data":{"step":4,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739249642,"type":"model_response","data":{"step":4,"httpStatus":200,"durationMs":977,"usage":{"prompt_tokens":5055,"completion_tokens":83,"total_tokens":5138,"prompt_tokens_details":{"cached_tokens":3328},"prompt_cache_hit_tokens":3328,"prompt_cache_miss_tokens":1727}}}
+{"time":1794739249644,"type":"tool_call","data":{"step":4,"name":"phone_wait_until","arguments":{"conditions":[{"selector":{"resourceId":"com.wukong.phone:id\/benchmark_result","textContains":"件"}}],"timeoutMs":10000}}}
+{"time":1794739249649,"type":"agent_event","data":{"phase":"RUNNING","message":"等待目标条件","step":4}}
+{"time":1794739249650,"type":"device_action","data":{"action":{"kind":"wait_until","conditions":[{"state":"present","minCount":1,"selector":{"textContains":"件","resourceId":"com.wukong.phone:id\/benchmark_result"}}],"matchAll":false,"timeoutMs":10000},"package":"com.wukong.phone","step":4}}
+{"time":1794739249759,"type":"inspection_result","data":{"action":{"kind":"wait_until","conditions":[{"state":"present","minCount":1,"selector":{"textContains":"件","resourceId":"com.wukong.phone:id\/benchmark_result"}}],"matchAll":false,"timeoutMs":10000},"result":{"package":"com.wukong.phone","fingerprint":"414bec13096f6cbe728e32a5ce28c58bd6a3fa7abaf9914daa39afa1878f1670","sourceTruncated":false,"elapsedMs":105,"samples":1,"timedOut":false,"verification":{"state":"met","package":"com.wukong.phone","fingerprint":"414bec13096f6cbe728e32a5ce28c58bd6a3fa7abaf9914daa39afa1878f1670","sourceTruncated":false,"checks":[{"condition":{"state":"present","minCount":1,"selector":{"textContains":"件","resourceId":"com.wukong.phone:id\/benchmark_result"}},"state":"met","totalMatches":1,"matches":[{"id":10,"text":"查询结果：蓝牙耳机，找到 3 件商品","resourceId":"com.wukong.phone:id\/benchmark_result","className":"android.widget.TextView","parentId":5,"editable":false,"clickable":false,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":259,"right":961,"bottom":285}}],"matchesTruncated":false}]}},"durationMs":105,"step":4}}
+{"time":1794739250138,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":373,"settled":true,"samples":3,"uiEvents":true,"uiRevision":372,"uiQuietMs":1213,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":4}}
+{"time":1794739250140,"type":"observation","data":{"step":5,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739250146,"type":"model_request","data":{"step":5,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739251024,"type":"model_response","data":{"step":5,"httpStatus":200,"durationMs":878,"usage":{"prompt_tokens":5801,"completion_tokens":69,"total_tokens":5870,"prompt_tokens_details":{"cached_tokens":3456},"prompt_cache_hit_tokens":3456,"prompt_cache_miss_tokens":2345}}}
+{"time":1794739251026,"type":"tool_call","data":{"step":5,"name":"phone_action","arguments":{"action":"tap","nodeId":11,"summary":"填写蓝牙耳机件数"}}}
+{"time":1794739251028,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 11","step":5}}
+{"time":1794739251029,"type":"device_action","data":{"action":{"kind":"tap","nodeId":11},"package":"com.wukong.phone","step":5}}
+{"time":1794739251112,"type":"device_result","data":{"action":{"kind":"tap","nodeId":11},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":84,"step":5}}
+{"time":1794739251560,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":447,"settled":true,"samples":4,"uiEvents":true,"uiRevision":375,"uiQuietMs":328,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":5}}
+{"time":1794739251562,"type":"observation","data":{"step":6,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739251573,"type":"model_request","data":{"step":6,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739252661,"type":"model_response","data":{"step":6,"httpStatus":200,"durationMs":1088,"usage":{"prompt_tokens":5919,"completion_tokens":86,"total_tokens":6005,"prompt_tokens_details":{"cached_tokens":3840},"prompt_cache_hit_tokens":3840,"prompt_cache_miss_tokens":2079}}}
+{"time":1794739252662,"type":"tool_call","data":{"step":6,"name":"phone_action","arguments":{"action":"input","nodeId":11,"text":"3","summary":"输入蓝牙耳机件数3"}}}
+{"time":1794739252664,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 11 输入文本","step":6}}
+{"time":1794739252665,"type":"device_action","data":{"action":{"kind":"input","nodeId":11,"text":"3"},"package":"com.wukong.phone","step":6}}
+{"time":1794739252708,"type":"device_result","data":{"action":{"kind":"input","nodeId":11,"text":"3"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":44,"step":6}}
+{"time":1794739253161,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":452,"settled":true,"samples":4,"uiEvents":true,"uiRevision":378,"uiQuietMs":305,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":6}}
+{"time":1794739253163,"type":"observation","data":{"step":7,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739253177,"type":"model_request","data":{"step":7,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739254149,"type":"model_response","data":{"step":7,"httpStatus":200,"durationMs":972,"usage":{"prompt_tokens":6058,"completion_tokens":68,"total_tokens":6126,"prompt_tokens_details":{"cached_tokens":3968},"prompt_cache_hit_tokens":3968,"prompt_cache_miss_tokens":2090}}}
+{"time":1794739254150,"type":"tool_call","data":{"step":7,"name":"phone_action","arguments":{"action":"tap","nodeId":7,"summary":"点击关键词输入框"}}}
+{"time":1794739254152,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 7","step":7}}
+{"time":1794739254153,"type":"device_action","data":{"action":{"kind":"tap","nodeId":7},"package":"com.wukong.phone","step":7}}
+{"time":1794739254231,"type":"device_result","data":{"action":{"kind":"tap","nodeId":7},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":79,"step":7}}
+{"time":1794739254713,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":480,"settled":true,"samples":4,"uiEvents":true,"uiRevision":385,"uiQuietMs":359,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":7}}
+{"time":1794739254714,"type":"observation","data":{"step":8,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739254718,"type":"model_request","data":{"step":8,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739255943,"type":"model_response","data":{"step":8,"httpStatus":200,"durationMs":1225,"usage":{"prompt_tokens":6174,"completion_tokens":84,"total_tokens":6258,"prompt_tokens_details":{"cached_tokens":4096},"prompt_cache_hit_tokens":4096,"prompt_cache_miss_tokens":2078}}}
+{"time":1794739255945,"type":"tool_call","data":{"step":8,"name":"phone_action","arguments":{"action":"input","nodeId":7,"text":"充电器","summary":"输入充电器"}}}
+{"time":1794739255947,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 7 输入文本","step":8}}
+{"time":1794739255947,"type":"device_action","data":{"action":{"kind":"input","nodeId":7,"text":"充电器"},"package":"com.wukong.phone","step":8}}
+{"time":1794739256006,"type":"device_result","data":{"action":{"kind":"input","nodeId":7,"text":"充电器"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":59,"step":8}}
+{"time":1794739256507,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":501,"settled":true,"samples":4,"uiEvents":true,"uiRevision":389,"uiQuietMs":464,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":8}}
+{"time":1794739256509,"type":"observation","data":{"step":9,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739256519,"type":"model_request","data":{"step":9,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739257064,"type":"model_response","data":{"step":9,"httpStatus":200,"durationMs":545,"usage":{"prompt_tokens":6310,"completion_tokens":67,"total_tokens":6377,"prompt_tokens_details":{"cached_tokens":4096},"prompt_cache_hit_tokens":4096,"prompt_cache_miss_tokens":2214}}}
+{"time":1794739257066,"type":"tool_call","data":{"step":9,"name":"phone_action","arguments":{"action":"tap","nodeId":8,"summary":"查询充电器"}}}
+{"time":1794739257068,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 8","step":9}}
+{"time":1794739257068,"type":"device_action","data":{"action":{"kind":"tap","nodeId":8},"package":"com.wukong.phone","step":9}}
+{"time":1794739257145,"type":"device_result","data":{"action":{"kind":"tap","nodeId":8},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":77,"step":9}}
+{"time":1794739257506,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":359,"settled":true,"samples":3,"uiEvents":true,"uiRevision":391,"uiQuietMs":358,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":9}}
+{"time":1794739257509,"type":"observation","data":{"step":10,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739257529,"type":"model_request","data":{"step":10,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739258601,"type":"model_response","data":{"step":10,"httpStatus":200,"durationMs":1072,"usage":{"prompt_tokens":6306,"completion_tokens":86,"total_tokens":6392,"prompt_tokens_details":{"cached_tokens":3456},"prompt_cache_hit_tokens":3456,"prompt_cache_miss_tokens":2850}}}
+{"time":1794739258602,"type":"tool_call","data":{"step":10,"name":"phone_wait_until","arguments":{"conditions":[{"resourceId":"com.wukong.phone:id\/benchmark_result","textContains":"充电器","state":"present"}],"timeoutMs":10000}}}
+{"time":1794739258604,"type":"tool_argument_error","data":{"name":"phone_wait_until","message":"Unknown argument(s): resourceId, textContains; allowed: selector, packageName, state, minCount","step":10}}
+{"time":1794739258604,"type":"agent_event","data":{"phase":"RUNNING","message":"操作未执行，正在重新观察并调整","step":10}}
+{"time":1794739259009,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":404,"settled":true,"samples":3,"uiEvents":true,"uiRevision":393,"uiQuietMs":1209,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":10}}
+{"time":1794739259011,"type":"observation","data":{"step":11,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739259022,"type":"model_request","data":{"step":11,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739260448,"type":"model_response","data":{"step":11,"httpStatus":200,"durationMs":1426,"usage":{"prompt_tokens":6430,"completion_tokens":69,"total_tokens":6499,"prompt_tokens_details":{"cached_tokens":3328},"prompt_cache_hit_tokens":3328,"prompt_cache_miss_tokens":3102}}}
+{"time":1794739260450,"type":"tool_call","data":{"step":11,"name":"phone_action","arguments":{"action":"tap","nodeId":9,"summary":"重试充电器查询"}}}
+{"time":1794739260453,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 9","step":11}}
+{"time":1794739260455,"type":"device_action","data":{"action":{"kind":"tap","nodeId":9},"package":"com.wukong.phone","step":11}}
+{"time":1794739260558,"type":"device_result","data":{"action":{"kind":"tap","nodeId":9},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":103,"step":11}}
+{"time":1794739261062,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":502,"settled":true,"samples":4,"uiEvents":true,"uiRevision":398,"uiQuietMs":388,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":11}}
+{"time":1794739261065,"type":"observation","data":{"step":12,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739261073,"type":"model_request","data":{"step":12,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739262092,"type":"model_response","data":{"step":12,"httpStatus":200,"durationMs":1019,"usage":{"prompt_tokens":6422,"completion_tokens":89,"total_tokens":6511,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3222}}}
+{"time":1794739262094,"type":"tool_call","data":{"step":12,"name":"phone_wait_until","arguments":{"conditions":[{"selector":{"resourceId":"com.wukong.phone:id\/benchmark_result","textContains":"充电器"},"state":"present"}],"timeoutMs":10000}}}
+{"time":1794739262098,"type":"agent_event","data":{"phase":"RUNNING","message":"等待目标条件","step":12}}
+{"time":1794739262099,"type":"device_action","data":{"action":{"kind":"wait_until","conditions":[{"state":"present","minCount":1,"selector":{"textContains":"充电器","resourceId":"com.wukong.phone:id\/benchmark_result"}}],"matchAll":false,"timeoutMs":10000},"package":"com.wukong.phone","step":12}}
+{"time":1794739262140,"type":"inspection_result","data":{"action":{"kind":"wait_until","conditions":[{"state":"present","minCount":1,"selector":{"textContains":"充电器","resourceId":"com.wukong.phone:id\/benchmark_result"}}],"matchAll":false,"timeoutMs":10000},"result":{"package":"com.wukong.phone","fingerprint":"b17bb62956f1d795eb556d283154691108b1bf158af52679b70e4a78b582aee0","sourceTruncated":false,"elapsedMs":38,"samples":1,"timedOut":false,"verification":{"state":"met","package":"com.wukong.phone","fingerprint":"b17bb62956f1d795eb556d283154691108b1bf158af52679b70e4a78b582aee0","sourceTruncated":false,"checks":[{"condition":{"state":"present","minCount":1,"selector":{"textContains":"充电器","resourceId":"com.wukong.phone:id\/benchmark_result"}},"state":"met","totalMatches":1,"matches":[{"id":10,"text":"查询结果：充电器，找到 5 件商品","resourceId":"com.wukong.phone:id\/benchmark_result","className":"android.widget.TextView","parentId":5,"editable":false,"clickable":false,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":259,"right":961,"bottom":285}}],"matchesTruncated":false}]}},"durationMs":38,"step":12}}
+{"time":1794739262517,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":374,"settled":true,"samples":3,"uiEvents":true,"uiRevision":400,"uiQuietMs":1294,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":12}}
+{"time":1794739262519,"type":"observation","data":{"step":13,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739262531,"type":"model_request","data":{"step":13,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739263721,"type":"model_response","data":{"step":13,"httpStatus":200,"durationMs":1190,"usage":{"prompt_tokens":6421,"completion_tokens":70,"total_tokens":6491,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3221}}}
+{"time":1794739263723,"type":"tool_call","data":{"step":13,"name":"phone_action","arguments":{"action":"tap","nodeId":12,"summary":"点击充电器件数输入框"}}}
+{"time":1794739263725,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 12","step":13}}
+{"time":1794739263725,"type":"device_action","data":{"action":{"kind":"tap","nodeId":12},"package":"com.wukong.phone","step":13}}
+{"time":1794739263810,"type":"device_result","data":{"action":{"kind":"tap","nodeId":12},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":85,"step":13}}
+{"time":1794739264280,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":469,"settled":true,"samples":4,"uiEvents":true,"uiRevision":403,"uiQuietMs":347,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":13}}
+{"time":1794739264282,"type":"observation","data":{"step":14,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739264294,"type":"model_request","data":{"step":14,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739264973,"type":"model_response","data":{"step":14,"httpStatus":200,"durationMs":679,"usage":{"prompt_tokens":6423,"completion_tokens":85,"total_tokens":6508,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3223}}}
+{"time":1794739264975,"type":"tool_call","data":{"step":14,"name":"phone_action","arguments":{"action":"input","nodeId":12,"summary":"输入充电器件数5","text":"5"}}}
+{"time":1794739264979,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 12 输入文本","step":14}}
+{"time":1794739264980,"type":"device_action","data":{"action":{"kind":"input","nodeId":12,"text":"5"},"package":"com.wukong.phone","step":14}}
+{"time":1794739265015,"type":"device_result","data":{"action":{"kind":"input","nodeId":12,"text":"5"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":35,"step":14}}
+{"time":1794739265566,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":551,"settled":true,"samples":5,"uiEvents":true,"uiRevision":406,"uiQuietMs":357,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":14}}
+{"time":1794739265568,"type":"observation","data":{"step":15,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739265577,"type":"model_request","data":{"step":15,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739266590,"type":"model_response","data":{"step":15,"httpStatus":200,"durationMs":1013,"usage":{"prompt_tokens":6427,"completion_tokens":68,"total_tokens":6495,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3227}}}
+{"time":1794739266592,"type":"tool_call","data":{"step":15,"name":"phone_action","arguments":{"action":"tap","nodeId":7,"summary":"点击关键词输入框"}}}
+{"time":1794739266593,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 7","step":15}}
+{"time":1794739266594,"type":"device_action","data":{"action":{"kind":"tap","nodeId":7},"package":"com.wukong.phone","step":15}}
+{"time":1794739266657,"type":"device_result","data":{"action":{"kind":"tap","nodeId":7},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":64,"step":15}}
+{"time":1794739267096,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":438,"settled":true,"samples":4,"uiEvents":true,"uiRevision":413,"uiQuietMs":313,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":15}}
+{"time":1794739267098,"type":"observation","data":{"step":16,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739267106,"type":"model_request","data":{"step":16,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739267931,"type":"model_response","data":{"step":16,"httpStatus":200,"durationMs":824,"usage":{"prompt_tokens":6426,"completion_tokens":84,"total_tokens":6510,"prompt_tokens_details":{"cached_tokens":3328},"prompt_cache_hit_tokens":3328,"prompt_cache_miss_tokens":3098}}}
+{"time":1794739267933,"type":"tool_call","data":{"step":16,"name":"phone_action","arguments":{"action":"input","nodeId":7,"summary":"输入数据线","text":"数据线"}}}
+{"time":1794739267936,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 7 输入文本","step":16}}
+{"time":1794739267936,"type":"device_action","data":{"action":{"kind":"input","nodeId":7,"text":"数据线"},"package":"com.wukong.phone","step":16}}
+{"time":1794739267981,"type":"device_result","data":{"action":{"kind":"input","nodeId":7,"text":"数据线"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":45,"step":16}}
+{"time":1794739268486,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":504,"settled":true,"samples":4,"uiEvents":true,"uiRevision":417,"uiQuietMs":463,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":16}}
+{"time":1794739268488,"type":"observation","data":{"step":17,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739268497,"type":"model_request","data":{"step":17,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739269770,"type":"model_response","data":{"step":17,"httpStatus":200,"durationMs":1273,"usage":{"prompt_tokens":6425,"completion_tokens":67,"total_tokens":6492,"prompt_tokens_details":{"cached_tokens":3328},"prompt_cache_hit_tokens":3328,"prompt_cache_miss_tokens":3097}}}
+{"time":1794739269772,"type":"tool_call","data":{"step":17,"name":"phone_action","arguments":{"action":"tap","nodeId":8,"summary":"查询数据线"}}}
+{"time":1794739269775,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 8","step":17}}
+{"time":1794739269777,"type":"device_action","data":{"action":{"kind":"tap","nodeId":8},"package":"com.wukong.phone","step":17}}
+{"time":1794739269874,"type":"device_result","data":{"action":{"kind":"tap","nodeId":8},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":98,"step":17}}
+{"time":1794739270278,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":404,"settled":true,"samples":3,"uiEvents":true,"uiRevision":419,"uiQuietMs":396,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":17}}
+{"time":1794739270281,"type":"observation","data":{"step":18,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739270291,"type":"model_request","data":{"step":18,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739271296,"type":"model_response","data":{"step":18,"httpStatus":200,"durationMs":1005,"usage":{"prompt_tokens":6421,"completion_tokens":125,"total_tokens":6546,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3221}}}
+{"time":1794739271297,"type":"tool_call","data":{"step":18,"name":"phone_wait_until","arguments":{"conditions":[{"selector":{"resourceId":"com.wukong.phone:id\/benchmark_result","textContains":"数据线，找到"},"state":"present"},{"selector":{"resourceId":"com.wukong.phone:id\/benchmark_result","textContains":"查询失败"},"state":"present"}],"timeoutMs":10000}}}
+{"time":1794739271301,"type":"agent_event","data":{"phase":"RUNNING","message":"等待目标条件","step":18}}
+{"time":1794739271302,"type":"device_action","data":{"action":{"kind":"wait_until","conditions":[{"state":"present","minCount":1,"selector":{"textContains":"数据线，找到","resourceId":"com.wukong.phone:id\/benchmark_result"}},{"state":"present","minCount":1,"selector":{"textContains":"查询失败","resourceId":"com.wukong.phone:id\/benchmark_result"}}],"matchAll":false,"timeoutMs":10000},"package":"com.wukong.phone","step":18}}
+{"time":1794739271357,"type":"inspection_result","data":{"action":{"kind":"wait_until","conditions":[{"state":"present","minCount":1,"selector":{"textContains":"数据线，找到","resourceId":"com.wukong.phone:id\/benchmark_result"}},{"state":"present","minCount":1,"selector":{"textContains":"查询失败","resourceId":"com.wukong.phone:id\/benchmark_result"}}],"matchAll":false,"timeoutMs":10000},"result":{"package":"com.wukong.phone","fingerprint":"b5dacbd45d24e65c27b70de605b2cc06babfb0a6c254a23decc65c5500ddab45","sourceTruncated":false,"elapsedMs":52,"samples":1,"timedOut":false,"verification":{"state":"met","package":"com.wukong.phone","fingerprint":"b5dacbd45d24e65c27b70de605b2cc06babfb0a6c254a23decc65c5500ddab45","sourceTruncated":false,"checks":[{"condition":{"state":"present","minCount":1,"selector":{"textContains":"数据线，找到","resourceId":"com.wukong.phone:id\/benchmark_result"}},"state":"met","totalMatches":1,"matches":[{"id":10,"text":"查询结果：数据线，找到 2 件商品","resourceId":"com.wukong.phone:id\/benchmark_result","className":"android.widget.TextView","parentId":5,"editable":false,"clickable":false,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":259,"right":961,"bottom":285}}],"matchesTruncated":false},{"condition":{"state":"present","minCount":1,"selector":{"textContains":"查询失败","resourceId":"com.wukong.phone:id\/benchmark_result"}},"state":"not_met","totalMatches":0,"matches":[],"matchesTruncated":false}]}},"durationMs":52,"step":18}}
+{"time":1794739271720,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":359,"settled":true,"samples":3,"uiEvents":true,"uiRevision":421,"uiQuietMs":1186,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":18}}
+{"time":1794739271722,"type":"observation","data":{"step":19,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739271735,"type":"model_request","data":{"step":19,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739272738,"type":"model_response","data":{"step":19,"httpStatus":200,"durationMs":1002,"usage":{"prompt_tokens":7109,"completion_tokens":71,"total_tokens":7180,"prompt_tokens_details":{"cached_tokens":3328},"prompt_cache_hit_tokens":3328,"prompt_cache_miss_tokens":3781}}}
+{"time":1794739272740,"type":"tool_call","data":{"step":19,"name":"phone_action","arguments":{"action":"tap","nodeId":13,"summary":"点击数据线件数输入框"}}}
+{"time":1794739272744,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 13","step":19}}
+{"time":1794739272745,"type":"device_action","data":{"action":{"kind":"tap","nodeId":13},"package":"com.wukong.phone","step":19}}
+{"time":1794739272843,"type":"device_result","data":{"action":{"kind":"tap","nodeId":13},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":98,"step":19}}
+{"time":1794739273306,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":461,"settled":true,"samples":4,"uiEvents":true,"uiRevision":424,"uiQuietMs":340,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":19}}
+{"time":1794739273307,"type":"observation","data":{"step":20,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739273318,"type":"model_request","data":{"step":20,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739274780,"type":"model_response","data":{"step":20,"httpStatus":200,"durationMs":1462,"usage":{"prompt_tokens":7112,"completion_tokens":86,"total_tokens":7198,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3912}}}
+{"time":1794739274782,"type":"tool_call","data":{"step":20,"name":"phone_action","arguments":{"action":"input","nodeId":13,"summary":"输入数据线件数2","text":"2"}}}
+{"time":1794739274786,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 13 输入文本","step":20}}
+{"time":1794739274787,"type":"device_action","data":{"action":{"kind":"input","nodeId":13,"text":"2"},"package":"com.wukong.phone","step":20}}
+{"time":1794739274842,"type":"device_result","data":{"action":{"kind":"input","nodeId":13,"text":"2"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":55,"step":20}}
+{"time":1794739275254,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":411,"settled":true,"samples":4,"uiEvents":true,"uiRevision":427,"uiQuietMs":280,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":20}}
+{"time":1794739275256,"type":"observation","data":{"step":21,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739275268,"type":"model_request","data":{"step":21,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739276112,"type":"model_response","data":{"step":21,"httpStatus":200,"durationMs":844,"usage":{"prompt_tokens":6505,"completion_tokens":67,"total_tokens":6572,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3305}}}
+{"time":1794739276113,"type":"tool_call","data":{"step":21,"name":"phone_action","arguments":{"action":"tap","nodeId":14,"summary":"点击校验结果"}}}
+{"time":1794739276116,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 14","step":21}}
+{"time":1794739276116,"type":"device_action","data":{"action":{"kind":"tap","nodeId":14},"package":"com.wukong.phone","step":21}}
+{"time":1794739276191,"type":"device_result","data":{"action":{"kind":"tap","nodeId":14},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":75,"step":21}}
+{"time":1794739276501,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":309,"settled":true,"samples":3,"uiEvents":true,"uiRevision":428,"uiQuietMs":314,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":21}}
+{"time":1794739276502,"type":"observation","data":{"step":22,"package":"com.wukong.phone","nodeCount":14}}
+{"time":1794739276506,"type":"model_request","data":{"step":22,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794739278062,"type":"model_response","data":{"step":22,"httpStatus":200,"durationMs":1556,"usage":{"prompt_tokens":6515,"completion_tokens":196,"total_tokens":6711,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":3315}}}
+{"time":1794739278064,"type":"tool_call","data":{"step":22,"name":"phone_action","arguments":{"action":"finish","outcome":"success","summary":"已依次查询蓝牙耳机、充电器、数据线并将件数填入对应输入框，点击校验结果后显示\"校验通过：蓝牙耳机=3，充电器=5，数据线=2\"。即：蓝牙耳机 3 件、充电器 5 件、数据线 2 件。","evidence":[{"selector":{"resourceId":"com.wukong.phone:id\/benchmark_result","textContains":"校验通过：蓝牙耳机=3，充电器=5，数据线=2"},"state":"present"}]}}}
+{"time":1794739278067,"type":"agent_event","data":{"phase":"RUNNING","message":"正在核对任务完成证据","step":22}}
+{"time":1794739278402,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":14,"durationMs":335,"settled":true,"samples":3,"uiEvents":true,"uiRevision":428,"uiQuietMs":2215,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":22}}
+{"time":1794739278405,"type":"completion_verification","data":{"state":"met","package":"com.wukong.phone","fingerprint":"b789a6d01f8b4167a5b7b0cdbc6ec880538ae15eb5d369aae3f68e9520d5c523","sourceTruncated":false,"checks":[{"condition":{"state":"present","minCount":1,"selector":{"textContains":"校验通过：蓝牙耳机=3，充电器=5，数据线=2","resourceId":"com.wukong.phone:id\/benchmark_result"}},"state":"met","totalMatches":1,"matches":[{"id":10,"text":"校验通过：蓝牙耳机=3，充电器=5，数据线=2","resourceId":"com.wukong.phone:id\/benchmark_result","className":"android.widget.TextView","parentId":5,"editable":false,"clickable":false,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":259,"right":961,"bottom":285}}],"matchesTruncated":false}],"step":22}}
+{"time":1794739278406,"type":"agent_event","data":{"phase":"COMPLETED","message":"已依次查询蓝牙耳机、充电器、数据线并将件数填入对应输入框，点击校验结果后显示\"校验通过：蓝牙耳机=3，充电器=5，数据线=2\"。即：蓝牙耳机 3 件、充电器 5 件、数据线 2 件。","step":22}}
+{"time":1794739278412,"type":"end","data":{"phase":"COMPLETED","message":"已依次查询蓝牙耳机、充电器、数据线并将件数填入对应输入框，点击校验结果后显示\"校验通过：蓝牙耳机=3，充电器=5，数据线=2\"。即：蓝牙耳机 3 件、充电器 5 件、数据线 2 件。","step":22}}

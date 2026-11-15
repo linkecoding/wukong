@@ -26,6 +26,9 @@ def sdk_stats(path, report):
         if not trace.exists():
             trace = path.parent / 'traces' / f"{index:02d}-{row['case']}-{row['mode'].lower()}.jsonl"
         events = [json.loads(line) for line in trace.read_text().splitlines() if line.strip()]
+        configs = [e['data'] for e in events if e['type'] == 'benchmark_config']
+        if len(configs) != 1 or any(configs[0][k] != row[k] for k in ('case', 'mode', 'repetition')):
+            raise SystemExit(f'Trace/report mismatch: {trace}')
         if not any(e['type'] == 'end' for e in events):
             raise SystemExit(f'Missing trace end: {trace}')
         for event in events:

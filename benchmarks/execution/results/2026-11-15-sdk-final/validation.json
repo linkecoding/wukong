@@ -1,0 +1,12 @@
+{
+  "runtimeRevision": "f5573059d8d8227e3a1704ec2496eea76cd36003",
+  "debugArm64ApkSha256": "fc3177493ba6a519e023569d33730ccd594ab1f996e0188b3294a33e0f69a629",
+  "jvmTestsPassed": 55,
+  "deviceOfflineTestsPassed": 23,
+  "deviceLiveOptInTestsSkipped": 1,
+  "lintDebug": "passed",
+  "newLiveRuns": 24,
+  "initialRoundSuccess": 9,
+  "finalRoundSuccess": 12,
+  "baselineChanged": false
+}

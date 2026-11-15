@@ -14,7 +14,7 @@
 
 対象要素の検索、結果やエラーを条件にした待機、完了前の最新画面による検証に対応しています。詳細は [クエリと完了検証](docs/architecture/condition-tools.md) を参照してください。
 
-組み込み QuickJS の JavaScript で、検索・待機・画面変更の監視・端末操作を短いワークフローにまとめられます。各操作は既存の承認と検証を通ります。[実行環境の詳細](docs/architecture/javascript-runtime.md)。
+組み込み QuickJS の JavaScript で、検索・待機・画面変更の監視・端末操作を短いワークフローにまとめられます。明示的なセレクター、名前付きの結果待機、目標状態の設定に対応し、各操作は既存の承認と検証を通ります。[実行環境の詳細](docs/architecture/javascript-runtime.md)。
 
 ## 主な機能
 

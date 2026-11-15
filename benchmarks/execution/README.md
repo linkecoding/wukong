@@ -9,6 +9,19 @@ App 日常任务保持 `PlanningMode.AUTO`，此次对比没有新增用户设�
 
 [2026-11-15 结论与错误分析](results/2026-11-15/analysis.md) · [实测逐次表格](results/2026-11-15/README.md) · [原始汇总 JSON](results/2026-11-15/report.json) · [12 次运行轨迹](results/2026-11-15/traces)
 
+## SDK 优化复测
+
+[最终复测与剩余问题](results/2026-11-15-sdk-final/analysis.md) · [前后指标](results/2026-11-15-sdk-final/comparison.md) · [首轮失败记录](results/2026-11-15-sdk-initial/analysis.md)。原始基线不变，两个新增完整 12 次分别保存；修复后 12/12 成功，JS 平均耗时下降约 28%，token 仅下降约 2%。纯工具组未改善。
+
+从两份完整报告及对应 traces 重新生成对比：
+
+```sh
+python3 benchmarks/execution/compare.py \
+  benchmarks/execution/results/2026-11-15/report.json \
+  benchmarks/execution/results/2026-11-15-sdk-final/report.json \
+  --output benchmarks/execution/results/2026-11-15-sdk-final/comparison.md
+```
+
 ## 任务与判定
 
 在 Pixel 6 上运行真实 Android View，底层使用 App 内相同的 shell 驱动、输入注入和 QuickJS。三个任务均为合成数据，避免真实发送、支付和用户业务数据：
