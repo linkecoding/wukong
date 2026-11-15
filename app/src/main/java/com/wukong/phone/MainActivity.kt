@@ -459,11 +459,7 @@ class MainActivity : LocalizedActivity() {
         divider(data)
         data.addView(settingRow(getString(R.string.ui_connection_diagnostics), icon = R.drawable.ic_nav_logs) { logsPage() })
         section(R.string.ui_group_data, data)
-        body.addView(button(getString(R.string.ui_clear_model_configuration), false) {
-            if (TaskRuntime.active) { errorDialog(getString(R.string.setup_stop_first)); return@button }
-            WukongUi.dialog(this).setTitle(R.string.ui_clear_model_configuration).setMessage(R.string.ui_clear_model_confirm)
-                .setPositiveButton(R.string.ui_clear) { _, _ -> store.clear(); navigate(2) }.setNegativeButton(R.string.ui_cancel, null).show()
-        }.apply { setTextColor(color(R.color.danger)) }.spaced(24, 0))
+
     }
     private fun statusBadge(phase: String) = text(if (phase == "COMPLETED") getString(R.string.ui_completed) else phaseName(phase), 11f, bold = true).apply {
         val failed = phase == "FAILED"

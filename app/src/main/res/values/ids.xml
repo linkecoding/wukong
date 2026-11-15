@@ -11,4 +11,7 @@
     <item name="sample_parameter" type="id"/>
     <item name="task_options" type="id"/>
     <item name="page_menu" type="id"/>
+    <item name="model_catalog_open" type="id"/>
+    <item name="model_catalog_refresh" type="id"/>
+    <item name="model_page_menu" type="id"/>
 </resources>

@@ -46,6 +46,11 @@
     </style>
     <style name="Theme.Wukong.Dropdown" parent="Theme.Wukong">
         <item name="android:dropDownListViewStyle">@style/Wukong.DropDownList</item>
+        <item name="android:autoCompleteTextViewStyle">@style/Wukong.ModelPicker</item>
+    </style>
+    <style name="Wukong.ModelPicker" parent="android:style/Widget.Material.AutoCompleteTextView">
+        <item name="android:popupElevation">6dp</item>
+        <item name="android:dropDownSelector">@android:color/transparent</item>
     </style>
     <style name="Wukong.DropDownList" parent="android:style/Widget.Material.ListView.DropDown">
         <item name="android:listSelector">@android:color/transparent</item>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="model_settings_title">模型配置</string>
+    <string name="model_get_key">获取 Key ↗</string>
+    <string name="model_key_hint">填写 API key</string>
+    <string name="model_pick_hint">选择或输入模型 ID</string>
+    <string name="model_choose">选择模型</string>
+    <string name="model_refresh">刷新</string>
+    <string name="model_region_note">北京地域标准 API，不适用于 Coding Plan Key。</string>
+    <string name="model_key_first">填写 API key 后可获取模型列表，也可以直接输入模型 ID。</string>
+    <string name="model_address_check">请检查 HTTPS 接口地址和 API key。</string>
+    <string name="model_unknown_route">此自定义完整地址无法推导模型列表，请手动输入模型 ID。</string>
+    <string name="model_loading">正在获取可用模型…</string>
+    <string name="model_list_empty">服务商未返回模型，请手动输入模型 ID。</string>
+    <string name="model_list_ready">已获取 %1$d 个模型，也可输入自定义 ID。</string>
+    <string name="model_list_auth">此 Key 无法访问模型列表，请检查权限或手动输入模型 ID。</string>
+    <string name="model_list_unsupported">此接口不提供模型列表，请手动输入模型 ID。</string>
+    <string name="model_list_rate_limit">请求频繁，请稍后重试或手动输入模型 ID。</string>
+    <string name="model_list_invalid">模型列表格式不兼容，请手动输入模型 ID。</string>
+    <string name="model_list_failed">获取模型失败，可重试或手动输入模型 ID。</string>
+    <string name="model_platform_failed">无法打开 API 平台链接。</string>
+</resources>

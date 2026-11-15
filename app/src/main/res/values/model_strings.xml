@@ -1,0 +1,21 @@
+<resources>
+    <string name="model_settings_title">Model settings</string>
+    <string name="model_get_key">Get API key ↗</string>
+    <string name="model_key_hint">Enter API key</string>
+    <string name="model_pick_hint">Select or enter model ID</string>
+    <string name="model_choose">Choose a model</string>
+    <string name="model_refresh">Refresh</string>
+    <string name="model_region_note">Standard Beijing API. Coding Plan keys are not supported.</string>
+    <string name="model_key_first">Enter an API key to load models. You can also type a model ID.</string>
+    <string name="model_address_check">Check the HTTPS base URL and API key.</string>
+    <string name="model_unknown_route">Model discovery is unavailable for this custom full URL. Enter the model ID manually.</string>
+    <string name="model_loading">Loading available models…</string>
+    <string name="model_list_empty">The service returned no models. Enter a model ID manually.</string>
+    <string name="model_list_ready">%1$d models available. You can also enter a custom ID.</string>
+    <string name="model_list_auth">Cannot access models with this key. Check its permissions, or enter the model ID manually.</string>
+    <string name="model_list_unsupported">This service does not provide a model list. Enter a model ID manually.</string>
+    <string name="model_list_rate_limit">Too many requests. Try again later, or enter a model ID.</string>
+    <string name="model_list_invalid">The model list format is unsupported. Enter a model ID manually.</string>
+    <string name="model_list_failed">Could not load models. Try again, or enter a model ID manually.</string>
+    <string name="model_platform_failed">Cannot open the API platform link.</string>
+</resources>

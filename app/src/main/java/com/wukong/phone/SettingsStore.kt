@@ -24,6 +24,13 @@ data class ModelSettings(
 
     fun requestEndpoint(): String = if (useFullEndpoint) endpoint else endpoint.trimEnd('/') + "/chat/completions"
 
+    /** Preserve any configured base path; only a standard full chat route has a known sibling. */
+    fun modelsEndpoint(): String? {
+        val base = endpoint.trimEnd('/')
+        if (!useFullEndpoint) return "$base/models"
+        return base.takeIf { it.endsWith("/chat/completions") }?.removeSuffix("/chat/completions")?.plus("/models")
+    }
+
     fun toJson(): JSONObject = JSONObject().put("endpoint", endpoint).put("model", model).put("key", apiKey)
         .put("useFullEndpoint", useFullEndpoint).put("thinkingEnabled", thinkingEnabled).put("providerId", providerId)
 

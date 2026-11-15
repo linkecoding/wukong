@@ -80,6 +80,22 @@ class ScreenReviewTest {
                 page("$lang-diagnostics")
                 i.runOnMainSync { a!!.finish() }; i.waitForIdleSync()
                 a = i.startActivitySync(Intent(c,SetupActivity::class.java).putExtra("model_only",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); i.waitForIdleSync()
+                i.runOnMainSync { a!!.findViewById<View>(R.id.model_catalog_open).performClick() }
+                val modelDeadline = System.currentTimeMillis() + 20000
+                var modelListReady = false
+                while (!modelListReady && System.currentTimeMillis() < modelDeadline) {
+                    Thread.sleep(100)
+                    i.runOnMainSync { modelListReady = views().filterIsInstance<ModelConfigurationView>().single().model.adapter?.count?.let { it > 0 } == true }
+                }
+                assertTrue("Real provider models should load for review", modelListReady)
+                shot("$lang-model-list")
+                i.runOnMainSync { views().filterIsInstance<ModelConfigurationView>().single().model.dismissDropDown() }
+                i.runOnMainSync { a!!.findViewById<View>(R.id.model_page_menu).performClick() }; i.waitForIdleSync()
+                i.runOnMainSync {
+                    val list = WindowInspector.getGlobalWindowViews().flatMap { all(it) }.filterIsInstance<ListView>().last()
+                    list.performItemClick(list.getChildAt(0), 0, list.adapter.getItemId(0))
+                }; shot("$lang-model-clear-dialog")
+                i.runOnMainSync { WindowInspector.getGlobalWindowViews().flatMap { all(it) }.filterIsInstance<Button>().single { it.text.toString() == a!!.getString(R.string.ui_cancel) }.performClick() }
                 i.runOnMainSync { views().filterIsInstance<ModelConfigurationView>().single().key.setText("") }; page("$lang-model")
                 click(R.string.setup_advanced); page("$lang-model-advanced")
                 i.runOnMainSync { a!!.finish() }; i.waitForIdleSync()

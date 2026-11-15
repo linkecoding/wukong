@@ -6,7 +6,7 @@ A shared design system for the Android app and project identity, approved on 202
 
 ## Genre and structure
 
-Modern-minimal. App pages use a task workbench: compact identity header, scrollable content, three-item bottom navigation (Tasks / History / Settings). The task composer leads the first screen, with one filled primary action. Examples and secondary settings are flat icon/text rows; explanations are disclosed when needed. Task composition comes before display options; history uses status cards; task details combine results, measured token usage and expandable step groups. Settings has separate model, device, preferences and data cards. Connection tests remain in Settings diagnostics. Introduction assets use a short typographic statement with the actual logo. Do not invent statistics or endorsements.
+Modern-minimal. App pages use a task workbench: compact identity header, scrollable content, three-item bottom navigation (Tasks / History / Settings). The task composer leads the first screen, with one filled primary action. Examples and secondary settings are flat icon/text rows; explanations are disclosed when needed. Task composition comes before display options; history uses status cards; task details combine results, measured token usage and expandable step groups. Settings has separate model, device, preferences and data cards. Model configuration uses a fixed compact header with a clear action in its overflow menu, a connection card and a model-selection card; advanced controls are disclosed. Connection tests remain in Settings diagnostics. Introduction assets use a short typographic statement with the actual logo. Do not invent statistics or endorsements.
 
 ## Theme
 

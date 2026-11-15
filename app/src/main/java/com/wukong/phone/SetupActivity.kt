@@ -15,6 +15,7 @@ class SetupActivity : LocalizedActivity() {
     private enum class Stage { MODEL, PHONE, CONTROLS, READY }
     private lateinit var body: LinearLayout
     private lateinit var ui: SetupViews
+    private lateinit var headerBar: LinearLayout
     private lateinit var actionBar: LinearLayout
     private var stage = Stage.MODEL
     private var modelOnly = false
@@ -42,6 +43,8 @@ class SetupActivity : LocalizedActivity() {
         stage = if (modelOnly || runCatching { SettingsStore(this).load()?.also { it.validate() } }.getOrNull() == null) Stage.MODEL else Stage.PHONE
         body = ui.column().apply { setPadding(ui.dp(24), ui.dp(20), ui.dp(24), ui.dp(32)); setBackgroundColor(getColor(R.color.paper)) }
         val root = ui.column().apply { setBackgroundColor(getColor(R.color.paper)) }
+        headerBar = ui.column().apply { setPadding(ui.dp(16), ui.dp(8), ui.dp(16), ui.dp(8)) }
+        root.addView(headerBar)
         val scroll = ScrollView(this).apply { addView(body); isFillViewport = true }
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
         actionBar = ui.column().apply {
@@ -72,7 +75,9 @@ class SetupActivity : LocalizedActivity() {
     private fun render() {
         if (isFinishing || isDestroyed) return
         body.removeAllViews(); actionBar.removeAllViews()
-        ui.back(body) { finish() }
+        headerBar.removeAllViews()
+        headerBar.visibility = if (stage == Stage.MODEL) View.VISIBLE else View.GONE
+        if (stage == Stage.MODEL) modelHeader() else ui.back(body) { finish() }
         if (!modelOnly) {
             ui.add(body, ui.text(getString(R.string.setup_steps), 12f, true), 8, 12)
             val goal = TaskDraftStore(this).goal()
@@ -83,7 +88,7 @@ class SetupActivity : LocalizedActivity() {
             })
         }
         val title = when (stage) { Stage.MODEL -> R.string.setup_model; Stage.PHONE -> R.string.setup_device; Stage.CONTROLS -> R.string.setup_controls; Stage.READY -> R.string.setup_ready }
-        ui.add(body, ui.text(getString(title), 24f), 12, 12)
+        if (stage != Stage.MODEL) ui.add(body, ui.text(getString(title), 24f), 12, 12)
         when (stage) {
             Stage.MODEL -> modelPage()
             Stage.PHONE -> {
@@ -107,8 +112,40 @@ class SetupActivity : LocalizedActivity() {
             }
         }
     }
+    private fun modelHeader() {
+        val header = LinearLayout(this).apply { gravity = android.view.Gravity.CENTER_VERTICAL }
+        header.addView(WukongUi.button(this, "") { finish() }.apply {
+            contentDescription = getString(R.string.setup_back)
+            setPadding(ui.dp(12), ui.dp(12), ui.dp(12), ui.dp(12))
+            setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_back, 0, 0, 0)
+        }, LinearLayout.LayoutParams(ui.dp(48), ui.dp(48)))
+        header.addView(ui.text(getString(if (modelOnly) R.string.model_settings_title else R.string.setup_model), 20f), LinearLayout.LayoutParams(0, -2, 1f))
+        if (runCatching { SettingsStore(this).load() }.getOrNull() != null) {
+            header.addView(WukongUi.button(this, "") {}.apply {
+                id = R.id.model_page_menu; contentDescription = getString(R.string.ui_more_actions)
+                setPadding(ui.dp(14), ui.dp(14), ui.dp(14), ui.dp(14))
+                setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_more, 0, 0, 0)
+                setOnClickListener { anchor ->
+                    if (submitting || TaskRuntime.active) return@setOnClickListener
+                    PopupMenu(this@SetupActivity, anchor).apply {
+                        menu.add(R.string.ui_clear_model_configuration).setOnMenuItemClickListener {
+                            WukongUi.dialog(this@SetupActivity).setTitle(R.string.ui_clear_model_configuration).setMessage(R.string.ui_clear_model_confirm)
+                                .setNegativeButton(R.string.ui_cancel, null)
+                                .setPositiveButton(R.string.ui_clear) { _, _ ->
+                                    if (!submitting && !TaskRuntime.active) {
+                                        SettingsStore(this@SetupActivity).clear(); testedSettings = null
+                                        setResult(RESULT_OK); render()
+                                    }
+                                }.show()
+                            true
+                        }
+                    }.show()
+                }
+            }, LinearLayout.LayoutParams(ui.dp(48), ui.dp(48)))
+        }
+        headerBar.addView(header)
+    }
     private fun modelPage() {
-        ui.add(body, ui.text(getString(R.string.setup_model_description), 15f, true))
         val view = ModelConfigurationView(this, runCatching { SettingsStore(this).load() }.getOrNull())
         ui.add(body, view)
         lateinit var next: Button

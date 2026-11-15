@@ -1,6 +1,14 @@
 [
   {
     "date": "2026-11-15",
+    "scope": "model settings page",
+    "macrostructure": "Compact header / grouped form",
+    "theme": "Cream, moss, pale apricot",
+    "enrichment": "none",
+    "brief": "Connection and model cards, editable model discovery dropdown, clear action owned by model settings"
+  },
+  {
+    "date": "2026-11-15",
     "scope": "app interaction polish",
     "macrostructure": "Workbench / task-linked history",
     "theme": "Cream, moss, pale apricot",

@@ -26,6 +26,14 @@ class ModelSettingsTest {
         }
     }
 
+    @Test fun modelDiscoveryUsesTheExactBasePrefixAndOnlyKnownFullRoutes() {
+        for (base in listOf("https://example.com", "https://example.com/v1/", "https://example.com/odd/prefix")) {
+            assertEquals(base.trimEnd('/') + "/models", ModelSettings(base, "", "key").modelsEndpoint())
+        }
+        assertEquals("https://example.com/odd/models", ModelSettings("https://example.com/odd/chat/completions/", "", "key", true).modelsEndpoint())
+        assertNull(ModelSettings("https://example.com/custom-completion", "", "key", true).modelsEndpoint())
+    }
+
     @Test fun legacyConfigurationKeepsCustomRoutesAndRecognizesCommonBases() {
         assertFalse(ModelSettings.legacyUsesFullEndpoint("https://api.deepseek.com/"))
         assertFalse(ModelSettings.legacyUsesFullEndpoint("https://example.com/v1/"))
