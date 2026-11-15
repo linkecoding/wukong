@@ -114,7 +114,7 @@ shell 进程通过 UiAutomation 读取 Android UI 节点，并注入触摸和按
 
 已在 Pixel 6 / Android 17 验证内置配对、手机内激活、shell 读屏、中文输入、触摸注入、滚动、跨应用导航、鉴权、过期快照和取消；已用用户配置的 DeepSeek 真机验证真实工具调用；已完成计算器、文件查找、秒表和设备信息任务的真机验证，结果与限制见[实际任务测试](docs/real-world-validation.md)；更广泛的任务和机型仍需验证。反射访问的系统内部 API 仍需要逐机型、逐系统版本验证。
 
-后续路径是 **Codex skill → MCP/本机桥接 → 悟空任务与设备接口**。skill 和 MCP 尚未实现，架构见 [Agent 接入规划](docs/agent-integration.md)、[执行架构](docs/architecture.md) 和 [验证记录](docs/validation.md)。
+当前源码已提供 **[Wukong skill 与本机配置网页](docs/agent-integration.md)**：外部 Agent 提交目标，由手机端配置的模型执行，支持虚拟屏预览、接管交还、进度查询与日志导出。此功能尚未包含在原先发布的 v0.0.2 APK 中，需从当前源码构建；MCP 仍在规划中。
 
 ## 开发用电脑激活
 

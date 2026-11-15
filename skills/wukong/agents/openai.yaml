@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wukong"
+  short_description: "Delegate Android tasks to your phone’s execution agent"
+  default_prompt: "Use $wukong to carry out this task on my Android phone and report the result."

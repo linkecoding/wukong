@@ -6,7 +6,7 @@
 
 **Wukong（悟空）** は、自然言語で伝えた目標に沿って Android を操作する パーソナル AI エージェントです。自分のモデル API を接続し、アプリをまたぐ操作を見守りながら、いつでも手動操作に切り替えられます。
 
-現在 **[v0.0.2 のプレビュー版](https://github.com/linkecoding/wukong/releases/tag/v0.0.2)** を公開しています。Pixel 6 で主要な動作を検証していますが、他の端末との互換性や実際のタスクには、さらに検証が必要です。Codex skill / MCP 連携は計画段階で、まだ実装されていません。
+現在 **[v0.0.2 のプレビュー版](https://github.com/linkecoding/wukong/releases/tag/v0.0.2)** を公開しています。Pixel 6 で主要な動作を検証していますが、他の端末との互換性や実際のタスクには、さらに検証が必要です。現在のソースには [Wukong skill とローカル設定ページ](docs/agent-integration.md) が含まれ、外部 Agent から端末内モデルへタスクを委任できます。この追加機能は既存の v0.0.2 APK には含まれません。MCP は計画段階です。
 
 <p align="center">
   <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-cross-app-demo.mp4"><img src="docs/demo/wukong-cross-app.gif" width="320" alt="Android 実機で Chrome から時計へ。フローティング画面と手動操作への切り替えを表示" /></a>

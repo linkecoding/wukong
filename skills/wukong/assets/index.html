@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Wukong · Agent companion</title>
+    <link rel="stylesheet" href="/tokens.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/"
+        ><img src="/logo.svg" width="40" height="40" alt="" /><span
+          data-i="brand"
+          >Wukong</span
+        ></a
+      ><span id="connection" role="status" data-i="connecting">Connecting…</span
+      ><button id="language" class="quiet" aria-label="Switch language">
+        中文
+      </button>
+    </header>
+    <main>
+      <section class="workspace">
+        <div class="intro">
+          <h1 data-i="title">Your phone. One request away.</h1>
+          <p data-i="subtitle">
+            Delegate the goal. Wukong handles the steps on your phone.
+          </p>
+        </div>
+        <form id="task-form">
+          <label for="goal" data-i="goalLabel">What would you like done?</label
+          ><textarea
+            id="goal"
+            maxlength="4000"
+            required
+            rows="4"
+            data-placeholder="goalPlaceholder"
+            placeholder="Read the recipe open in Chrome, then prepare a timer in Clock. Don't start it yet."
+          ></textarea>
+          <div class="compose-footer">
+            <label class="display"
+              ><span data-i="screen">Screen</span
+              ><select id="display">
+                <option value="virtual" data-i="virtual">
+                  Virtual display
+                </option>
+                <option value="physical" data-i="physical">Phone screen</option>
+              </select></label
+            ><button id="run" type="submit" data-i="run">Run on phone</button>
+          </div>
+        </form>
+        <p id="notice" role="status" class="notice" aria-live="polite"></p>
+        <section id="task" hidden aria-label="Current task">
+          <div class="task-heading">
+            <h2 data-i="current">Current task</h2>
+            <span id="phase" class="phase"></span>
+          </div>
+          <p id="task-goal"></p>
+          <p id="task-id" class="mono"></p>
+          <p id="task-message" aria-live="polite"></p>
+          <div class="controls">
+            <button id="takeover" class="secondary" data-i="takeover">
+              Take over</button
+            ><button id="resume" class="secondary" data-i="resume">
+              Resume agent</button
+            ><button id="stop" class="danger" data-i="stop">Stop</button
+            ><button id="logs" class="quiet" data-i="logs">
+              Export run log
+            </button>
+          </div>
+          <ol id="events"></ol>
+        </section>
+        <details id="model-panel">
+          <summary>
+            <span data-i="modelConfig">Execution model</span
+            ><span id="model-summary"></span>
+          </summary>
+          <form id="model-form">
+            <p class="muted" data-i="modelNote">
+              The phone uses this model to execute tasks. Your calling agent
+              only delegates the goal. API usage is billed by your provider.
+            </p>
+            <div class="fields">
+              <label
+                ><span data-i="provider">Provider</span
+                ><select id="provider"></select></label
+              ><a
+                id="platform"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-i="platform"
+                >Get an API key ↗</a
+              ><label
+                ><span>API Key</span
+                ><input
+                  id="key"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="sk-…"
+                /><small data-i="keyNote"
+                  >Sent to the phone and encrypted there. Never returned to this
+                  page.</small
+                ></label
+              ><label
+                ><span data-i="model">Model name</span>
+                <div class="model-row">
+                  <input
+                    id="model"
+                    list="models"
+                    required
+                    maxlength="200"
+                    spellcheck="false"
+                  /><button
+                    id="fetch-models"
+                    class="secondary"
+                    type="button"
+                    data-i="fetchModels"
+                  >
+                    Fetch models
+                  </button>
+                </div>
+                <datalist id="models"></datalist
+              ></label>
+            </div>
+            <details class="advanced">
+              <summary data-i="advanced">Advanced</summary>
+              <label
+                ><span>Base URL</span
+                ><input
+                  id="endpoint"
+                  type="url"
+                  required
+                  spellcheck="false" /></label
+              ><label class="check"
+                ><input id="full" type="checkbox" /><span data-i="full"
+                  >URL already includes the complete chat endpoint</span
+                ></label
+              ><label class="check"
+                ><input id="thinking" type="checkbox" /><span data-i="thinking"
+                  >Thinking mode</span
+                ></label
+              >
+              <p class="muted" data-i="thinkingNote">
+                Off by default. Some models always reason; choose a model that
+                supports disabling thinking for faster execution.
+              </p>
+            </details>
+            <div class="form-actions">
+              <button id="save-model" type="submit" data-i="save">
+                Test & save to phone</button
+              ><span id="model-notice" role="status"></span>
+            </div>
+          </form>
+        </details>
+      </section>
+      <aside class="monitor">
+        <div class="monitor-header">
+          <h2 data-i="live">On your phone</h2>
+          <span id="frame-status" class="muted"></span>
+        </div>
+        <div class="preview">
+          <img id="preview" alt="Virtual display preview" hidden />
+          <div id="preview-empty">
+            <span class="screen-icon" aria-hidden="true">▯</span>
+            <p data-i="empty">The execution screen appears here.</p>
+            <small data-i="previewNote"
+              >Take over using the floating window on your phone.</small
+            >
+          </div>
+        </div>
+        <p class="monitor-note" data-i="boundary">
+          Closing this page keeps the task running. Payments and destructive
+          actions still require confirmation on the phone.
+        </p>
+      </aside>
+    </main>
+    <footer>
+      <span data-i="local"
+        >Local connection · ADB authorized · No cloud relay</span
+      ><button id="close" class="quiet" data-i="close">Close companion</button>
+    </footer>
+  </body>
+</html>

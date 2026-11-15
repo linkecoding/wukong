@@ -66,3 +66,7 @@ shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 
 ## JS 短流程
 
 模型可通过 `phone_run_js` 调用内置 QuickJS。JS 在独立 isolated UID 的 Service 中运行，Binder 只转发有限的手机 API；可信任务工作线程逐次校验、审批，再调用原有 shell。支持同步查询、条件等待、变化监听、操作及任务内 JSON state。脚本返回后仍需独立完成验证。详见 [JS 执行架构](architecture/javascript-runtime.md)。
+
+## External agent task delegation
+
+The current source bundles `skills/wukong`: a local Python companion and configuration webpage submit goal/UUID requests through an ADB-forwarded, authenticated App task API. The phone’s configured model runs the existing TaskRuntime, including QuickJS, local approvals and virtual-display controls. This is separate from the private shell protocol; neither the model API key nor shell credential is returned to external agents. See [Agent companion](agent-integration.md). Original v0.0.2 release binaries predate this addition.

@@ -2,6 +2,12 @@
 
 Changes are grouped by source version. A section here does not mean its APK has been published; see [GitHub Releases](https://github.com/linkecoding/wukong/releases) for downloadable tags and publication dates.
 
+## Unreleased
+
+- Add a portable Wukong skill, dependency-free Python companion, and English/Chinese local setup page. External agents delegate complete tasks to the phone’s configured execution model.
+- Add ADB-authorized task receipts, idempotent submission, virtual-screen preview, takeover/handoff, cancellation, and per-run log export. Existing phone approvals remain in force.
+- Keep an already-awake phone screen on during active tasks and release the timed wake lock when execution ends.
+
 ## 0.0.2 — 2026-11-15
 
 ### Added

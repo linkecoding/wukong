@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 data class PendingApproval(val action: Action, val screen: Screen, val answer: CompletableFuture<Boolean> = CompletableFuture())
 data class TaskRecord(val goal: String, val app: String, val phase: String, val result: String, val timestamp: Long, val logName: String? = null, val logAssociationKnown: Boolean = false)
 
-/** Single task owner, independent of Activity lifecycle. No externally callable transport in v0.1. */
+/** Single task owner, independent of Activity lifecycle. All entry points share this owner. */
 object TaskRuntime {
     private val main = Handler(Looper.getMainLooper())
     private val executor = Executors.newSingleThreadExecutor { Thread(it, "wukong-agent") }
@@ -58,14 +58,16 @@ object TaskRuntime {
         notifyChanged()
     }
 
-    /** Invoked on main by the explicit Start button. */
-    fun start(context: Context, taskGoal: String, initialPackage: String?, settings: ModelSettings, threadId: String? = null) {
+    /** All entry points, including authorized companion requests, start on the main thread. */
+    fun start(context: Context, taskGoal: String, initialPackage: String?, settings: ModelSettings, threadId: String? = null,
+        targetDisplayId: Int? = null, onFinished: ((TaskRecord) -> Unit)? = null) {
         require(taskGoal.isNotBlank() && taskGoal.length <= 4000) { "请输入 1–4000 字的任务" }
         settings.validate()
         check(!WirelessActivation.busy) { "请等待执行引擎激活完成" }
         require(Settings.canDrawOverlays(context)) { "请先允许悟空显示悬浮控制条" }
         if (initialPackage != null) require(context.packageManager.getLaunchIntentForPackage(initialPackage) != null) { "无法打开这个应用" }
-        val targetDisplay = if (VirtualScreenState.enabled(context)) VirtualScreenState.displayId.also { require(it > 0) { "请先启动虚拟屏，等待画面就绪" } } else 0
+        val targetDisplay = targetDisplayId?.also { require(it == 0 || it > 0 && it == VirtualScreenState.displayId) { "虚拟屏尚未就绪" } }
+            ?: if (VirtualScreenState.enabled(context)) VirtualScreenState.displayId.also { require(it > 0) { "请先启动虚拟屏，等待画面就绪" } } else 0
         check(busy.compareAndSet(false, true)) { "请先停止当前任务" }
         val appContext = context.applicationContext
         val token = Cancellation()
@@ -168,6 +170,7 @@ object TaskRuntime {
                     val record = TaskRecord(goal, "整机任务", result.phase.name, result.message, System.currentTimeMillis(), trace?.name, true)
                     runCatching { HistoryStore(appContext).append(record) }
                     if (threadId != null && turnId != null) runCatching { conversations.finish(threadId, turnId, result.phase.name, result.message, android.os.SystemClock.elapsedRealtime()-startedAt) }
+                    runCatching { onFinished?.invoke(record) }
                     conversationId = null; conversationTurnId = null
                     pending = null; client = null; cancellation = null; worker = null
                     busy.set(false)
@@ -194,7 +197,7 @@ object TaskRuntime {
         scriptSession?.cancelCell()
         pending?.answer?.complete(false)
         activeTrace?.record("control_changed", JSONObject().put("manual", value))
-        publish(AgentEvent(if (value) Phase.PAUSED else Phase.RUNNING, if (value) "你已接管，Agent 已暂停" else "已交还 Agent，正在重新读取界面"))
+        publish(AgentEvent(if (value) Phase.PAUSED else Phase.RUNNING, if (value) "你已接管，Agent 已暂停" else "已交还 Agent，正在重新读取界面", event.step))
     }
 
     fun stop() {

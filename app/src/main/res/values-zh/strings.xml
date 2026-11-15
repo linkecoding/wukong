@@ -1,0 +1,5 @@
+<resources>
+    <string name="companion_notification_title">Agent 连接已开启</string>
+    <string name="companion_notification_body">已连接的 Agent 可提交手机任务，你可以随时断开。</string>
+    <string name="companion_disconnect">断开连接</string>
+</resources>

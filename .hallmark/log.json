@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-11-16",
+    "macrostructure": "Workbench",
+    "theme": "Cream, moss, pale apricot",
+    "enrichment": "none",
+    "brief": "Agent companion webpage with task-first composition, disclosed phone model setup, readonly shared virtual display and manual takeover controls"
+  },
+  {
     "date": "2026-11-15",
     "scope": "personal-agent conversation and native navigation",
     "macrostructure": "Conversation workbench / native side drawer / pushed pages",

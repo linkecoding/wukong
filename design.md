@@ -62,3 +62,7 @@ See root `tokens.css` for OKLCH colors and portable spacing/type tokens. Native 
 ## Onboarding extension
 
 Task-first setup: practical examples ask for one useful detail, then return to an editable saved task. Preparation proceeds through model → phone → controls, one primary action per stage. Standard API presets expose the provider and key; custom endpoints, model IDs, and thinking controls remain available under Advanced. Vendor platforms open through explicit links. Never transfer a key between providers. Task options and manual connection ports are progressively disclosed. Existing authorized connections may recover automatically, but task execution always requires the user's Run action.
+
+## Agent companion web surface
+
+The bundled skill webpage follows the same cream/moss/apricot tokens and system typography. A task composer leads the left column; an optional execution-model form is disclosed below task results, and a read-only portrait preview occupies the right column. Small screens stack the preview after the composer and task. Provider/model/key fields use native controls, visible labels and immediate focus rings. The page follows browser language (English or Chinese), with a language toggle. It uses local assets only and stores no model key in browser storage. Sensitive actions stay confirmed on the phone.

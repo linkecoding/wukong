@@ -10,4 +10,7 @@
     <string name="export_saved">Log saved</string>
     <string name="export_missing">This run log is no longer available.</string>
     <string name="export_failed">Unable to export log</string>
+    <string name="companion_notification_title">Agent connection active</string>
+    <string name="companion_notification_body">Connected agents can submit phone tasks. Disconnect at any time.</string>
+    <string name="companion_disconnect">Disconnect</string>
 </resources>

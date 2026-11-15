@@ -13,6 +13,10 @@ class BootstrapProvider : ContentProvider() {
     override fun call(method: String, arg: String?, extras: Bundle?): Bundle {
         context!!.enforceCallingPermission("android.permission.DUMP", "Only adb shell can activate Wukong")
         if (Binder.getCallingUid() != 2000) throw SecurityException("Only adb shell can activate Wukong")
+        if (method == "companion") return Bundle().apply {
+            putString("token", com.wukong.phone.companion.CompanionCredentials.get(context!!))
+            putInt("port", com.wukong.phone.companion.CompanionServer.PORT)
+        }
         require(method == "prepare") { "Unknown bootstrap operation" }
         val token = ShellCredentials.rotate(context!!)
         return Bundle().apply { putString("token", token); putInt("port", ShellClient.PORT) }

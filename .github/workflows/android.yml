@@ -27,10 +27,16 @@ jobs:
       - name: Install pinned Android toolchain
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;28.2.13676358' 'cmake;3.22.1'
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
+      - name: Test and package companion skill
+        run: |
+          python3 -m unittest discover -s skills/wukong/scripts -p test_wukong.py
+          python3 scripts/package-skill.py --output dist/wukong-skill.zip
       - name: Build, test and lint
         run: ./gradlew --no-daemon -PtargetAbi=arm64-v8a :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :shell-runtime:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wukong-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            dist/wukong-skill.zip
           if-no-files-found: error

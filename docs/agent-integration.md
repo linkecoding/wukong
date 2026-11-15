@@ -1,36 +1,89 @@
-# 悟空的外部 Agent 接入规划
+# Agent companion / Wukong skill
 
-Android App 是首个入口。后续 Codex 等 Agent 应通过桥接程序调用同一个设备操作接口，skill 负责工具用法、限制与示例。当前提供核心代码接口和 App 使用的 shell 内部协议，没有运行中的 MCP 服务或可安装的 skill。
+The repository now includes a working **task-delegation skill** and local configuration webpage. This is new development after the published **v0.0.2** APKs; build the current source with companion support to use it. MCP and direct per-action remote control remain planned.
 
-## 两种调用方式
+[中文说明](#中文说明) · [Physical-device validation](companion-validation.md)
 
-任务模式由外部 Agent 提交目标和可选起始应用，手机内模型完成跨应用任务，外部 Agent 查询事件并可取消。
+## Install and start
 
-工具模式由外部 Agent 负责推理，读取设备观察结果后提交一步动作；手机仍负责校验快照版本、审批与执行。默认整机操作，可选择提供更窄范围的授权。这样 Codex 自身模型可直接操作设备，不需要手机再调用一次模型。
+Requires Python 3.10+, Android platform-tools (`adb`), and an authorized USB or wireless ADB connection. The phone must have a compatible Wukong build, an activated execution engine, overlay permission, and be awake and unlocked. No root or AccessibilityService is used.
 
-## 计划中的工具
+Copy the self-contained [`skills/wukong`](../skills/wukong) folder into your agent's skill directory. For Codex, for example:
 
-| 工具 | 用途 |
-| --- | --- |
-| `devices.list` | 列出已配对设备、连接状态和驱动能力 |
-| `wukong.observe` | 返回当前界面的快照和可操作节点 |
-| `wukong.act` | 提交绑定快照 ID 的单个动作，可能返回等待用户确认 |
-| `tasks.start` | 用唯一请求 ID、目标与可选起点启动整机任务 |
-| `tasks.events` | 按游标读取进度与结果 |
-| `tasks.cancel` | 幂等取消任务，撤销尚未执行的待审批动作 |
+```sh
+mkdir -p ~/.codex/skills
+cp -R skills/wukong ~/.codex/skills/wukong
+python3 ~/.codex/skills/wukong/scripts/wukong.py --serial DEVICE_SERIAL status
+python3 ~/.codex/skills/wukong/scripts/wukong.py --serial DEVICE_SERIAL serve --background
+```
 
-这些名称是协议草案，不是已发布 API。当前 `DeviceDriver.observe/execute`、`Agent.run` 和 `ShellSession` 是实现基础。shell 连接仅限受信 App 使用；远程 Agent 不能绕过 App 的审批层直接获得内部执行凭据。
+The page opens locally, using a browser-session credential. `serve --no-browser --background` starts without opening a browser; `open` opens the authenticated page later. The printed URL deliberately omits the session token. A browser on another computer/cloud agent cannot use this loopback URL directly. Run this companion next to the authorized ADB client; do not expose it through public tunnels.
 
-## 连接与授权
+Choose a provider, enter your own API key and model name, optionally fetch `/models`, then **Test & save to phone**. Requests run on the phone to verify its actual network path. The existing encrypted Android configuration is reused; it can be kept by leaving the key blank at the same endpoint/provider. Changing provider clears the input and requires a new key. Base URL paths are preserved; a checkbox selects a full chat endpoint. Thinking is off by default; models that mandate reasoning cannot be made faster with this switch.
 
-当前 App 与 app_process 通过带令牌的本机回环协议通信，激活脚本用临时 ADB 转发检查状态。后续电脑端桥接可沿用 ADB 通道，但必须增加 App 侧任务与审批入口。即使仅绑定回环地址，也需要鉴权，不能把「本机端口」当作可信身份。手机侧确认配对后生成会话令牌，限定设备、应用范围与有效期；令牌只交给桥接进程，不写入 skill、仓库或模型消息。
+## Delegate a task
 
-在加入网络连接前，先实现请求大小上限、超时、令牌撤销、重连后的任务查询与幂等请求 ID。连接丢失后不能自动重放点击、输入或下单等动作。每次动作必须带观察快照 ID，过期拒绝执行。
+```sh
+python3 ~/.codex/skills/wukong/scripts/wukong.py --serial DEVICE_SERIAL run \
+  --goal 'Read the recipe open in Chrome, then prepare a timer in Clock for that duration. Do not start it. Tell me the temperature and duration.'
+python3 ~/.codex/skills/wukong/scripts/wukong.py --serial DEVICE_SERIAL wait TASK_UUID --timeout 45
+python3 ~/.codex/skills/wukong/scripts/wukong.py --serial DEVICE_SERIAL task TASK_UUID
+```
 
-审批仍只在手机本机 UI 完成，MCP 不提供 `approve` 工具。取消可由任一已授权入口发起。屏幕文字与外部 Agent 的文本都不能扩张设备权限。
+The external agent submits the complete goal. **The Android task worker calls the configured execution model**, which chooses individual tools or QuickJS short workflows. Each operation still passes through local snapshot/permission/cancellation checks before the shell-UID `app_process` performs it. The calling agent's reasoning mode does not determine the phone execution model's mode. This avoids an outer-agent round trip for each tap; actual speed still depends on model latency and task complexity. No speed benchmark is claimed.
 
-## Skill 的交付条件
+```mermaid
+flowchart LR
+  Agent[External agent / skill] -->|Goal + request UUID| Host[Local Python companion]
+  Browser[Configuration / live preview page] --> Host
+  Host -->|ADB forward + bearer| App[Android App task API]
+  App <-->|HTTPS| Model[User-configured execution model]
+  App <--> JS[Isolated QuickJS service]
+  App -->|Existing authenticated channel| Shell[Shell UID 2000 app_process]
+  Shell --> Display[Main / virtual display]
+  Display -->|Shared preview frames| Browser
+```
 
-在桥接协议、配对和取消测试通过后，再创建 `wukong` skill，包含安装说明、健康检查、观察与动作示例、任务模式示例和错误恢复规则。skill 中不得包含用户的模型密钥或设备令牌。
+## Virtual screen and human control
 
-首版不提前生成指向不存在命令的 skill，以免形成看似可调用的接口。
+- Tasks default to **virtual display**. `--display physical` explicitly selects the main screen. The choice is fixed per task and does not rewrite the app's saved display preference. `--initial-package` chooses a starting app, not an app allowlist.
+- The webpage shows the same preview bitmap as the existing Android virtual-screen service. It is **read-only**, refreshed roughly every 1.2 seconds; this is a monitor, not a high-frame-rate remote desktop.
+- `takeover TASK_UUID` pauses the agent and switches the existing phone floating window into manual mode. Touch/scroll/text input use the existing phone implementation and coordinate mapping. `resume TASK_UUID` hands control back and obtains fresh observations; a queued action is not blindly replayed.
+- `stop TASK_UUID` cancels that task. A companion task cannot stop an unrelated task started in the app. High-risk approval remains on the phone; no remote approve endpoint exists.
+- During an active task Wukong keeps an already-awake screen on, with a timed wake lock that is released on completion/service destruction. It does not wake/unlock a locked phone or defeat an explicit press of the power button. Locking the phone may interrupt a task.
+- Closing the browser or running `close` stops the **host webpage bridge**; accepted phone tasks keep running. Reconnect and query the same UUID. The phone notification's **Disconnect** cancels a companion-owned task, revokes its credential and closes the phone server. Other existing ADB authorizations remain unchanged.
+
+## Recovery and receipts
+
+`run` prints the UUID before sending and returns a receipt. Keep it if a connection fails. Retry only with the same `--request-id UUID` and identical goal, display and initial package; a mismatched reuse is rejected. The reservation is persisted **before** execution. The most recent 200 detailed receipts are retained; older completed receipts become compact ID/hash tombstones so they still cannot execute again. App data clearing/uninstallation removes this history.
+
+App process death converts an unfinished receipt to `INTERRUPTED` on its next query. This is not rollback: inspect the phone before a new task, because earlier actions may already have happened. A process death between an effect and persistence cannot prove its outcome. Tasks started by the companion also appear in the app's conversations/history.
+
+`AWAITING_APPROVAL` means phone confirmation is needed. `PAUSED` means manual takeover; do not resume automatically against the user's intent. Only `COMPLETED` means reported success; failed/cancelled/interrupted runs retain their actual outcome.
+
+For feedback:
+
+```sh
+python3 ~/.codex/skills/wukong/scripts/wukong.py --serial DEVICE_SERIAL logs TASK_UUID --output /absolute/new-file.zip
+```
+
+This exports only that task's retained logs, using the existing redaction/exporter. It can include personal task/page text. Do not publish it without reviewing it. Logs may be disabled or already removed; compact receipts do not contain logs. Export never overwrites an existing host file.
+
+## Transport and boundaries
+
+- Phone HTTP listener: `127.0.0.1:39743`, with an independent app-owned bearer. ADB shell provisions it through the existing provider, guarded by both `android.permission.DUMP` and UID 2000. Shell-engine credentials are separate and never passed to the host.
+- An ADB-shell-protected Activity starts a visible foreground service. ADB forwarding uses a dynamically allocated host port. The Python web server also binds only to `127.0.0.1`, with a separate random browser token, Host/Origin checks, CSP and no CORS.
+- API keys are encrypted with the existing Android Keystore storage. Keys pass from the local page to Android, and to the configured provider for authentication. They are not stored by the companion on the computer, returned in status, passed to QuickJS/shell, or logged in command lines. Browser-session/ADB app tokens remain local to the process or a mode-0600 host state file at `~/.wukong/companion.json`.
+- Requests have body/header/time/worker limits. Remote operations call the same single TaskRuntime owner on the Android main thread. Network/model I/O and preview serialization run off-main; the existing task thread owns execution. There is no remote shell, direct tap, secret-read, or approval-bypass endpoint.
+
+Task API v1: `GET /v1/status`, `GET /v1/model` (no key), `POST /v1/model`, `POST /v1/model/test`, `POST /v1/models`, `POST /v1/tasks`, `GET /v1/tasks/{uuid}`, `POST /v1/tasks/{uuid}/{stop|takeover|resume}`, `GET /v1/tasks/{uuid}/logs`, `GET /v1/preview` (JPEG). The desktop page proxies only these routes. Future MCP can wrap the same task interface; no MCP server is supplied here.
+
+## 中文说明
+
+仓库已实现 **skill + 本机配置网页 + 手机任务接口**，尚未包含在原先发布的 v0.0.2 APK 中，需要使用当前源码构建。MCP 和由外部模型逐次点击的远程工具模式仍是后续计划。
+
+把 `skills/wukong` 整个目录复制到 Agent 的 skills 目录（Codex 示例见上）。连接已授权 ADB 的手机后启动 `serve --background`，在网页选择服务商、填写模型名称和自己的 API Key，测试后加密保存到手机。模型列表、测试和执行请求都走手机网络，支持任意合法 HTTPS Base URL 路径以及完整 Chat 接口地址。思考默认关闭，强制思考的模型仍按厂商能力运行。
+
+外部 Agent 只提交完整目标并等待任务 ID 的结果；每一步操作由手机端模型决定，可调用现有工具或 QuickJS。默认在虚拟屏执行，网页只读显示同一份预览。接管/交还按钮控制现有手机悬浮窗，用户在手机上触摸操作；交还后重新观察当前界面。支付、删除文件等高危操作继续在手机确认。
+
+断线、关闭网页不会重放或取消已经提交的任务。使用原 ID 查询或重试，不能换新 ID 盲目重做。`close` 关闭电脑网页桥接；手机通知的“断开连接”则会停止当前远程任务并撤销手机连接凭据。运行日志可以按任务导出，发给别人前请检查其中的个人内容。

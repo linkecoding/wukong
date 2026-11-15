@@ -26,7 +26,22 @@ import java.lang.ref.WeakReference
 class WukongService : LocalizedService() {
     private val main = Handler(Looper.getMainLooper())
     private var overlay: View? = null
+    private var taskWakeLock: android.os.PowerManager.WakeLock? = null
+    @Suppress("DEPRECATION")
+    private fun updateWakeLock() {
+        val power = getSystemService(android.os.PowerManager::class.java)
+        if (TaskRuntime.active && power.isInteractive) {
+            if (taskWakeLock?.isHeld != true) {
+                taskWakeLock = power.newWakeLock(android.os.PowerManager.SCREEN_DIM_WAKE_LOCK, "wukong:active-task").apply {
+                    setReferenceCounted(false)
+                    acquire(15 * 60 * 1000L)
+                }
+            }
+        } else releaseWakeLock()
+    }
+    private fun releaseWakeLock() { taskWakeLock?.let { if (it.isHeld) it.release() }; taskWakeLock = null }
     private val update: () -> Unit = {
+        updateWakeLock()
         if ((VirtualScreenState.foreground || VirtualScreenState.service?.floatingVisible == true) && TaskRuntime.displayId > 0 && TaskRuntime.pending == null) hideControls()
         else if (TaskRuntime.active && TaskRuntime.displayId > 0) { if (overlay == null) showControls() else renderControls() }
         else if (overlay != null) renderControls()
@@ -39,7 +54,7 @@ class WukongService : LocalizedService() {
         startForeground(1, Notification.Builder(this, "tasks").setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(getString(R.string.ui_wukong_task_controls)).setContentText(getString(R.string.ui_routine_actions_run_automatically_sensitive_actions_need_approval))
             .setContentIntent(open).setOngoing(true).addAction(Notification.Action.Builder(null, getString(R.string.ui_stop), stop).build()).build())
-        serviceReference = WeakReference(this); TaskRuntime.listen(update); VirtualScreenState.listen(update); TaskRuntime.connectionChanged()
+        serviceReference = WeakReference(this); TaskRuntime.listen(update); VirtualScreenState.listen(update); TaskRuntime.connectionChanged(); updateWakeLock()
     }
     override fun onBind(intent: Intent?): IBinder? = null
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -47,7 +62,7 @@ class WukongService : LocalizedService() {
         return START_NOT_STICKY
     }
     override fun onDestroy() { disconnect(); super.onDestroy() }
-    private fun disconnect() { TaskRuntime.stop(); TaskRuntime.unlisten(update); VirtualScreenState.unlisten(update); hideControls(); if (instance === this) serviceReference = null; TaskRuntime.connectionChanged() }
+    private fun disconnect() { TaskRuntime.stop(); releaseWakeLock(); TaskRuntime.unlisten(update); VirtualScreenState.unlisten(update); hideControls(); if (instance === this) serviceReference = null; TaskRuntime.connectionChanged() }
 
     fun <T> onMain(block: () -> T): T {
         if (Looper.myLooper() == Looper.getMainLooper()) return block()

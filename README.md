@@ -6,7 +6,7 @@
 
 **Wukong** is a personal AI agent for Android that turns a natural-language goal into actions across your phone, with requests, task cards, live previews and results in one conversation. Bring your own model, watch each step, and take over whenever you need to.
 
-**[v0.0.2](https://github.com/linkecoding/wukong/releases/tag/v0.0.2) · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. A Codex skill / MCP bridge is planned and is **not available yet**.
+**[v0.0.2](https://github.com/linkecoding/wukong/releases/tag/v0.0.2) · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. The current source also includes a [Wukong skill and local configuration page](docs/agent-integration.md) for delegating tasks from other agents; this addition is not in the original v0.0.2 APKs. MCP remains planned.
 
 The app follows your **system language** by default (Chinese or English, with English as the fallback). Settings also offers manual language selection. Project introductions are also available in Japanese.
 
@@ -118,7 +118,7 @@ The interface uses cream, moss and pale apricot. The conversation is home; a nat
 
 ## Technical notes
 
-- [Architecture](docs/architecture.md) · [Agent integration plan](docs/agent-integration.md)
+- [Architecture](docs/architecture.md) · [Agent companion / skill](docs/agent-integration.md)
 - [Visual tools and virtual display](docs/visual-virtual.md)
 - [On-device OCR comparison](docs/ocr-v6-comparison.md) · [Native trimming and 16 KB validation](docs/ocr-native-trimming.md)
 - [Autonomy and logs](docs/autonomy-logs.md) · [Validation notes](docs/validation.md) · [Real-app validation](docs/real-world-validation.md)

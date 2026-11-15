@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
@@ -14,6 +15,10 @@
         <activity android:name=".MainActivity" android:exported="true" android:windowSoftInputMode="adjustNothing" android:configChanges="density|screenSize|smallestScreenSize|orientation|screenLayout|keyboardHidden|keyboard">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity>
+        <activity android:name=".companion.CompanionActivity" android:exported="true" android:permission="android.permission.DUMP" android:excludeFromRecents="true" android:theme="@android:style/Theme.NoDisplay" />
+        <service android:name=".companion.CompanionService" android:exported="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="ADB-authorized companion task delegation with visible disconnect controls" />
+        </service>
         <activity android:name=".HistoryActivity" android:exported="false" android:parentActivityName=".MainActivity" android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".SettingsActivity" android:exported="false" android:parentActivityName=".MainActivity" android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".TaskDetailActivity" android:exported="false" android:parentActivityName=".MainActivity" android:windowSoftInputMode="adjustNothing" />
