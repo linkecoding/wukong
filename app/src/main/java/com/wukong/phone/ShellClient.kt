@@ -38,7 +38,7 @@ class ShellClient(context: Context, private val credentialOverride: String? = nu
         } catch (e: java.io.IOException) { throw IllegalStateException("执行引擎连接不可用，请在手机内重新激活") }
     }
     fun status(): JSONObject = (request("status") as JSONObject).also {
-        check(it.getInt("uid") == 2000 && it.getInt("protocol") == 2 && it.getString("engine") == "app_process") { "执行引擎需更新，请在手机内重新激活" }
+        check(it.getInt("uid") == 2000 && it.getInt("protocol") == 2 && it.getString("engine") == "app_process" && it.optBoolean("uiEvents")) { "执行引擎需更新，请在手机内重新激活" }
     }
     companion object { const val PORT = 43219 }
 }
@@ -53,7 +53,7 @@ class ShellSession(context: Context, val displayId: Int = 0) : AutoCloseable {
     override fun close() { client.request("finishTask", JSONObject().put("taskId", id)) }
 }
 
-fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fingerprint"), getJSONArray("nodes").toNodes())
+fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fingerprint"), getJSONArray("nodes").toNodes(), uiRevision = optLong("uiRevision", 0), uiQuietMillis = optLong("uiQuietMs", Long.MAX_VALUE), uiEvents = optBoolean("uiEvents"))
 private fun JSONArray.toNodes() = (0 until length()).map { index -> getJSONObject(index).let {
     UiNode(it.getInt("id"), it.getString("text"), it.getBoolean("editable"), it.getBoolean("clickable"), it.getBoolean("scrollable"), it.getBoolean("sensitive"), it.optJSONObject("bounds")?.toBounds())
 } }

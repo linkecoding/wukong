@@ -38,7 +38,7 @@ jobs:
         run: python3 scripts/prepare-ci-signing.py
       - name: Test and build signed APKs
         run: |
-          ./gradlew --no-daemon :agent-core:test :app:testDebugUnitTest :app:lintRelease :shell-runtime:lintDebug :app:assembleRelease
+          ./gradlew --no-daemon :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintRelease :shell-runtime:lintDebug :app:assembleRelease
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/wukong-${GITHUB_REF_NAME}-universal.apk"
           ./gradlew --no-daemon -PtargetAbi=arm64-v8a :app:assembleRelease

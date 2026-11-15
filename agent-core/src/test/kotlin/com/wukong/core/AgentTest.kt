@@ -18,11 +18,39 @@ class AgentTest {
         assertEquals(Phase.CANCELLED, run(driver, Action.Tap(1), Approval { _, _ -> false }).phase)
         assertTrue(driver.executed.isEmpty())
     }
-    @Test fun changedScreenInvalidatesApproval() {
+    @Test fun changedScreenInvalidatesOldApprovalAndRequiresANewDecisionAndApproval() {
         val driver = Driver(screen)
-        val result = run(driver, Action.Tap(1), Approval { _, _ -> driver.screen = screen.copy(fingerprint = "b"); true })
-        assertEquals(Phase.FAILED, result.phase)
-        assertTrue(driver.executed.isEmpty())
+        var approvals = 0
+        val model = Model { _, current, history ->
+            if (history.lastOrNull()?.result == "accepted") Action.Finish("done") else {
+                if (history.isNotEmpty()) {
+                    assertTrue(history.last().result.contains("操作未执行"))
+                    assertEquals("b", current.fingerprint)
+                    assertTrue(driver.executed.isEmpty())
+                }
+                Action.Tap(1)
+            }
+        }
+        val result = Agent(model, driver, Approval { _, _ ->
+            approvals++
+            if (approvals == 1) driver.screen = screen.copy(fingerprint = "b")
+            true
+        }, "demo.app", approvalRequired = { _, _ -> true }).run("task", Cancellation()) {}
+        assertEquals(Phase.COMPLETED, result.phase)
+        assertEquals(2, approvals); assertEquals(listOf(Action.Tap(1)), driver.executed)
+    }
+    @Test fun repeatedPreInjectionChangesHaveABoundedReplanningBudget() {
+        var decisions = 0; var attempts = 0
+        val driver = object : DeviceDriver {
+            override fun observe() = screen
+            override fun execute(action: Action, expected: Screen): String { attempts++; error("界面已更新，本次操作未执行") }
+        }
+        val result = Agent(Model { _, _, history ->
+            decisions++
+            if (decisions > 1) assertTrue(history.last().result.contains("操作未执行"))
+            Action.Tap(1)
+        }, driver, Approval { _, _ -> true }).run("task", Cancellation()) {}
+        assertEquals(Phase.FAILED, result.phase); assertEquals(7, decisions); assertEquals(7, attempts)
     }
     @Test fun appSwitchInvalidatesApprovalEvenIfFingerprintMatches() {
         val driver = Driver(screen)

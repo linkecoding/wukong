@@ -60,3 +60,9 @@ Validation includes 27 JVM tests; 12 physical Pixel 6 regression tests covering 
 Main and setup windows use adjustNothing. Footers keep their original position and remain visible in the view hierarchy while the IME naturally covers them. System-bar padding stays stable; only the scroll region gains the covered-area inset and brings the focused cursor into view. No keyboard-dependent footer visibility changes are used.
 
 A physical Pixel 6 test exercised the real keyboard on the task field and model input, asserted identical footer bounds before and during text entry, checked that the focused input remains above the keyboard, and preserved draft/model values. Four actual screenshots cover both open and closed states under .tooling/keyboard-review/. Debug/release builds and lint passed. Localized width previews refreshed the public model screenshots, including leading-aligned selected model IDs.
+
+## Event-assisted observation and replanning
+
+The fixed post-action 650 ms sleep is replaced by UI-event-assisted snapshot settling. See [the implementation and thread inventory](architecture/observation-and-threads.md) for timing policy, compatibility and observed test results. Changes before injection now enter model history as unexecuted tool results; unknown effects remain non-retriable. A changed approval is discarded and requires a new decision/confirmation.
+
+[Browser-use and article review](architecture/browser-use-review.md) records recommendations separately from delivered features.

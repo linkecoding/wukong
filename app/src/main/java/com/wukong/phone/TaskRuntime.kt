@@ -20,7 +20,7 @@ data class TaskRecord(val goal: String, val app: String, val phase: String, val 
 /** Single task owner, independent of Activity lifecycle. No externally callable transport in v0.1. */
 object TaskRuntime {
     private val main = Handler(Looper.getMainLooper())
-    private val executor = Executors.newSingleThreadExecutor()
+    private val executor = Executors.newSingleThreadExecutor { Thread(it, "wukong-agent") }
     private val listeners = CopyOnWriteArrayList<() -> Unit>()
     private val busy = AtomicBoolean(false)
     private var cancellation: Cancellation? = null
@@ -30,7 +30,7 @@ object TaskRuntime {
     @Volatile private var activeTrace: RunLog? = null
     @Volatile private var activeDriver: AndroidDriver? = null
     @Volatile private var shellSession: ShellSession? = null
-    private val canceller = Executors.newSingleThreadExecutor()
+    private val canceller = Executors.newSingleThreadExecutor { Thread(it, "wukong-task-cancel") }
     @Volatile private var worker: Thread? = null
     @Volatile var event = AgentEvent(Phase.IDLE, "准备好后，把任务交给悟空")
         private set

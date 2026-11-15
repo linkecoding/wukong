@@ -56,7 +56,7 @@ class SensitiveActionsTest {
                 return "accepted"
             }
         }
-        val model = Model { _, _, history -> decisions++; if (history.isEmpty()) Action.Tap(1) else Action.Finish("done") }
+        val model = Model { _, _, history -> decisions++; if (history.lastOrNull()?.result == "accepted") Action.Finish("done") else Action.Tap(1) }
         assertEquals(Phase.COMPLETED, Agent(model, driver, Approval { _, _ -> error("普通操作") }).run("搜索", Cancellation()) { }.phase)
         assertEquals(2, attempts)
         assertEquals(3, decisions)

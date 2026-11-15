@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.InputEvent;
 import android.util.SparseArray;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,6 +33,11 @@ import java.util.regex.Pattern;
 public final class Main {
     private final String token;
     private final UiAutomation automation;
+    private final UiChanges uiChanges = new UiChanges();
+    private final ThreadLocal<List<Integer>> observedWindows = ThreadLocal.withInitial(ArrayList::new);
+    private final ThreadLocal<String> windowSignature = ThreadLocal.withInitial(() -> "");
+    private static final int CHANGE_EVENTS = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED | AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+        | AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_VIEW_SCROLLED | AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED;
     private final Object deviceLock = new Object();
     private final Map<String, Boolean> tasks = new ConcurrentHashMap<>();
     private final Map<String, Frame> frames = new ConcurrentHashMap<>();
@@ -66,8 +72,12 @@ public final class Main {
     }
 
     private void configureAutomation() {
+        automation.setOnAccessibilityEventListener(event -> {
+            if ((event.getEventType() & CHANGE_EVENTS) != 0) uiChanges.record(event.getWindowId(), event.getEventTime());
+        });
         AccessibilityServiceInfo info = automation.getServiceInfo();
         if (info == null) throw new IllegalStateException("Cannot initialize shell UI automation");
+        info.eventTypes |= CHANGE_EVENTS;
         info.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS | AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS;
         automation.setServiceInfo(info);
     }
@@ -109,7 +119,7 @@ public final class Main {
     private Object dispatch(JSONObject request) throws Exception {
         targetDisplay.set(0);
         String method = request.getString("method");
-        if (method.equals("status")) return new JSONObject().put("uid", android.os.Process.myUid()).put("protocol", 2).put("engine", "app_process");
+        if (method.equals("status")) return new JSONObject().put("uid", android.os.Process.myUid()).put("protocol", 2).put("engine", "app_process").put("uiEvents", true);
         if (method.startsWith("virtual") || method.equals("setControl") || method.equals("manualInput")) {
             synchronized (deviceLock) { return virtualRequest(method, request); }
         }
@@ -386,12 +396,16 @@ public final class Main {
         try {
             Point size = displaySize(); tree.width = size.x; tree.height = size.y;
             String pkg = String.valueOf(root.getPackageName());
-            StringBuilder signature = new StringBuilder(pkg);
+            List<Integer> relevant = new ArrayList<>(observedWindows.get());
+            if (!relevant.contains(root.getWindowId())) relevant.add(root.getWindowId());
+            StringBuilder signature = new StringBuilder(pkg).append('|').append(windowSignature.get());
             JSONArray nodes = new JSONArray();
             visit(root, tree, nodes, signature, 0);
             byte[] digest = MessageDigest.getInstance("SHA-256").digest(signature.toString().getBytes(StandardCharsets.UTF_8));
             StringBuilder hash = new StringBuilder(); for (byte b : digest) hash.append(String.format(Locale.ROOT, "%02x", b));
-            tree.json = new JSONObject().put("package", pkg).put("fingerprint", hash.toString()).put("nodes", nodes);
+            long[] change = uiChanges.snapshot(relevant, SystemClock.uptimeMillis());
+            tree.json = new JSONObject().put("package", pkg).put("fingerprint", hash.toString()).put("nodes", nodes)
+                .put("uiEvents", true).put("uiRevision", change[0]).put("uiQuietMs", change[1]);
             return tree;
         } catch (Exception e) { tree.close(); throw e; }
     }
@@ -411,6 +425,16 @@ public final class Main {
                 windows = all.get(targetDisplay.get(), Collections.emptyList());
             } catch (ReflectiveOperationException error) { throw new IllegalStateException("系统不支持虚拟屏读屏", error); }
         }
+        List<Integer> ids = new ArrayList<>();
+        StringBuilder structure = new StringBuilder();
+        for (AccessibilityWindowInfo window : windows) {
+            if (window.getType() == AccessibilityWindowInfo.TYPE_APPLICATION || window.getType() == AccessibilityWindowInfo.TYPE_INPUT_METHOD) {
+                if (window.getType() == AccessibilityWindowInfo.TYPE_INPUT_METHOD) ids.add(window.getId());
+                Rect bounds = new Rect(); window.getBoundsInScreen(bounds);
+                structure.append(window.getId()).append(':').append(window.getType()).append(':').append(window.isFocused()).append(':').append(bounds.toShortString()).append('|');
+            }
+        }
+        observedWindows.set(ids); windowSignature.set(structure.toString());
         for (AccessibilityWindowInfo window : windows) {
             if (window.getType() == AccessibilityWindowInfo.TYPE_APPLICATION && window.isFocused()) { root = window.getRoot(); break; }
         }

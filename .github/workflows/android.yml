@@ -28,7 +28,7 @@ jobs:
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;28.2.13676358' 'cmake;3.22.1'
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
       - name: Build, test and lint
-        run: ./gradlew --no-daemon -PtargetAbi=arm64-v8a :agent-core:test :app:testDebugUnitTest :app:lintDebug :shell-runtime:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
+        run: ./gradlew --no-daemon -PtargetAbi=arm64-v8a :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :shell-runtime:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wukong-debug

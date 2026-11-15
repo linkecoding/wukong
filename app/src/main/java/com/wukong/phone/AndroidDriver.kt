@@ -11,22 +11,25 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
     @Volatile private var visual: VisualFrame? = null
     @Volatile private var visualFingerprint: String? = null
     fun invalidateVisual() { visual = null; visualFingerprint = null }
+    private val settler = ScreenSettler()
     override fun observe(): Screen {
-        cancellation.check()
-        val controls = WukongService.instance
+        check(android.os.Looper.myLooper() != android.os.Looper.getMainLooper()) { "界面读取必须在后台线程运行" }
         val started = android.os.SystemClock.elapsedRealtime()
-        controls?.onMain { controls.hideControls() }
         try {
-            val screen = (session.request("observe") as JSONObject).toScreen()
+            // Shell reads TYPE_APPLICATION windows; overlays need no UI-thread hide/show for node reads.
+            val screen = settler.observe({ (session.request("observe") as JSONObject).toScreen() }, cancellation::check)
             if (screen.fingerprint != visualFingerprint) { visual = null; visualFingerprint = null }
             return screen.copy(visual = visual).also {
-                trace?.record("device_observation", JSONObject().put("package", it.packageName).put("nodeCount", it.nodes.size).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
+                trace?.record("device_observation", JSONObject().put("package", it.packageName).put("nodeCount", it.nodes.size)
+                    .put("durationMs", android.os.SystemClock.elapsedRealtime() - started)
+                    .put("settled", screen.observation?.settled).put("samples", screen.observation?.samples)
+                    .put("uiEvents", screen.uiEvents).put("uiRevision", screen.uiRevision).put("uiQuietMs", screen.uiQuietMillis)
+                    .put("thread", Thread.currentThread().name))
             }
         } catch (e: Exception) {
             trace?.record("observation_error", JSONObject().put("message", e.message).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
             throw e
         }
-        finally { controls?.onMain { if (!TaskRuntime.stopRequested) controls.showControls() } }
     }
     override fun execute(action: Action, expected: Screen): String {
         cancellation.check()
@@ -59,7 +62,6 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
             val result = session.request("execute", JSONObject().put("action", action.toJson())
                 .put("package", expected.packageName).put("fingerprint", expected.fingerprint)) as String
             visual = null; visualFingerprint = null
-            Thread.sleep(650)
             trace?.record("device_result", JSONObject().put("action", action.toJson()).put("result", result).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
             return result
         } catch (e: Exception) {

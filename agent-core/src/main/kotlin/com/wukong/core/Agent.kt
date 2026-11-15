@@ -15,7 +15,8 @@ data class Bounds(val left: Int, val top: Int, val right: Int, val bottom: Int) 
 }
 data class OcrLine(val text: String, val bounds: Bounds)
 data class VisualFrame(val id: String, val width: Int, val height: Int, val lines: List<OcrLine>, val jpegBase64: String? = null)
-data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null)
+data class Observation(val settled: Boolean, val samples: Int, val elapsedMillis: Long, val uiEvents: Boolean = false)
+data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null, val observation: Observation? = null, val uiRevision: Long = 0, val uiQuietMillis: Long = Long.MAX_VALUE, val uiEvents: Boolean = false)
 
 sealed interface Action {
     data class Tap(val nodeId: Int) : Action
@@ -122,8 +123,11 @@ class Agent(
                     if (!allowed) return event(Phase.CANCELLED, "已拒绝操作，任务停止")
                     cancellation.check()
                     val fresh = driver.observe()
-                    require(fresh.packageName == screen.packageName && fresh.fingerprint == screen.fingerprint) {
-                        "审批期间界面发生变化，请重新开始任务"
+                    if (fresh.packageName != screen.packageName || fresh.fingerprint != screen.fingerprint) {
+                        if (staleRetries++ >= 6) error("界面持续变化，请接管或稍后重试")
+                        history += Turn(screen, action, "操作未执行：确认期间界面发生变化，旧确认已失效。请根据新界面重新决策；敏感操作仍需重新确认。")
+                        event(Phase.RUNNING, "界面已变化，正在重新读取并规划")
+                        return@repeat
                     }
                 }
                 cancellation.check()
@@ -133,7 +137,8 @@ class Agent(
                     if (control.epoch != epoch && e.message?.contains("用户正在接管") == true) return@repeat
                     // The driver explicitly guarantees this error occurs before injection.
                     // Re-observe/re-plan, never replay an accepted or ambiguous action.
-                    if ((e.message?.startsWith("界面已更新，本次操作未执行") == true || e.message?.startsWith("截图已过期") == true) && staleRetries++ < 3) {
+                    if ((e.message?.startsWith("界面已更新，本次操作未执行") == true || e.message?.startsWith("截图已过期") == true) && staleRetries++ < 6) {
+                        history += Turn(screen, action, "操作未执行：界面或截图已更新，没有注入设备操作。请根据新界面重新选择目标；界面仍在加载时可先等待，不要重放旧编号或旧坐标。")
                         event(Phase.RUNNING, "界面已变化，正在重新读取并规划")
                         return@repeat
                     }
