@@ -13,8 +13,8 @@ Android App 是首个入口。后续 Codex 等 Agent 应通过桥接程序调用
 | 工具 | 用途 |
 | --- | --- |
 | `devices.list` | 列出已配对设备、连接状态和驱动能力 |
-| `phone.observe` | 返回当前界面的快照和可操作节点 |
-| `phone.act` | 提交绑定快照 ID 的单个动作，可能返回等待用户确认 |
+| `wukong.observe` | 返回当前界面的快照和可操作节点 |
+| `wukong.act` | 提交绑定快照 ID 的单个动作，可能返回等待用户确认 |
 | `tasks.start` | 用唯一请求 ID、目标与可选起点启动整机任务 |
 | `tasks.events` | 按游标读取进度与结果 |
 | `tasks.cancel` | 幂等取消任务，撤销尚未执行的待审批动作 |

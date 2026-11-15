@@ -26,7 +26,7 @@ internal object JsSdk {
     return page;
   };
   const listeners = new Set();
-  const phone = Object.freeze({
+  const wukong = Object.freeze({
     observe: () => invoke('observe'),
     query: (value = {}, options = {}) => query(value, options),
     waitUntil: (value, options = {}) => invoke('waitUntil', conditionArgs(value, options)),
@@ -47,7 +47,7 @@ internal object JsSdk {
       next: (options = {}) => { const event = invoke('nextChange', options); if (event.changed) for (const callback of [...listeners]) callback(event); return event; }
     })
   });
-  Object.defineProperty(globalThis, 'phone', {value: phone, writable: false, configurable: false});
+  Object.defineProperty(globalThis, 'wukong', {value: wukong, writable: false, configurable: false});
   const state = $state;
   const value = (function(state) {
     'use strict';

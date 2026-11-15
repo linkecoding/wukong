@@ -21,17 +21,19 @@ class JsRuntimeTest {
         JsSession(context, Cancellation(), ExecutionControl()).use { js ->
             val first = JSONObject(js.run("state.count = 1; return {sum: [1,2,3].reduce((a,b)=>a+b,0), java: typeof Java, packages: typeof Packages, node: typeof require, network: typeof fetch};", host))
             assertEquals(6, first.getInt("sum"))
+            assertEquals("object", js.run("return typeof wukong;", host))
+            assertEquals("undefined", js.run("return typeof phone;", host))
             for (key in listOf("java", "packages", "node", "network")) assertEquals("undefined", first.getString(key))
             assertNotEquals(Process.myPid(), js.enginePid); assertTrue(js.engineUid % 100000 >= 99000)
             assertEquals("2", js.run("state.count++; return state.count;", host))
             assertEquals("undefined", js.run("return typeof first;", host))
-            val query = JSONObject(js.run("return phone.query({textEquals:'结果就绪'});", host))
+            val query = JSONObject(js.run("return wukong.query({textEquals:'结果就绪'});", host))
             assertEquals(1, query.getInt("totalMatches"))
-            assertEquals("结果就绪", js.run("return phone.query({textEquals:'结果就绪'},1).map(n=>n.text).join(',');", host))
-            assertEquals("1", js.run("return phone.query({textEquals:'结果就绪'},1).length;", host))
-            assertEquals("met", js.run("return phone.waitUntil({selector:{textEquals:'结果就绪'}}).verification.state;", host))
-            assertEquals("met", js.run("return phone.waitUntil({conditions:[{selector:{textEquals:'结果就绪'}}],timeoutMs:500}).verification.state;", host))
-            assertEquals("met", js.run("return phone.verify([{textEquals:'结果就绪'}]).verification.state;", host))
+            assertEquals("结果就绪", js.run("return wukong.query({textEquals:'结果就绪'},1).map(n=>n.text).join(',');", host))
+            assertEquals("1", js.run("return wukong.query({textEquals:'结果就绪'},1).length;", host))
+            assertEquals("met", js.run("return wukong.waitUntil({selector:{textEquals:'结果就绪'}}).verification.state;", host))
+            assertEquals("met", js.run("return wukong.waitUntil({conditions:[{selector:{textEquals:'结果就绪'}}],timeoutMs:500}).verification.state;", host))
+            assertEquals("met", js.run("return wukong.verify([{textEquals:'结果就绪'}]).verification.state;", host))
         }
     }
     @Test fun runawayLoopIsTerminatedAndTheAppAndFreshContextSurvive() {
@@ -50,7 +52,7 @@ class JsRuntimeTest {
             override fun execute(action: Action, expected: Screen): String { injections++; error("结果未知，必须停止") }
         }
         JsSession(context, Cancellation(), ExecutionControl()).use { js ->
-            assertNotNull(runCatching { js.run("try { phone.tap('测试'); } catch(e) {} phone.tap('测试'); return 'fake success';", dangerous) }.exceptionOrNull())
+            assertNotNull(runCatching { js.run("try { wukong.tap('测试'); } catch(e) {} wukong.tap('测试'); return 'fake success';", dangerous) }.exceptionOrNull())
             assertEquals(1, injections)
         }
     }
@@ -80,7 +82,7 @@ class JsRuntimeTest {
     @Test fun utf8BridgeStackLimitAndBlockingAtomicsAreHandled() {
         JsSession(context, Cancellation(), ExecutionControl()).use { js ->
             assertEquals("中文😀", js.run("return '中文😀';", host))
-            val result = JSONObject(js.run("return phone.query({textEquals:'桥接😀'});", host))
+            val result = JSONObject(js.run("return wukong.query({textEquals:'桥接😀'});", host))
             assertEquals("桥接😀", result.getJSONArray("nodes").getJSONObject(0).getString("text"))
             val recursion = runCatching { js.run("function recurse(){ return recurse(); } return recurse();", host) }.exceptionOrNull()
             assertTrue(recursion?.message.orEmpty().contains("stack", ignoreCase = true))

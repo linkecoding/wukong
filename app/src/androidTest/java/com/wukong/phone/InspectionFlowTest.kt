@@ -73,18 +73,18 @@ class InspectionFlowTest {
                     com.wukong.phone.script.JsSession(c, Cancellation(), control, trace).use { scripts ->
                         val code = """
                             state.keyword = '蓝牙耳机';
-                            phone.waitUntil({resourceId:'android:id/button1', enabled:true});
-                            phone.input({resourceId:'android:id/edit'}, state.keyword);
-                            phone.tap({resourceId:'android:id/button1'});
-                            const before = phone.observe();
+                            wukong.waitUntil({resourceId:'android:id/button1', enabled:true});
+                            wukong.input({resourceId:'android:id/edit'}, state.keyword);
+                            wukong.tap({resourceId:'android:id/button1'});
+                            const before = wukong.observe();
                             let events = 0;
-                            const unsubscribe = phone.events.onChange(() => events++);
-                            phone.events.next({after:before,timeoutMs:2000});
+                            const unsubscribe = wukong.events.onChange(() => events++);
+                            wukong.events.next({after:before,timeoutMs:2000});
                             unsubscribe();
-                            const ready = phone.waitUntil({textContains:'蓝牙耳机，找到 3 件商品'});
+                            const ready = wukong.waitUntil({textContains:'蓝牙耳机，找到 3 件商品'});
                             if (ready.verification.state !== 'met') throw new Error('结果未出现');
                             state.events = events;
-                            return phone.query({textContains:'蓝牙耳机，找到 3 件商品'});
+                            return wukong.query({textContains:'蓝牙耳机，找到 3 件商品'});
                         """.trimIndent()
                         var rounds = 0
                         val outcome = Agent(Model { _, _, history ->

@@ -23,20 +23,22 @@ Binder callbacks only enqueue host calls and wait for replies. The task worker p
 
 ## SDK
 
+The global API object is `wukong`, for example `wukong.query()` and `wukong.tap()`.
+
 | API | Behavior |
 | --- | --- |
-| `phone.observe()` | Compact current snapshot with package, fingerprint, revision, normalized nodes and any current OCR metadata |
-| `phone.query(selector, {limit, offset})` | Read/filter/page the larger visible source |
-| `phone.waitUntil(selectorOrConditions, options)` | Freshly resolve conditions without global page-quiet settling |
-| `phone.verify(selectorOrConditions, options)` | Read current condition evidence, without finishing the task |
-| `phone.tap(selector)` / `input(selector,text)` / `scroll(selector,forward)` | Freshly resolve a unique target and perform a validated action |
-| `phone.launch(packageName)` / `home()` / `back()` | Navigate within the session's target display |
-| `phone.ocr()` / `screenshot()` | Current capture ID, local OCR and normalized boxes; raw image bytes are not copied into JS |
-| `phone.tapAt(x,y,captureId)` / `longPress(x,y,captureId,duration)` / `swipe(x,y,endX,endY,captureId,duration)` | Existing guarded coordinate actions |
-| `phone.sleep(milliseconds)` | Bounded, cancelable wait; conditions are preferable |
-| `phone.log(message)` | Add bounded diagnostic output to this task's existing trace |
-| `phone.events.onChange(callback)` | Register a cell-local change listener; returns an unsubscribe function |
-| `phone.events.next({after,timeoutMs})` | Wait for relevant revision/package/fingerprint changes, return an event and synchronously dispatch registered listeners |
+| `wukong.observe()` | Compact current snapshot with package, fingerprint, revision, normalized nodes and any current OCR metadata |
+| `wukong.query(selector, {limit, offset})` | Read/filter/page the larger visible source |
+| `wukong.waitUntil(selectorOrConditions, options)` | Freshly resolve conditions without global page-quiet settling |
+| `wukong.verify(selectorOrConditions, options)` | Read current condition evidence, without finishing the task |
+| `wukong.tap(selector)` / `input(selector,text)` / `scroll(selector,forward)` | Freshly resolve a unique target and perform a validated action |
+| `wukong.launch(packageName)` / `home()` / `back()` | Navigate within the session's target display |
+| `wukong.ocr()` / `screenshot()` | Current capture ID, local OCR and normalized boxes; raw image bytes are not copied into JS |
+| `wukong.tapAt(x,y,captureId)` / `longPress(x,y,captureId,duration)` / `swipe(x,y,endX,endY,captureId,duration)` | Existing guarded coordinate actions |
+| `wukong.sleep(milliseconds)` | Bounded, cancelable wait; conditions are preferable |
+| `wukong.log(message)` | Add bounded diagnostic output to this task's existing trace |
+| `wukong.events.onChange(callback)` | Register a cell-local change listener; returns an unsubscribe function |
+| `wukong.events.next({after,timeoutMs})` | Wait for relevant revision/package/fingerprint changes, return an event and synchronously dispatch registered listeners |
 
 Selectors/conditions share [the query tool contracts](condition-tools.md). A string is an exact text selector. Query returns a page object (`nodes`, `totalMatches`, `hasMore`, `sourceTruncated`, fingerprint). Prefer `page.nodes.map(...)`; `.map`, `.filter`, `.find`, `.length` and iteration are also provided as non-enumerable conveniences, preserving the metadata when returning/serializing the page. A numeric query second argument is shorthand for `{limit: n}`. Wait/verify accept a selector, a condition object, an array of selectors/conditions, or the full `{conditions,matchAll,timeoutMs}` form. A target action adds its capability filter (`clickable`, `editable`, or `scrollable`), requires one match on a complete source, and never guesses among duplicates. Targets are selectors, not durable node handles. The shell still checks the full fingerprint immediately before mutation.
 
@@ -44,9 +46,9 @@ Example for an illustrative app, with placeholder resource IDs:
 
 ```js
 state.keyword = '蓝牙耳机';
-phone.input({resourceId: 'example.app:id/query'}, state.keyword);
-phone.tap({resourceId: 'example.app:id/search'});
-const outcome = phone.waitUntil([
+wukong.input({resourceId: 'example.app:id/query'}, state.keyword);
+wukong.tap({resourceId: 'example.app:id/search'});
+const outcome = wukong.waitUntil([
   {selector: {ancestorResourceId: 'example.app:id/results', textContains: state.keyword}},
   {selector: {textContains: '网络错误'}}
 ], {timeoutMs: 8000});
