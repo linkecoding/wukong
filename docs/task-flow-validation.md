@@ -40,3 +40,9 @@ Screenshots document the tested Pixel 6. Other Android/vendor behaviors and app-
 Validation: 12 initial physical Pixel 6 tests passed. After the final changes, 8 targeted tests passed, including a real provider test that remains on the configuration page, editing after success, an archive of 1,008 events, nested credential redaction, exact-run isolation, content-URI reading, missing-log behavior, canceling the export dialog, onboarding, history and bilingual width previews. An actual system document-picker save produced a readable ZIP with all 21 events of the selected task. Debug/release builds and lint passed.
 
 The updated screen review passed with 53 fresh ADB captures, including both languages of the export dialog. The system share sheet opened with a readable ZIP attachment and was dismissed without selecting a recipient. Signed release verification, ZIP alignment and all six arm64 native-library 16 KB checks passed.
+
+## Dropdown appearance
+
+Shared native spinners now use the app surface token, a 20 dp rounded popup with a subtle border and 6 dp elevation, and inset 12 dp rounded rows. The current choice has a soft moss fill and a check mark; pressed, keyboard focus and hover use the existing feedback colors. Expanded labels remain leading-aligned and collapsed values trailing-aligned. Long labels ellipsize within the native popup bounds. Styling is scoped to spinner popups.
+
+Debug build and lint passed. Physical Pixel 6 screenshots checked language menus at 320 / 375 / 414 / 768 dp and the provider menu at the original device width. The temporary display-size override was reset. Review captures are in the ignored .tooling/dropdown-*-expanded.png and .tooling/dropdown-styled-provider.png files.

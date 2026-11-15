@@ -5,6 +5,7 @@
         <item name="android:colorControlNormal">@color/muted</item>
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:spinnerStyle">@style/Wukong.Spinner</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -36,5 +37,20 @@
     <style name="Wukong.DialogBody" parent="android:style/TextAppearance.Material.Medium">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/muted</item>
+    </style>
+    <style name="Wukong.Spinner" parent="android:style/Widget.Material.Spinner">
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:popupTheme">@style/Theme.Wukong.Dropdown</item>
+        <item name="android:popupBackground">@drawable/dropdown_background</item>
+        <item name="android:popupElevation">6dp</item>
+    </style>
+    <style name="Theme.Wukong.Dropdown" parent="Theme.Wukong">
+        <item name="android:dropDownListViewStyle">@style/Wukong.DropDownList</item>
+    </style>
+    <style name="Wukong.DropDownList" parent="android:style/Widget.Material.ListView.DropDown">
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">2dp</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
     </style>
 </resources>

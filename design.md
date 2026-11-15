@@ -35,7 +35,7 @@ System sans-serif: regular body, medium buttons, bold headings, upright througho
 
 ## Spacing and shape
 
-4 dp scale. Page inset 24 dp, form inset 16 dp, related spacing 8–12 dp, section spacing 24 dp. Content is centered and capped at 680 dp. Inputs and buttons have 12 dp corners; composer panels 16 dp and grouped cards 18 dp. Minimum touch target 48 dp. Navigation target 64 dp with a consistent outline icon set.
+4 dp scale. Page inset 24 dp, form inset 16 dp, related spacing 8–12 dp, section spacing 24 dp. Content is centered and capped at 680 dp. Inputs and buttons have 12 dp corners; composer panels 16 dp and grouped cards 18 dp. Dropdown panels use 20 dp corners, a surface fill, subtle line border, 6 dp inset and light elevation. Options stay leading-aligned with 12 dp rounded rows; the selected option has a soft moss fill and a check mark. Collapsed values remain trailing-aligned. Minimum touch target 48 dp. Navigation target 64 dp with a consistent outline icon set.
 
 ## Interaction
 

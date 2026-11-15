@@ -65,7 +65,27 @@ object WukongUi {
             setPadding(dp(context, 12), dp(context, 10), dp(context, 12), dp(context, 10))
         }
         override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getView(position, convertView, parent)).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; gravity = android.view.Gravity.END or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END }
-        override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent)).apply { gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START }
+        override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent)).apply {
+            gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL
+            textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START
+            maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END
+            setPadding(dp(context, 14), dp(context, 12), dp(context, 12), dp(context, 12))
+            setTextColor(ColorStateList(arrayOf(intArrayOf(-android.R.attr.state_enabled), intArrayOf(android.R.attr.state_checked), intArrayOf()),
+                intArrayOf(context.getColor(R.color.muted), context.getColor(R.color.accent), context.getColor(R.color.ink))))
+            val fill = StateListDrawable().apply {
+                addState(intArrayOf(android.R.attr.state_focused), shape(context, R.color.soft_success, 12, R.color.accent, 2))
+                addState(intArrayOf(android.R.attr.state_checked), shape(context, R.color.soft_success, 12))
+                addState(intArrayOf(android.R.attr.state_hovered), shape(context, R.color.soft_success, 12))
+                addState(intArrayOf(), shape(context, R.color.surface, 12))
+            }
+            background = RippleDrawable(ColorStateList.valueOf(context.getColor(R.color.soft_accent)), fill, shape(context, R.color.surface, 12))
+            if (this is android.widget.CheckedTextView) checkMarkDrawable = StateListDrawable().apply {
+                addState(intArrayOf(android.R.attr.state_checked), context.getDrawable(R.drawable.ic_check))
+                addState(intArrayOf(), android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT).apply {
+                    setBounds(0, 0, dp(context, 20), dp(context, 20))
+                })
+            }
+        }
     }
 
     fun actionRow(context: Context, label: String, icon: Int? = null, action: () -> Unit) = button(context, label, false, action).apply {
