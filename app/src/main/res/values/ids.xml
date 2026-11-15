@@ -10,4 +10,5 @@
     <item name="setup_primary" type="id"/>
     <item name="sample_parameter" type="id"/>
     <item name="task_options" type="id"/>
+    <item name="page_menu" type="id"/>
 </resources>

@@ -17,6 +17,7 @@ class VirtualControlTest {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val context = instrumentation.targetContext
         val previous = VirtualScreenState.enabled(context)
+        val logStore = RunLogStore(context); val previousLogs = logStore.enabled; logStore.enabled = true
         val activity = instrumentation.startActivitySync(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         fun await(condition: () -> Boolean) {
             val end = System.currentTimeMillis()+30_000
@@ -45,12 +46,16 @@ class VirtualControlTest {
             VirtualScreenState.control(false)
             await { !VirtualScreenState.manual && !TaskRuntime.active }
             assertEquals(TaskRuntime.event.message,Phase.COMPLETED,TaskRuntime.event.phase)
+            val taskRecord = HistoryStore(context).read().first()
+            assertTrue("New tasks persist an explicit log association", taskRecord.logAssociationKnown)
+            assertNotNull("Real task has a trace", taskRecord.logName)
+            assertEquals(taskRecord.logName, logStore.forTask(taskRecord))
             ShellSession(context,id).use { assertEquals("com.android.settings",AndroidDriver(it).observe().packageName) }
             ShellSession(context).use { assertEquals("com.wukong.phone",AndroidDriver(it).observe().packageName) }
         } finally {
             TaskRuntime.stop()
             instrumentation.runOnMainSync { VirtualScreenState.stop(context); activity.finish() }
-            VirtualScreenState.enabled(context,previous)
+            VirtualScreenState.enabled(context,previous); logStore.enabled = previousLogs
         }
     }
 }

@@ -21,7 +21,7 @@ The app follows your **system language** by default (Chinese or English, with En
 - **See beyond UI elements.** Screenshots, on-device PP-OCRv6 tiny OCR, coordinate taps, long presses, and swipes supplement structured UI automation.
 - **Watch and take over.** Run on the main display or a virtual display. Its preview is embedded in Wukong and floats when Wukong goes into the background. Manual takeover pauses the agent; handing back control triggers a fresh observation.
 - **Bring your own model.** Connect a tool-calling Chat Completions compatible endpoint. Configure any HTTPS base URL or an exact request URL. Thinking is off by default where supported; models that require thinking are identified in the UI.
-- **Inspect the run.** Local history and optional logs show tool calls, results, timing, and token usage reported by your provider.
+- **Inspect each task.** Open a history card to see its result, provider-reported token usage and grouped execution timeline. Expand an event for the recorded tool arguments and results. Optional logs remain on the phone.
 
 Wukong includes wireless ADB pairing and its execution engine. **No root, enabled AccessibilityService, or companion app is required.** The app remains a normal Android app; user-authorized wireless debugging starts an `app_process` shell process (UID 2000).
 
@@ -29,10 +29,12 @@ Wukong includes wireless ADB pairing and its execution engine. **No root, enable
 
 [Download and release notes](https://github.com/linkecoding/wukong/releases) · [First-task guide](docs/getting-started.md)
 
+Screenshots and descriptions track the current `main` branch; tagged releases are versioned snapshots.
+
 Choose the **arm64-v8a APK** for most current phones, or the universal APK for other architectures. Release builds use the project's production signing identity and include SHA-256 checksums. You can also build from source below.
 
 1. Choose **Find a downloaded file**, **Search for answers**, or **Search inside an app**. Add a filename, a question, or an app and keyword—or write your own task.
-2. Tap **Continue setup**. Select DeepSeek, Alibaba Cloud / Qwen, Zhipu / GLM, Moonshot / Kimi, or a custom API. Follow the provider's API platform link if you need a key. Wukong fills the standard endpoint and model; a tool-call test checks the connection before saving.
+2. Tap **Continue setup**. Select DeepSeek, Alibaba Cloud / Qwen, Zhipu / GLM, Moonshot / Kimi, or a custom API. Follow the provider's API platform link if you need a key. Wukong fills the standard endpoint; the model name is visible and editable alongside the API key. A tool-call test checks the connection before saving.
 3. Follow **Connect this phone**. Android 11+ requires Wi-Fi, Developer options, and Wireless debugging authorization. Wukong guides the current step; ports and manual pairing are tucked into troubleshooting.
 4. Allow control buttons when prompted. Return to your saved task, review it, and tap **Run task**. Setup does not start the task automatically.
 5. On later launches, Wukong attempts to restore an already-paired connection when wireless debugging is available. Your pending task survives setup screens and app restarts.
@@ -76,6 +78,8 @@ For USB development activation only:
 python3 scripts/activate-shell.py SERIAL
 python3 scripts/activate-shell.py SERIAL --stop
 ```
+
+The interface uses cream, moss and pale apricot, with three main destinations: Tasks, History and Settings. Model settings, device access, preferences and data controls have separate groups. Task logs open from history; connection-test diagnostics remain under Settings.
 
 ## Releases
 

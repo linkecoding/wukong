@@ -11,8 +11,8 @@
     <string name="ui_use_virtual_display">在虚拟屏执行</string>
     <string name="ui_could_not_start_the_virtual_display">虚拟屏启动失败</string>
     <string name="ui_activate_on_device">手机内激活</string>
-    <string name="ui_starting_app_optional">从哪里开始（可选）</string>
-    <string name="ui_home_screen_all_apps">桌面 · 整机操作</string>
+    <string name="ui_starting_app_optional">起始应用</string>
+    <string name="ui_home_screen_all_apps">自动选择</string>
     <string name="ui_no_apps_available">没有可操作的应用</string>
     <string name="ui_your_task">你想做什么</string>
     <string name="ui_e_g_open_settings_and_tell_me_the_android_version">例如：搜索无线耳机，告诉我前几条结果</string>
@@ -223,4 +223,26 @@
     <string name="ui_brief_logs">记录工具调用和 Token 用量，仅保存在本机。</string>
     <string name="ui_show_details">查看详情</string>
     <string name="ui_hide_details">收起详情</string>
+    <string name="ui_more_actions">更多操作</string>
+    <string name="ui_delete_this_log">删除本次运行日志</string>
+    <string name="ui_group_model">模型</string>
+    <string name="ui_model_service">模型服务</string>
+    <string name="ui_allowed">已允许</string>
+    <string name="ui_not_allowed">未允许</string>
+    <string name="ui_group_preferences">偏好</string>
+    <string name="ui_group_data">数据</string>
+    <string name="ui_connection_diagnostics">模型连接诊断</string>
+    <string name="ui_no_diagnostics">还没有模型连接测试记录。</string>
+    <string name="ui_view_task">查看结果与执行过程  ›</string>
+    <string name="ui_task_detail">任务详情</string>
+    <string name="ui_task_result">任务结果</string>
+    <string name="ui_log_unavailable">此任务没有可用日志，可能未开启记录，或日志已被清除。</string>
+    <string name="ui_token_usage">Token 用量</string>
+    <string name="ui_tokens_input">输入</string>
+    <string name="ui_tokens_output">输出</string>
+    <string name="ui_tokens_total">合计</string>
+    <string name="ui_execution_steps">执行过程</string>
+    <string name="ui_completed">已完成</string>
+    <string name="ui_usage_note">仅累计服务商返回的用量，缺失部分不估算。</string>
+    <string name="ui_preparation">准备阶段</string>
 </resources>

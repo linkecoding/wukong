@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 data class PendingApproval(val action: Action, val screen: Screen, val answer: CompletableFuture<Boolean> = CompletableFuture())
-data class TaskRecord(val goal: String, val app: String, val phase: String, val result: String, val timestamp: Long)
+data class TaskRecord(val goal: String, val app: String, val phase: String, val result: String, val timestamp: Long, val logName: String? = null, val logAssociationKnown: Boolean = false)
 
 /** Single task owner, independent of Activity lifecycle. No externally callable transport in v0.1. */
 object TaskRuntime {
@@ -133,7 +133,7 @@ object TaskRuntime {
                     runCatching { shellSession?.close() }
                     shellSession = null
                     displayId = 0; activeTrace = null; activeDriver = null
-                    val record = TaskRecord(goal, "整机任务", result.phase.name, result.message, System.currentTimeMillis())
+                    val record = TaskRecord(goal, "整机任务", result.phase.name, result.message, System.currentTimeMillis(), trace?.name, true)
                     runCatching { HistoryStore(appContext).append(record) }
                     pending = null; client = null; cancellation = null; worker = null
                     busy.set(false)
@@ -174,17 +174,18 @@ object TaskRuntime {
     }
 }
 
-class HistoryStore(context: Context) {
-    private val prefs = context.getSharedPreferences("history", Context.MODE_PRIVATE)
+class HistoryStore(context: Context, namespace: String = "") {
+    init { require(namespace.matches(Regex("(-[a-z]+)?"))) }
+    private val prefs = context.getSharedPreferences("history$namespace", Context.MODE_PRIVATE)
     fun read(): List<TaskRecord> = runCatching {
         val array = JSONArray(prefs.getString("records", "[]"))
         (0 until array.length()).map { index -> array.getJSONObject(index).let {
-            TaskRecord(it.getString("goal"), it.getString("app"), it.getString("phase"), it.getString("result"), it.getLong("timestamp"))
+            TaskRecord(it.getString("goal"), it.getString("app"), it.getString("phase"), it.getString("result"), it.getLong("timestamp"), if (it.has("logName") && !it.isNull("logName")) it.getString("logName") else null, it.optBoolean("logAssociationKnown", false))
         } }
     }.getOrDefault(emptyList())
     fun append(record: TaskRecord) {
         val array = JSONArray((listOf(record) + read()).take(30).map {
-            JSONObject().put("goal", it.goal).put("app", it.app).put("phase", it.phase).put("result", it.result).put("timestamp", it.timestamp)
+            JSONObject().put("goal", it.goal).put("app", it.app).put("phase", it.phase).put("result", it.result).put("timestamp", it.timestamp).put("logName", it.logName ?: JSONObject.NULL).put("logAssociationKnown", it.logAssociationKnown)
         })
         check(prefs.edit().putString("records", array.toString()).commit())
     }

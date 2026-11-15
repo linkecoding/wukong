@@ -2,17 +2,17 @@
 
 These brand assets are stored locally. Nothing has been published.
 
-- [Symbol](wukong-mark.svg): editable vector, 64-unit construction, dark background.
+- [Symbol](wukong-mark.svg): editable vector, 64-unit construction, pale apricot background.
 - [Wordmark](wukong-wordmark.svg): cool light background, English product name.
 - [Social preview](social-preview.svg): 1280 × 640, suitable for a repository or project announcement.
 - PNG exports: [symbol](wukong-mark.png), [wordmark](wukong-wordmark.png), [social preview](social-preview.png).
 - [Shared design system](../../design.md) and [portable color/type tokens](../../tokens.css).
 
-Concept A, Cobalt, is the selected identity. The mark combines ice-blue headband arcs and a white geometric monkey mask on vivid blue. Blue expresses the app’s active controls. The eyes remain legible at small sizes. Keep the mark upright and preserve space of at least one eye-width around it. Do not use the full-color launcher icon as a monochrome Android notification glyph.
+The selected soft direction combines cream, moss and pale apricot. The mark uses moss headband arcs and a geometric monkey mask on apricot. The same restrained colors carry through native controls and status cards. The eyes remain legible at small sizes. Keep the mark upright and preserve space of at least one eye-width around it. Do not use the full-color launcher icon as a monochrome Android notification glyph.
 
 ## App previews
 
-[English task screen](../images/onboarding/home-en.png) · [Chinese task render](../images/onboarding/home-zh-CN.png) · [Model setup](../images/onboarding/model-en.png) · [Cobalt validation](../cobalt-validation.md)
+[English task screen](../images/onboarding/home-en.png) · [Chinese task render](../images/onboarding/home-zh-CN.png) · [Model setup](../images/onboarding/model-en.png) · [Task-flow validation](../task-flow-validation.md)
 
 [First-task guide](../getting-started.md) · [Model provider presets](../model-providers.md) · [New onboarding previews](../images/onboarding/home-en.png)
 

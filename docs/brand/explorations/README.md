@@ -1,3 +1,5 @@
+> These are earlier identity explorations. The current selected cream / moss / apricot system is in [design.md](../../../design.md).
+
 > Concept A (Cobalt) was selected and applied to the Android app. B and C remain explorations.
 
 # Wukong — modern identity directions

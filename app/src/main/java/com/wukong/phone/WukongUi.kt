@@ -44,7 +44,7 @@ object WukongUi {
             minimumHeight = dp(context, 48)
             setPadding(dp(context, 12), dp(context, 10), dp(context, 12), dp(context, 10))
         }
-        override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getView(position, convertView, parent))
+        override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getView(position, convertView, parent)).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END }
         override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent))
     }
 

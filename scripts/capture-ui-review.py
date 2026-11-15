@@ -4,7 +4,7 @@ import subprocess,time,pathlib,argparse
 parser=argparse.ArgumentParser()
 parser.add_argument('serial')
 args=parser.parse_args()
-root=pathlib.Path('.tooling/cobalt-review');root.mkdir(parents=True,exist_ok=True)
+root=pathlib.Path('.tooling/task-flow-review');root.mkdir(parents=True,exist_ok=True)
 base=['adb','-s',args.serial]
 def adb(*a):return subprocess.run(base+list(a),stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 adb('shell','run-as','com.wukong.phone','rm','-f','files/screen-review-request','files/screen-review-done')

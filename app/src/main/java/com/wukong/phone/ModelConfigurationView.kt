@@ -21,7 +21,6 @@ class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLa
     private val providerNote = ui.text("", 13f, true)
     private val thinkingNote = ui.text("", 13f, true)
     private val capabilityNotice = ui.text(context.getString(R.string.setup_thinking_required), 13f, true)
-    private val summary = ui.text("", 13f, true)
     private val advanced = ui.column().apply { id = R.id.model_advanced; visibility = View.GONE }
     private val platform = ui.button(R.string.setup_platform) { openPlatform() }
     private var chosen = saved?.let(ModelPresets::provider) ?: "deepseek"
@@ -33,7 +32,8 @@ class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLa
         providerPicker.adapter = WukongUi.choiceAdapter(context, ModelPresets.all.map { context.getString(it.title) })
         providerPicker.setSelection(ModelPresets.all.indexOfFirst { it.id == chosen }.coerceAtLeast(0))
         ui.add(this, providerPicker)
-        ui.add(this, summary)
+        ui.add(this, ui.text(context.getString(R.string.ui_model_id), 14f))
+        ui.add(this, model)
         ui.add(this, capabilityNotice)
         ui.add(this, platform)
         ui.add(this, providerNote)
@@ -49,7 +49,6 @@ class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLa
         ui.add(advanced, ui.text("Base URL", 14f)); ui.add(advanced, endpoint)
         ui.add(advanced, fullEndpoint)
         ui.add(advanced, ui.text(context.getString(R.string.ui_any_base_path_is_allowed_wukong_appends_chat_completions_unless_y), 12f, true))
-        ui.add(advanced, ui.text(context.getString(R.string.ui_model_id), 14f)); ui.add(advanced, model)
         ui.add(advanced, thinking); ui.add(advanced, thinkingNote)
         addView(advanced)
         addView(message)
@@ -86,7 +85,6 @@ class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLa
         capabilityNotice.visibility = if (required) View.VISIBLE else View.GONE
         thinkingNote.setText(if (required) R.string.setup_thinking_required else R.string.setup_thinking_hint)
         val preset = ModelPresets.all.firstOrNull { it.id == chosen } ?: ModelPresets.all.last()
-        summary.text = model.text.toString()
         platform.visibility = if (preset.platform.isBlank()) View.GONE else View.VISIBLE
         providerNote.text = if (chosen == "qwen") context.getString(R.string.setup_region_note) else ""
         providerNote.visibility = if (chosen == "qwen") View.VISIBLE else View.GONE

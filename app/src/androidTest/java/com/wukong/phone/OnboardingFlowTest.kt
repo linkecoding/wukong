@@ -61,6 +61,9 @@ class OnboardingFlowTest {
             instrumentation.runOnMainSync {
                 val form = views(root(activity)).filterIsInstance<ModelConfigurationView>().single()
                 assertEquals(View.GONE, form.findViewById<View>(R.id.model_advanced).visibility)
+                assertTrue("Model name is visible without Advanced", form.model.isShown)
+                form.model.setText("custom-model-id")
+                assertEquals("custom-model-id", form.candidate(false).model)
                 form.key.setText("test-key-for-first-provider")
                 val next = if (form.providerPicker.selectedItemPosition == 1) 0 else 1
                 form.providerPicker.setSelection(next)

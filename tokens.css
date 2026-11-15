@@ -1,25 +1,26 @@
 /* Hallmark · modern-minimal · Workbench · design-system: design.md
  * Portable export; Android runtime tokens live in res/values/colors.xml. */
 :root {
-  --color-paper: oklch(97.258% 0.00862 264.52);
-  --color-surface: oklch(100.000% 0.00000 89.88);
-  --color-ink: oklch(25.072% 0.05280 263.02);
-  --color-muted: oklch(49.500% 0.04388 257.02);
-  --color-accent: oklch(50.512% 0.20279 263.88);
+  --color-paper: oklch(97.003% 0.00823 91.48);
+  --color-surface: oklch(99.529% 0.00251 48.72);
+  --color-ink: oklch(33.278% 0.02111 142.37);
+  --color-muted: oklch(52.598% 0.02211 140.47);
+  --color-accent: oklch(43.308% 0.04154 146.03);
   --color-accent-ink: oklch(100.000% 0.00000 89.88);
-  --color-line: oklch(87.639% 0.02461 259.82);
-  --color-success: oklch(46.128% 0.08693 159.72);
-  --color-danger: oklch(48.603% 0.16273 25.67);
-  --color-soft-accent: oklch(94.887% 0.02412 267.93);
-  --color-soft-success: oklch(95.022% 0.01573 160.62);
-  --color-gold: oklch(72.668% 0.14103 264.04);
-  --color-brand-red: oklch(50.512% 0.20279 263.88);
-  --color-brand-ink: oklch(25.072% 0.05280 263.02);
-  --color-brand-paper: oklch(97.258% 0.00862 264.52);
-  --color-control: oklch(65.855% 0.04537 258.37);
-  --color-brand-mark: oklch(100.000% 0.00000 89.88);
-  --color-brand-arc: oklch(86.405% 0.07354 241.98);
-  --color-brand-background: oklch(50.512% 0.20279 263.88);
+  --color-line: oklch(91.864% 0.01208 111.77);
+  --color-success: oklch(44.448% 0.06431 142.99);
+  --color-danger: oklch(50.182% 0.13335 27.99);
+  --color-soft-accent: oklch(89.863% 0.03801 64.74);
+  --color-soft-success: oklch(93.166% 0.01969 125.83);
+  --color-gold: oklch(64.689% 0.08475 53.86);
+  --color-brand-red: oklch(43.308% 0.04154 146.03);
+  --color-brand-ink: oklch(33.278% 0.02111 142.37);
+  --color-brand-paper: oklch(97.003% 0.00823 91.48);
+  --color-control: oklch(63.646% 0.03220 137.43);
+  --color-brand-mark: oklch(43.308% 0.04154 146.03);
+  --color-brand-arc: oklch(43.308% 0.04154 146.03);
+  --color-brand-background: oklch(89.863% 0.03801 64.74);
+
 
 
   --font-display: system-ui, sans-serif;

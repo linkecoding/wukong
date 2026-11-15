@@ -11,8 +11,8 @@
     <string name="ui_use_virtual_display">Use virtual display</string>
     <string name="ui_could_not_start_the_virtual_display">Could not start the virtual display</string>
     <string name="ui_activate_on_device">Activate on device</string>
-    <string name="ui_starting_app_optional">Starting app · optional</string>
-    <string name="ui_home_screen_all_apps">Home screen · all apps</string>
+    <string name="ui_starting_app_optional">Start in</string>
+    <string name="ui_home_screen_all_apps">Automatic</string>
     <string name="ui_no_apps_available">No apps available</string>
     <string name="ui_your_task">Your task</string>
     <string name="ui_e_g_open_settings_and_tell_me_the_android_version">e.g. Open Settings and tell me the Android version</string>
@@ -223,4 +223,26 @@
     <string name="ui_brief_logs">Tool calls and token usage, saved on this phone.</string>
     <string name="ui_show_details">Inspect details</string>
     <string name="ui_hide_details">Hide details</string>
+    <string name="ui_more_actions">More actions</string>
+    <string name="ui_delete_this_log">Delete this run log</string>
+    <string name="ui_group_model">Model</string>
+    <string name="ui_model_service">Model provider</string>
+    <string name="ui_allowed">Allowed</string>
+    <string name="ui_not_allowed">Not allowed</string>
+    <string name="ui_group_preferences">Preferences</string>
+    <string name="ui_group_data">Data</string>
+    <string name="ui_connection_diagnostics">Connection diagnostics</string>
+    <string name="ui_no_diagnostics">No connection tests recorded.</string>
+    <string name="ui_view_task">Results and execution details  ›</string>
+    <string name="ui_task_detail">Task details</string>
+    <string name="ui_task_result">Result</string>
+    <string name="ui_log_unavailable">No run log is available for this task. Logging may have been off, or the log was removed.</string>
+    <string name="ui_token_usage">Token usage</string>
+    <string name="ui_tokens_input">Input</string>
+    <string name="ui_tokens_output">Output</string>
+    <string name="ui_tokens_total">Total</string>
+    <string name="ui_execution_steps">Execution timeline</string>
+    <string name="ui_completed">Completed</string>
+    <string name="ui_usage_note">Totals include reported usage only.</string>
+    <string name="ui_preparation">Preparation</string>
 </resources>

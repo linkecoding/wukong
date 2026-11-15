@@ -52,15 +52,22 @@ class ScreenReviewTest {
                 a = i.startActivitySync(Intent(c,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); page("$lang-tasks")
                 click(R.string.setup_show_options); page("$lang-options")
                 click(R.string.ui_history); page("$lang-history")
-                click(R.string.ui_logs); page("$lang-logs")
-                val file = RunLogStore(c).files().firstOrNull()
-                if(file != null) { i.runOnMainSync { MainActivity::class.java.getDeclaredMethod("logDetail",String::class.java).apply { isAccessible=true }.invoke(a,file.name) }; page("$lang-log-detail")
-                    i.runOnMainSync {
-                        views().first { it.tag == "run-event" }.performClick()
-                        assertTrue("Expanded log payload visible", views().first { it.tag == "event-payload" }.visibility == View.VISIBLE)
-                    }; page("$lang-log-expanded")
+                if (views().any { it.tag == "history-entry" }) {
+                    i.runOnMainSync { views().first { it.tag == "history-entry" }.performClick() }
+                    page("$lang-task-detail")
+                    if (views().any { it.tag == "run-event" }) {
+                        i.runOnMainSync {
+                            views().first { it.tag == "run-event" }.performClick()
+                            assertTrue("Expanded log payload visible", views().first { it.tag == "event-payload" }.visibility == View.VISIBLE)
+                        }; page("$lang-task-expanded")
+                    }
+                    i.runOnMainSync { views().filterIsInstance<Button>().first { it.contentDescription == a!!.getString(R.string.setup_back) }.performClick() }
+                    i.waitForIdleSync()
+                    assertTrue("Back returns to history", views().any { it.tag == "history-entry" })
                 }
                 click(R.string.ui_settings); page("$lang-settings")
+                i.runOnMainSync { views().single { it.contentDescription == a!!.getString(R.string.ui_connection_diagnostics) }.performClick() }
+                page("$lang-diagnostics")
                 i.runOnMainSync { a!!.finish() }; i.waitForIdleSync()
                 a = i.startActivitySync(Intent(c,SetupActivity::class.java).putExtra("model_only",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); i.waitForIdleSync()
                 i.runOnMainSync { views().filterIsInstance<ModelConfigurationView>().single().key.setText("") }; page("$lang-model")

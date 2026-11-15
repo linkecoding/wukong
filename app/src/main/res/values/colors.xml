@@ -2,23 +2,23 @@
 <!-- Hallmark · modern-minimal · Workbench · design-system: design.md
      Native Android tokens. Pre-emit critique: P4 H4 E4 S4 R5 V4; native contrast and layout checks passed. -->
 <resources>
-    <color name="paper">#F3F6FC</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="ink">#14213B</color>
-    <color name="muted">#52637B</color>
-    <color name="accent">#2457D6</color>
+    <color name="paper">#F7F5EF</color>
+    <color name="surface">#FFFDFC</color>
+    <color name="ink">#30392F</color>
+    <color name="muted">#646E62</color>
+    <color name="accent">#425743</color>
     <color name="accent_ink">#FFFFFF</color>
-    <color name="line">#CDD7E7</color>
-    <color name="success">#226747</color>
-    <color name="danger">#A82A2A</color>
-    <color name="soft_accent">#E7EEFF</color>
-    <color name="soft_success">#E6F2EB</color>
-    <color name="gold">#79A4FF</color>
-    <color name="brand_red">#2457D6</color>
-    <color name="brand_ink">#14213B</color>
-    <color name="brand_paper">#F3F6FC</color>
-    <color name="control">#8193AE</color>
-    <color name="brand_mark">#FFFFFF</color>
-    <color name="brand_arc">#A8D9FF</color>
-    <color name="brand_background">#2457D6</color>
+    <color name="line">#E4E5DC</color>
+    <color name="success">#3E5D3C</color>
+    <color name="danger">#A23F36</color>
+    <color name="soft_accent">#F0D9C4</color>
+    <color name="soft_success">#E5EBDD</color>
+    <color name="gold">#B7805C</color>
+    <color name="brand_red">#425743</color>
+    <color name="brand_ink">#30392F</color>
+    <color name="brand_paper">#F7F5EF</color>
+    <color name="control">#82907D</color>
+    <color name="brand_mark">#425743</color>
+    <color name="brand_arc">#425743</color>
+    <color name="brand_background">#F0D9C4</color>
 </resources>

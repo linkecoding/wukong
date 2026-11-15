@@ -1,6 +1,15 @@
 [
   {
     "date": "2026-11-15",
+    "scope": "native task flow",
+    "macrostructure": "Task composer / history detail / grouped settings",
+    "theme": "custom",
+    "theme_axes": "warm light / system sans / low-chroma moss and apricot",
+    "enrichment": "original geometric mark",
+    "brief": "Model name in primary form; exact task/log linkage; three tabs; task timeline; grouped settings; selected soft palette A"
+  },
+  {
+    "date": "2026-11-15",
     "scope": "app refinement",
     "macrostructure": "Task composer / quiet secondary rows",
     "theme": "custom",

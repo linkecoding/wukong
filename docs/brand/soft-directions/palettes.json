@@ -1,0 +1,26 @@
+[
+  {
+    "id": "moss",
+    "name": "奶油白 · 苔绿 · 浅杏",
+    "paper": "#F7F5EF",
+    "surface": "#FFFDFC",
+    "ink": "#30392F",
+    "muted": "#73796F",
+    "accent": "#425743",
+    "soft": "#E5EBDD",
+    "pop": "#F0D9C4",
+    "line": "#E4E5DC"
+  },
+  {
+    "id": "mist",
+    "name": "冷白 · 雾蓝 · 灰紫",
+    "paper": "#F4F6F7",
+    "surface": "#FFFFFF",
+    "ink": "#32444F",
+    "muted": "#71808A",
+    "accent": "#4C6371",
+    "soft": "#E1EAF0",
+    "pop": "#E4DEED",
+    "line": "#DFE5E8"
+  }
+]

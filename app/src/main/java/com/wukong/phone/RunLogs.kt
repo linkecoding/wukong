@@ -22,6 +22,25 @@ class RunLogStore(context: Context, private val namespace: String = "") {
         val file = File(directory, name)
         if (!file.exists()) emptyList() else file.useLines { lines -> lines.take(1000).mapNotNull { runCatching { JSONObject(it) }.getOrNull() }.toList() }
     }
+    fun delete(name: String) = synchronized(lock) {
+        require(name.matches(Regex("[0-9]+-[a-f0-9-]+\\.jsonl")))
+        File(directory, name).delete()
+    }
+
+    /** New tasks keep an exact reference; legacy matches require one unique finished run. */
+    fun forTask(task: TaskRecord): String? {
+        task.logName?.let { name -> return files().firstOrNull { it.name == name }?.name }
+        if (task.logAssociationKnown) return null
+        return files().filter { file ->
+            val records = read(file.name)
+            val start = records.firstOrNull { it.optString("type") == "start" }?.optJSONObject("data")
+            val end = records.lastOrNull { it.optString("type") == "end" }
+            start?.optString("kind") == "task" && start.optString("goal") == task.goal && end != null &&
+                kotlin.math.abs(end.optLong("time") - task.timestamp) <= 5000 &&
+                end.optJSONObject("data")?.optString("phase") == task.phase
+        }.singleOrNull()?.name
+    }
+
     fun clear() = synchronized(lock) { files().forEach { it.delete() }; Unit }
 
     fun start(kind: String, goal: String, settings: ModelSettings): RunLog? {
