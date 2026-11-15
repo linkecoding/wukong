@@ -2,7 +2,7 @@
 
 Changes are grouped by source version. A section here does not mean its APK has been published; see [GitHub Releases](https://github.com/linkecoding/wukong/releases) for downloadable tags and publication dates.
 
-## 0.0.2
+## 0.0.2 — 2026-11-15
 
 ### Added
 

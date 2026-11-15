@@ -10,9 +10,13 @@ App 默认跟随系统语言，暂不支持的语言回退到英文；可在「�
 
 悟空是一款 Android Personal Agent（个人 AI 助手）：用自然语言描述目标，AI 在整台手机上跨应用操作，普通操作自主执行，敏感操作前等待确认。
 
-当前 main 分支版本为 **0.0.2 早期预览版**。无线 ADB 配对、连接和执行引擎全部内置于悟空 APK，不依赖 Shizuku、LADB、Termux 或其他外部 App。执行底座采用 **内置 ADB → app_process → 独立 shell 进程（UID 2000）**，不需要启用无障碍服务或 root。Android App 保持普通应用权限，负责模型、任务调度、历史和悬浮控制。
+当前已发布 **[0.0.2 早期预览版](https://github.com/linkecoding/wukong/releases/tag/v0.0.2)**。无线 ADB 配对、连接和执行引擎全部内置于悟空 APK，不依赖 Shizuku、LADB、Termux 或其他外部 App。执行底座采用 **内置 ADB → app_process → 独立 shell 进程（UID 2000）**，不需要启用无障碍服务或 root。Android App 保持普通应用权限，负责模型、任务调度、历史和悬浮控制。
 
-<p align="center"><img src="docs/images/conversation/home-zh-CN.png" width="320" alt="Wukong Android task interface" /></p>
+<p align="center">
+  <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4"><img src="docs/demo/wukong-demo.gif" width="320" alt="悟空真机演示：购物预算、虚拟屏执行、接管交还和任务详情" /></a>
+</p>
+
+<p align="center">真机演示：一句话核算购物预算，观看虚拟屏执行、中途接管，再交还 Agent 并查看结果。<br /><a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4">剪辑预览 · 完整录屏（48 秒，MP4）</a> · <a href="docs/demo/README.md">Demo notes</a></p>
 
 界面采用奶油白、苔绿和浅杏配色。首页以会话承载需求、任务卡、执行画面和结果；最近会话、历史和设置放在原生侧边抽屉。历史、设置和执行详情使用 Android 页面返回栈。从任务卡查看 Token 用量和分组步骤，连接测试记录放在设置中的「模型连接诊断」。清空日志在右上角菜单中，删除前会确认。
 

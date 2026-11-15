@@ -6,15 +6,26 @@
 
 **Wukong** is a personal AI agent for Android that turns a natural-language goal into actions across your phone, with requests, task cards, live previews and results in one conversation. Bring your own model, watch each step, and take over whenever you need to.
 
-**v0.0.2 on main · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. A Codex skill / MCP bridge is planned and is **not available yet**.
+**[v0.0.2](https://github.com/linkecoding/wukong/releases/tag/v0.0.2) · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. A Codex skill / MCP bridge is planned and is **not available yet**.
 
 The app follows your **system language** by default (Chinese or English, with English as the fallback). Settings also offers manual language selection. Project introductions are also available in Japanese.
 
 
 <p align="center">
+  <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4"><img src="docs/demo/wukong-demo.gif" width="320" alt="Real Android recording: Wukong calculates a shopping budget with manual takeover and execution details" /></a>
+</p>
+
+<p align="center">A real shopping-budget task: watch the virtual screen, take over, hand back control and inspect the result.<br /><a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4">Edited highlights · Full recording (48 s, MP4)</a> · <a href="docs/demo/README.md">Demo notes</a></p>
+
+<details>
+<summary>More screenshots</summary>
+
+<p align="center">
   <img src="docs/images/conversation/home-en.png" width="280" alt="Wukong conversation interface" />
   <img src="docs/images/onboarding/model-en.png" width="280" alt="Model provider setup" />
 </p>
+
+</details>
 
 ## What you can do
 
