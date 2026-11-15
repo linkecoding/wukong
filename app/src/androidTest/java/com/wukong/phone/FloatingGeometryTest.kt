@@ -76,7 +76,26 @@ class FloatingGeometryTest {
                 val driver=AndroidDriver(session)
                 await { driver.observe().packageName=="com.android.settings" }
                 VirtualScreenState.control(true);await { VirtualScreenState.manual }
-                ui { panel().findViewById<View>(R.id.virtual_preview_home).performClick() }
+                ui {
+                    fun descendants(view: View): Sequence<View> = sequence {
+                        yield(view)
+                        if(view is android.view.ViewGroup) for(index in 0 until view.childCount)yieldAll(descendants(view.getChildAt(index)))
+                    }
+                    val back=descendants(panel()).single { it.contentDescription==context.getString(R.string.ui_back) }
+                    assertTrue("Floating Back is an icon button",back is android.widget.ImageButton)
+                    back.performClick()
+                }
+                VirtualScreenState.control(false);await { !VirtualScreenState.manual }
+                await { driver.observe().packageName==context.packageName }
+                ui { ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+                    .filterIsInstance<VirtualHomeActivity>().single().startActivity(Intent(Settings.ACTION_WIFI_SETTINGS)) }
+                await { driver.observe().packageName=="com.android.settings" }
+                VirtualScreenState.control(true);await { VirtualScreenState.manual }
+                ui {
+                    val home=panel().findViewById<View>(R.id.virtual_preview_home)
+                    assertTrue("Floating Home is an icon button",home is android.widget.ImageButton)
+                    home.performClick()
+                }
                 // Input and handoff share the service queue; observe only after manual ownership ends.
                 VirtualScreenState.control(false);await { !VirtualScreenState.manual }
                 await { driver.observe().packageName==context.packageName }

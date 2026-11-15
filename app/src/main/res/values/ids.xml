@@ -32,4 +32,5 @@
     <item name="virtual_preview_header" type="id" />
     <item name="virtual_preview_resize" type="id" />
     <item name="virtual_preview_home" type="id" />
+    <item name="virtual_preview_image" type="id" />
 </resources>

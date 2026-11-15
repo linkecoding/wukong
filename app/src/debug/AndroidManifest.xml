@@ -2,5 +2,6 @@
     <application>
         <activity android:name=".TestSurfaceActivity" android:exported="false" android:taskAffinity="com.wukong.fixture" android:configChanges="density|screenSize|smallestScreenSize|orientation|screenLayout|keyboardHidden|keyboard" />
         <activity android:name=".CanvasSurfaceActivity" android:exported="true" android:taskAffinity="com.wukong.canvas" android:configChanges="density|screenSize|smallestScreenSize|orientation|screenLayout|keyboardHidden|keyboard" />
+        <activity android:name=".FloatingInputSurfaceActivity" android:exported="false" android:taskAffinity="com.wukong.inputfixture" />
     </application>
 </manifest>

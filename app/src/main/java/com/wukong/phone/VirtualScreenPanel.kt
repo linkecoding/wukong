@@ -60,7 +60,11 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
                         if(dragging)onDrag?.invoke(event.rawX-lastX,event.rawY-lastY)
                         lastX=event.rawX;lastY=event.rawY
                     }
-                    MotionEvent.ACTION_UP -> { if(!dragging)view.performClick() else onGeometrySettled?.invoke() }
+                    MotionEvent.ACTION_UP -> {
+                        if(!dragging)view.performClick() else {
+                            onDrag?.invoke(event.rawX-lastX,event.rawY-lastY);onGeometrySettled?.invoke()
+                        }
+                    }
                     MotionEvent.ACTION_CANCEL -> { if(dragging)onGeometrySettled?.invoke();dragging=false }
                 }
                 true
@@ -84,9 +88,18 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
         }
         addView(primary, LayoutParams(-1,dp(48)).apply { topMargin=dp(8); bottomMargin=dp(4) })
         val row = LinearLayout(context)
-        fun button(label: String, action: () -> Unit) { row.addView(WukongUi.button(context, label, false, action).apply {
-            text = label; textSize = 11f; isAllCaps = false; minimumWidth = 0; minWidth = 0; setPadding(0, 0, 0, 0); setOnClickListener { action() }
-        }.also { if (row.childCount < 2) manualInputs += it }, LayoutParams(0, dp(48), 1f).apply { marginEnd = dp(4) }) }
+        fun button(label: String, action: () -> Unit) {
+            val view = if(compact) ImageButton(context).apply {
+                setImageResource(if(row.childCount==0)R.drawable.ic_back else R.drawable.ic_preview_home)
+                contentDescription=label;imageTintList=android.content.res.ColorStateList.valueOf(context.getColor(R.color.muted))
+                setPadding(dp(14),dp(14),dp(14),dp(14));background=WukongUi.feedback(context,android.R.color.transparent,24,canDisable=true)
+                setOnClickListener { action() }
+            } else WukongUi.button(context,label,false,action).apply {
+                textSize=11f;isAllCaps=false;minimumWidth=0;minWidth=0;setPadding(0,0,0,0)
+            }
+            if(row.childCount<2)manualInputs+=view
+            row.addView(view,LayoutParams(0,dp(48),1f).apply { marginEnd=dp(4) })
+        }
         button(context.getString(R.string.ui_back)) { VirtualScreenState.input(JSONObject().put("kind", "back")) }
         button(context.getString(R.string.ui_home)) { VirtualScreenState.input(JSONObject().put("kind", "home")) }
         manualInputs.last().id=R.id.virtual_preview_home
@@ -103,7 +116,7 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
                 when(event.actionMasked) {
                     MotionEvent.ACTION_DOWN -> { lastX=event.rawX;lastY=event.rawY }
                     MotionEvent.ACTION_MOVE -> { onResize?.invoke(event.rawX-lastX,event.rawY-lastY);lastX=event.rawX;lastY=event.rawY }
-                    MotionEvent.ACTION_UP -> { onGeometrySettled?.invoke();view.performClick() }
+                    MotionEvent.ACTION_UP -> { onResize?.invoke(event.rawX-lastX,event.rawY-lastY);onGeometrySettled?.invoke();view.performClick() }
                     MotionEvent.ACTION_CANCEL -> onGeometrySettled?.invoke()
                 };true
             }
@@ -123,6 +136,7 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
             addView(inputs)
             if(!taskInline) addView(WukongUi.button(context, context.getString(R.string.ui_close_display)) { VirtualScreenState.stop(context) })
         }
+        image.id=R.id.virtual_preview_image
         image.contentDescription = context.getString(R.string.virtual_preview_description)
         image.setOnTouchListener { view, event ->
             if (!VirtualScreenState.manual) return@setOnTouchListener false

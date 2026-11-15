@@ -16,6 +16,7 @@ import org.json.JSONObject
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.ScheduledFuture
+import kotlin.math.roundToInt
 
 /** One polling stream serves both the embedded view and background floating monitor. */
 class VirtualScreenService : LocalizedService() {
@@ -134,23 +135,36 @@ class VirtualScreenService : LocalizedService() {
             params.x=params.x.coerceIn(0,(availableWidth-params.width).coerceAtLeast(0))
             params.y=params.y.coerceIn(0,(availableHeight-height).coerceAtLeast(0))
         }
+        // Preserve fractional deltas across real MotionEvent streams; rounding every move loses distance.
+        var dragX=params.x.toFloat();var dragY=params.y.toFloat()
+        var resizeWidth=params.width.toFloat();var resizeHeight=panel.previewHeight.toFloat()
+        var chromeHeight=px(172f)
         panel.onDrag = { dx,dy ->
-            params.x=(params.x+dx).toInt();params.y=(params.y+dy).toInt()
-            constrain(panel.height)
+            dragX=(dragX+dx).coerceIn(0f,(availableWidth-params.width).coerceAtLeast(0).toFloat())
+            dragY=(dragY+dy).coerceIn(0f,(availableHeight-panel.height).coerceAtLeast(0).toFloat())
+            params.x=dragX.roundToInt();params.y=dragY.roundToInt()
             runCatching { manager.updateViewLayout(panel,params) }
         }
         panel.onResize = { dx,dy ->
-            params.width=(params.width+dx).toInt().coerceIn(minWidth,availableWidth)
-            val height=(panel.previewHeight+dy).toInt().coerceIn(minPreview,maxPreview)
-            val chrome=panel.height-panel.previewHeight
-            panel.setPreviewHeight(height);constrain(height+chrome)
+            resizeWidth=(resizeWidth+dx).coerceIn(minWidth.toFloat(),availableWidth.toFloat())
+            resizeHeight=(resizeHeight+dy).coerceIn(minPreview.toFloat(),maxPreview.toFloat())
+            params.width=resizeWidth.roundToInt()
+            val height=resizeHeight.roundToInt()
+            panel.setPreviewHeight(height);constrain(height+chromeHeight)
+            dragX=params.x.toFloat();dragY=params.y.toFloat()
             runCatching { manager.updateViewLayout(panel,params) }
         }
-        panel.onGeometrySettled = { save() }
+        panel.onGeometrySettled = {
+            dragX=params.x.toFloat();dragY=params.y.toFloat()
+            resizeWidth=params.width.toFloat();resizeHeight=panel.previewHeight.toFloat()
+            save()
+        }
         panel.addOnLayoutChangeListener { _,left,top,right,bottom,oldLeft,oldTop,oldRight,oldBottom ->
             if(bottom-top!=oldBottom-oldTop||right-left!=oldRight-oldLeft) {
+                chromeHeight=panel.height-panel.previewHeight
                 val oldX=params.x;val oldY=params.y
                 constrain(panel.height)
+                dragX=params.x.toFloat();dragY=params.y.toFloat()
                 if(oldX!=params.x||oldY!=params.y)runCatching { manager.updateViewLayout(panel,params) }
             }
         }

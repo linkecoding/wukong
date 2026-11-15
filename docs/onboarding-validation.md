@@ -66,3 +66,22 @@ The Pixel 6 debug App and test APK built successfully, and lintDebug passed. Dev
 - `FloatingGeometryTest` passed on the Pixel 6: header movement, corner resizing, restored width/viewport height/position after dismiss/reopen and service recreation, and minimum/maximum size bounds. The test restores previous geometry preferences. The resized native panel was rendered on-device and inspected locally; personal installed-app content remains excluded from the repository.
 - Reproduced the old Home failure by opening a Settings page in the virtual launcher's task. Starting the launcher without CLEAR_TOP only brought the task forward, leaving Settings on top. Both manual Home and Agent Home now use NEW_TASK + CLEAR_TOP on the target display. The device test clicks the actual floating Home button, hands control back, and verifies the virtual launcher tree is visible. Manual input errors also produce a short visible message.
 - Existing foreground hiding/close behavior and the live-model takeover/close/handoff/completion regression passed (two additional device tests). Debug App, test APK and shell runtime builds plus lintDebug passed.
+
+
+## Physical touch mapping after live resize — 2026-11-15
+
+On the connected Pixel 6, `FloatingInputTest` plus `scripts/test-floating-input.py` drove 60 physical-display ADB touch operations through the real overlay. A debug-only Activity on the virtual display recorded received touch endpoints, native button selections and actual vertical/horizontal scroll offsets. The test derives expected preview positions independently from ImageView's drawable matrix; it does not inject normalized coordinates directly into the shell runtime. Each size is reached by physically dragging the live resize handle without recreating the preview.
+
+| Floating width × preview height (dp) | Target clicks | Four-way native swipes | Ignored letterbox taps | Maximum endpoint error (virtual px) |
+| --- | ---: | ---: | ---: | ---: |
+| 208 × 120 | 5 | 4 | 2 | 5 |
+| 208 × 300 | 5 | 4 | 2 | 4 |
+| 360 × 180 | 5 | 4 | 2 | 4 |
+| 208 × 600 | 5 | 4 | 2 | 3 |
+| 360 × 600 | 5 | 4 | 2 | 2 |
+
+The small errors are bounded by integer physical-input rounding and normalized-coordinate quantization on the 1080 × 2400 virtual display. All native targets and scroll-direction assertions passed. The test also confirms resize gestures do not reach the virtual Activity. Wide and tall device renders were inspected. Geometry/preferences are restored after the test.
+
+The real gesture stream exposed two resize issues: truncating fractional movement on every MotionEvent and omitting the final ACTION_UP delta. Both were fixed for sizing/movement. Back and Home are now icon buttons; `FloatingGeometryTest` checks both icons actually return from Settings, as well as geometry persistence/bounds. That regression and the live-model takeover/close/handoff regression passed. App/test builds and lintDebug passed. Test surfaces and instrumentation are excluded from release builds.
+
+To reproduce after installing debug App/test APKs and activating the shell engine: `python3 scripts/test-floating-input.py SERIAL --adb /path/to/adb`.
