@@ -30,4 +30,8 @@
     <string name="chat_location_phone_detail">Works on your current phone screen.</string>
     <string name="chat_display_ready">Ready · Runs independently; you can take over anytime.</string>
     <string name="chat_display_preparing">Preparing the virtual screen…</string>
+    <string name="preview_manual">You’re in control</string>
+    <string name="preview_working">Working</string>
+    <string name="preview_ready">Ready</string>
+    <string name="preview_connection_lost">Connection interrupted</string>
 </resources>

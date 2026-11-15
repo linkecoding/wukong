@@ -15,6 +15,7 @@ object VirtualScreenState {
     @Volatile var displayId = 0; internal set
     @Volatile var manual = false; internal set
     @Volatile var bitmap: Bitmap? = null; internal set
+    @Volatile var frameError: String? = null; internal set
     @Volatile var message = "虚拟屏未启动"; internal set
     @Volatile var foreground = false; private set
     @Volatile internal var service: VirtualScreenService? = null

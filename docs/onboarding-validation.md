@@ -51,3 +51,11 @@ Validated on the connected Pixel 6 with the existing saved model configuration. 
 - Existing onboarding, single-run log export and ordinary/high-risk approval fixtures passed after the navigation changes. Native layouts and English/Chinese views were inspected from captured device renders. Final JVM suite: 57 tests passed; debug App/test builds and lintDebug passed.
 
 Screenshots in `docs/images/conversation/` show actual native Android views and harmless test conversations. No signing material, model keys, personal app content or external messages are included. The test APK is not part of the release. Full arbitrary-App task reliability and general long-term personal memory are outside this UI validation.
+
+
+## Floating preview polish — 2026-11-15
+
+The Pixel 6 debug App and test APK built successfully, and lintDebug passed. Device renders of idle and active/manual states were inspected: the 208dp portrait preview retains the entire display image, a transparent close icon, compact status, and one prominent takeover/handoff action. These local renders include the user's installed-app list and are intentionally excluded from public documentation.
+
+- `PreviewAndApprovalTest#everyPhysicalWukongPageHidesPreviewAndCloseOnlyDismissesTheWindow` passed: all physical Wukong pages hide the preview, Close retains the same virtual display, its hit target remains 48dp, header dragging does not navigate, and header tapping returns to Wukong.
+- Live-model `VirtualControlTest#embeddedBackgroundFloatingTakeoverAndHandoffContinueRealAgent` passed: background preview, manual takeover, closing during the task, returning to the App, handing control back, and model completion preserve the running task and associated history.

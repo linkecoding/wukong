@@ -30,4 +30,8 @@
     <string name="chat_location_phone_detail">在手机当前页面执行。</string>
     <string name="chat_display_ready">已就绪 · 独立执行，可随时接管。</string>
     <string name="chat_display_preparing">正在准备虚拟屏…</string>
+    <string name="preview_manual">你正在控制</string>
+    <string name="preview_working">正在执行</string>
+    <string name="preview_ready">已就绪</string>
+    <string name="preview_connection_lost">连接已中断</string>
 </resources>

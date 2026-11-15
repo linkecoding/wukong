@@ -2,17 +2,19 @@ package com.wukong.phone
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.view.View
+import android.view.ViewConfiguration
 import android.view.MotionEvent
 import android.widget.*
 import org.json.JSONObject
 
+/** Hallmark · compact monitor · cream/moss · critique P4 H5 E4 S4 R5 V4. */
 class VirtualScreenPanel(context: Context, private val compact: Boolean = false, private val taskInline: Boolean = false) : LinearLayout(context) {
     private val status = TextView(context)
     private var title: TextView?=null
     private var manualRow: LinearLayout?=null
     private var manualText: LinearLayout?=null
-    private var stopButton: Button?=null
+    private var stopButton: View?=null
     private val image = ImageView(context).apply { scaleType = ImageView.ScaleType.FIT_CENTER; background=WukongUi.shape(context,R.color.paper,14); clipToOutline=true }
     private val control = WukongUi.button(context, "", true) { VirtualScreenState.control(!VirtualScreenState.manual) }
     private val manualInputs = mutableListOf<android.view.View>()
@@ -20,42 +22,61 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
     private val changed: () -> Unit = { refresh() }
     var onDrag: ((Float, Float) -> Unit)? = null
     init {
-        orientation = VERTICAL; setPadding(dp(if(taskInline)0 else 8), dp(8), dp(if(taskInline)0 else 8), dp(if(taskInline)0 else 8)); background = if(taskInline) null else WukongUi.shape(context, R.color.surface, 16, R.color.line)
-        status.textSize = if (compact) 11f else 14f; status.setTextColor(context.getColor(R.color.ink))
+        orientation = VERTICAL; setPadding(dp(if(taskInline)0 else 8), dp(8), dp(if(taskInline)0 else 8), dp(if(taskInline)0 else 8)); background = if(taskInline) null else WukongUi.shape(context, R.color.surface, if(compact)20 else 16, R.color.line)
+        status.textSize = if (compact) 11f else 14f; status.setTextColor(context.getColor(if(compact)R.color.muted else R.color.ink))
         if (compact) {
-            val header = LinearLayout(context).apply { gravity = android.view.Gravity.CENTER_VERTICAL }
-            header.addView(ImageView(context).apply { setImageResource(R.drawable.ic_wukong); importantForAccessibility=android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO },LayoutParams(dp(24),dp(24)).apply { marginEnd=dp(8) })
+            val header = LinearLayout(context).apply { id=R.id.virtual_preview_header; gravity = android.view.Gravity.CENTER_VERTICAL; minimumHeight=dp(48) }
+            header.addView(ImageView(context).apply { setImageResource(R.drawable.ic_notification); imageTintList=android.content.res.ColorStateList.valueOf(context.getColor(R.color.accent)); importantForAccessibility=android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO },LayoutParams(dp(20),dp(20)).apply { marginEnd=dp(8) })
             val labels=LinearLayout(context).apply { orientation=VERTICAL }
             title=TextView(context).apply { textSize=13f; setTextColor(context.getColor(R.color.ink)); setTypeface(typeface,android.graphics.Typeface.BOLD); maxLines=1; ellipsize=android.text.TextUtils.TruncateAt.END }
             labels.addView(title); labels.addView(status)
             header.addView(labels, LayoutParams(0, -2, 1f))
             header.addView(ImageButton(context).apply {
                 id = R.id.virtual_preview_close
-                setImageResource(R.drawable.ic_close); contentDescription = context.getString(R.string.ui_close_floating_preview)
-                background = WukongUi.shape(context, R.color.paper, 12)
-                setPadding(dp(12), dp(12), dp(12), dp(12))
-                imageTintList = android.content.res.ColorStateList.valueOf(context.getColor(R.color.ink))
+                setImageResource(R.drawable.ic_preview_close); contentDescription = context.getString(R.string.ui_close_floating_preview)
+                background = WukongUi.feedback(context,android.R.color.transparent,24,canDisable=false)
+                setPadding(dp(15), dp(15), dp(15), dp(15))
+                imageTintList = android.content.res.ColorStateList.valueOf(context.getColor(R.color.muted))
                 setOnClickListener { VirtualScreenState.service?.closeFloatingPreview() }
             }, LayoutParams(dp(48), dp(48)))
             addView(header)
         } else if(!taskInline) addView(status)
         if (compact) {
-            var lastX = 0f; var lastY = 0f
-            getChildAt(0).setOnTouchListener { _, event ->
-                if (event.action == MotionEvent.ACTION_MOVE) onDrag?.invoke(event.rawX-lastX,event.rawY-lastY)
-                lastX=event.rawX; lastY=event.rawY; true
+            val header=getChildAt(0)
+            header.contentDescription=context.getString(R.string.ui_wukong_2)
+            header.isFocusable=true
+            header.setOnClickListener { openWukong() }
+            var lastX=0f; var lastY=0f; var downRawX=0f; var downRawY=0f; var dragging=false
+            val slop=ViewConfiguration.get(context).scaledTouchSlop
+            header.setOnTouchListener { view,event ->
+                when(event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> { lastX=event.rawX;lastY=event.rawY;downRawX=lastX;downRawY=lastY;dragging=false }
+                    MotionEvent.ACTION_MOVE -> {
+                        if(kotlin.math.abs(event.rawX-downRawX)+kotlin.math.abs(event.rawY-downRawY)>slop)dragging=true
+                        if(dragging)onDrag?.invoke(event.rawX-lastX,event.rawY-lastY)
+                        lastX=event.rawX;lastY=event.rawY
+                    }
+                    MotionEvent.ACTION_UP -> if(!dragging)view.performClick()
+                    MotionEvent.ACTION_CANCEL -> dragging=false
+                }
+                true
             }
         }
         val screenHeight = resources.displayMetrics.heightPixels / resources.displayMetrics.density
-        addView(image, LayoutParams(-1, dp(if (compact) minOf(220, (screenHeight-220).toInt()).coerceAtLeast(100) else 320)))
+        addView(image, LayoutParams(-1, dp(if (compact) minOf(300, (screenHeight-240).toInt()).coerceAtLeast(100) else 320)))
         control.isAllCaps = false; control.setSingleLine(); control.textSize = 13f; control.minHeight = dp(48)
         control.setOnClickListener { VirtualScreenState.control(!VirtualScreenState.manual) }
         val primary=LinearLayout(context).apply { gravity=android.view.Gravity.CENTER_VERTICAL }
+        if(compact)control.background=WukongUi.feedback(context,R.color.accent,24)
         primary.addView(control,LayoutParams(0,dp(48),1f))
         if(compact) {
-            primary.addView(WukongUi.button(context,context.getString(R.string.ui_wukong_2),false) { context.startActivity(Intent(context,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)) }.apply { textSize=12f; minWidth=0; minimumWidth=0; setPadding(dp(8),0,dp(8),0) },LayoutParams(dp(64),dp(48)).apply { marginStart=dp(4) })
-            stopButton=WukongUi.button(context,context.getString(R.string.ui_stop),false) { TaskRuntime.stop() }.apply { textSize=12f; minWidth=0; minimumWidth=0; setPadding(dp(6),0,dp(6),0) }
-            primary.addView(stopButton,LayoutParams(dp(52),dp(48)))
+            stopButton=ImageButton(context).apply {
+                contentDescription=context.getString(R.string.ui_stop_task);setImageResource(R.drawable.ic_preview_stop)
+                setPadding(dp(15),dp(15),dp(15),dp(15));imageTintList=android.content.res.ColorStateList.valueOf(context.getColor(R.color.muted))
+                background=WukongUi.feedback(context,android.R.color.transparent,24,canDisable=true)
+                setOnClickListener { TaskRuntime.stop() }
+            }
+            primary.addView(stopButton,LayoutParams(dp(48),dp(48)).apply { marginStart=dp(4) })
         }
         addView(primary, LayoutParams(-1,dp(48)).apply { topMargin=dp(8); bottomMargin=dp(4) })
         val row = LinearLayout(context)
@@ -101,9 +122,17 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
         refresh()
     }
     private fun refresh() {
-        title?.text=if(TaskRuntime.active && TaskRuntime.displayId>0) TaskRuntime.goal else context.getString(R.string.ui_wukong_virtual_display)
-        status.text = if(compact && TaskRuntime.active && TaskRuntime.displayId>0) UiMessages.text(context,TaskRuntime.event.message).take(80) else UiMessages.text(context, VirtualScreenState.message)
-        status.maxLines=2; status.ellipsize=android.text.TextUtils.TruncateAt.END
+        title?.text=context.getString(R.string.app_name)
+        status.text = if(compact)context.getString(when {
+            VirtualScreenState.frameError!=null -> R.string.preview_connection_lost
+            VirtualScreenState.manual -> R.string.preview_manual
+            TaskRuntime.stopRequested&&TaskRuntime.active -> R.string.ui_stopping
+            TaskRuntime.pending!=null -> R.string.ui_waiting_for_approval
+            TaskRuntime.active&&TaskRuntime.displayId>0 -> R.string.preview_working
+            else -> R.string.preview_ready
+        }) else UiMessages.text(context,VirtualScreenState.message)
+        if(compact)status.setTextColor(context.getColor(if(VirtualScreenState.frameError!=null)R.color.danger else R.color.muted))
+        status.maxLines=if(compact)1 else 2; status.ellipsize=android.text.TextUtils.TruncateAt.END
         manualRow?.visibility=if(VirtualScreenState.manual) VISIBLE else GONE
         manualText?.visibility=if(VirtualScreenState.manual) VISIBLE else GONE
         stopButton?.visibility=if(TaskRuntime.active) VISIBLE else GONE
@@ -113,6 +142,7 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
         control.isEnabled = VirtualScreenState.displayId > 0
         manualInputs.forEach { it.isEnabled = VirtualScreenState.displayId > 0 && VirtualScreenState.manual }
     }
+    private fun openWukong() { context.startActivity(Intent(context,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)) }
     override fun onAttachedToWindow() { super.onAttachedToWindow(); VirtualScreenState.listen(changed); refresh() }
     override fun onDetachedFromWindow() { VirtualScreenState.unlisten(changed); super.onDetachedFromWindow() }
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()

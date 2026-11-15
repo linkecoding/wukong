@@ -55,6 +55,7 @@ class PreviewAndApprovalTest {
             ui {
                 val close = WindowInspector.getGlobalWindowViews().firstNotNullOfOrNull { it.findViewById<View>(R.id.virtual_preview_close) }
                 assertNotNull("Floating preview needs a real close button", close)
+                assertEquals(WukongUi.dp(context,48),close!!.width);assertEquals(WukongUi.dp(context,48),close.height)
                 val panel = WindowInspector.getGlobalWindowViews().first { it.findViewById<View>(R.id.virtual_preview_close) != null }
                 val bitmap = android.graphics.Bitmap.createBitmap(panel.width, panel.height, android.graphics.Bitmap.Config.ARGB_8888)
                 panel.draw(android.graphics.Canvas(bitmap))
@@ -70,6 +71,19 @@ class PreviewAndApprovalTest {
             await { VirtualScreenState.foreground }; assertFalse(VirtualScreenState.service!!.floatingVisible)
             ui { main.moveTaskToBack(true) }; await { VirtualScreenState.service!!.floatingVisible }
             assertEquals(id, VirtualScreenState.displayId)
+            ui {
+                val panel=WindowInspector.getGlobalWindowViews().first { it.findViewById<View>(R.id.virtual_preview_header)!=null }
+                val header=panel.findViewById<View>(R.id.virtual_preview_header)
+                val origin=IntArray(2);panel.getLocationOnScreen(origin)
+                val now=SystemClock.uptimeMillis()
+                for((action,offset) in listOf(android.view.MotionEvent.ACTION_DOWN to 0,android.view.MotionEvent.ACTION_MOVE to 40,android.view.MotionEvent.ACTION_UP to 40)) {
+                    val event=android.view.MotionEvent.obtain(now,now+offset,action,(origin[0]+40).toFloat(),(origin[1]+20+offset).toFloat(),0)
+                    event.offsetLocation(-origin[0].toFloat(),-origin[1].toFloat());header.dispatchTouchEvent(event);event.recycle()
+                }
+            }
+            i.waitForIdleSync();assertTrue(VirtualScreenState.service!!.floatingVisible);assertFalse(VirtualScreenState.foreground)
+            ui { WindowInspector.getGlobalWindowViews().first { it.findViewById<View>(R.id.virtual_preview_header)!=null }.findViewById<View>(R.id.virtual_preview_header).performClick() }
+            await { VirtualScreenState.foreground&&!VirtualScreenState.service!!.floatingVisible }
         } finally {
             ui { wireless?.finish(); setup?.finish(); VirtualScreenState.stop(context); main.finish() }
             VirtualScreenState.enabled(context, previous)

@@ -29,4 +29,5 @@
     <item name="execution_options_sheet" type="id" />
     <item name="execution_virtual" type="id" />
     <item name="execution_phone" type="id" />
+    <item name="virtual_preview_header" type="id" />
 </resources>

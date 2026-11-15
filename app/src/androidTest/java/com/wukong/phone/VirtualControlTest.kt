@@ -46,7 +46,12 @@ class VirtualControlTest {
             await { VirtualScreenState.service!!.floatingVisible }
             instrumentation.runOnMainSync {
                 val close = WindowInspector.getGlobalWindowViews().firstNotNullOfOrNull { it.findViewById<View>(R.id.virtual_preview_close) }
-                assertNotNull(close); close!!.performClick()
+                assertNotNull(close)
+                val panel=WindowInspector.getGlobalWindowViews().first { it.findViewById<View>(R.id.virtual_preview_close)!=null }
+                val bitmap=android.graphics.Bitmap.createBitmap(panel.width,panel.height,android.graphics.Bitmap.Config.ARGB_8888)
+                panel.draw(android.graphics.Canvas(bitmap))
+                java.io.File(context.filesDir,"floating-preview-manual.png").outputStream().use { bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,it) };bitmap.recycle()
+                close!!.performClick()
             }
             await { !VirtualScreenState.service!!.floatingVisible }
             assertTrue("Closing the preview must not stop an active task", TaskRuntime.active)

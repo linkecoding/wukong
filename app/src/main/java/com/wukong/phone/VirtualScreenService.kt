@@ -29,7 +29,7 @@ class VirtualScreenService : LocalizedService() {
     @Volatile private var closed = false
     override fun onCreate() {
         super.onCreate()
-        VirtualScreenState.service = this
+        VirtualScreenState.service = this; VirtualScreenState.frameError=null
         getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel("virtual", getString(R.string.ui_wukong_virtual_display), NotificationManager.IMPORTANCE_LOW))
         val open = PendingIntent.getActivity(this, 50, Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), PendingIntent.FLAG_IMMUTABLE)
         val stop = PendingIntent.getService(this, 51, Intent(this, VirtualScreenService::class.java).setAction("close"), PendingIntent.FLAG_IMMUTABLE)
@@ -58,6 +58,7 @@ class VirtualScreenService : LocalizedService() {
         try {
             val packet = ShellClient(this).request("virtualFrame") as JSONObject
             if (closed) return
+            VirtualScreenState.frameError=null
             VirtualScreenState.manual = packet.getBoolean("manual")
             val next = packet.getLong("revision")
             if (next != revision && packet.has("jpeg")) {
@@ -66,7 +67,7 @@ class VirtualScreenService : LocalizedService() {
                 revision = next
             }
             VirtualScreenState.message = if (VirtualScreenState.manual) getString(R.string.ui_you_are_in_control_touch_the_preview) else if (TaskRuntime.active && TaskRuntime.displayId > 0) getString(R.string.ui_agent_is_working_on_the_virtual_display) else getString(R.string.ui_display_ready_run_a_task_or_take_over)
-        } catch (error: Exception) { VirtualScreenState.message = error.message ?: getString(R.string.ui_display_connection_interrupted) }
+        } catch (error: Exception) { VirtualScreenState.message = error.message ?: getString(R.string.ui_display_connection_interrupted); VirtualScreenState.frameError=VirtualScreenState.message }
         VirtualScreenState.changed()
     }
     fun control(manual: Boolean) {
@@ -99,7 +100,7 @@ class VirtualScreenService : LocalizedService() {
         val metrics = ui.resources.displayMetrics
         val manager = ui.getSystemService(WindowManager::class.java)
         val panel = VirtualScreenPanel(ui, compact = true)
-        val params = WindowManager.LayoutParams((280 * metrics.density).toInt(), WindowManager.LayoutParams.WRAP_CONTENT,
+        val params = WindowManager.LayoutParams(minOf((208 * metrics.density).toInt(),metrics.widthPixels-(24*metrics.density).toInt()), WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT).apply {
             gravity = Gravity.TOP or Gravity.END; y = (70 * metrics.density).toInt()
         }
@@ -107,6 +108,12 @@ class VirtualScreenService : LocalizedService() {
             params.x = (params.x-dx).toInt().coerceIn(0,(metrics.widthPixels-panel.width).coerceAtLeast(0))
             params.y = (params.y+dy).toInt().coerceIn(0,(metrics.heightPixels-panel.height).coerceAtLeast(0))
             runCatching { manager.updateViewLayout(panel,params) }
+        }
+        panel.addOnLayoutChangeListener { _,_,top,_,bottom,_,oldTop,_,oldBottom ->
+            if(bottom-top!=oldBottom-oldTop) {
+                val y=params.y.coerceIn(0,(metrics.heightPixels-panel.height).coerceAtLeast(0))
+                if(y!=params.y) { params.y=y;runCatching { manager.updateViewLayout(panel,params) } }
+            }
         }
         try { manager.addView(panel, params); overlay = panel; overlayManager = manager }
         catch (error: Exception) { VirtualScreenState.message = error.message ?: getString(R.string.ui_could_not_show_floating_preview) }
@@ -118,7 +125,7 @@ class VirtualScreenService : LocalizedService() {
         if (TaskRuntime.displayId > 0) TaskRuntime.stop()
         io.execute { runCatching { ShellClient(this).request("virtualStop",JSONObject().put("ownerId",ownerId)) } }
         io.shutdown()
-        VirtualScreenState.service = null; VirtualScreenState.displayId = 0; VirtualScreenState.bitmap = null
+        VirtualScreenState.frameError=null; VirtualScreenState.service = null; VirtualScreenState.displayId = 0; VirtualScreenState.bitmap = null
         VirtualScreenState.message = getString(R.string.ui_virtual_display_closed); VirtualScreenState.changed()
         super.onDestroy()
     }
