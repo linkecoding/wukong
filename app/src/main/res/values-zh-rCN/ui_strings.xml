@@ -6,7 +6,7 @@
     <string name="ui_logs">日志</string>
     <string name="ui_wukong">悟空</string>
     <string name="ui_checking_the_execution_engine">正在检查 Shell 连接…</string>
-    <string name="ui_what_shall_we_do">把这件事，\n交给悟空。</string>
+    <string name="ui_what_shall_we_do">想让手机帮你做什么？</string>
     <string name="ui_give_wukong_a_goal_let_your_phone_do_the_work">说清楚目标，悟空可以跨应用帮你完成。</string>
     <string name="ui_use_virtual_display">在虚拟屏执行</string>
     <string name="ui_could_not_start_the_virtual_display">虚拟屏启动失败</string>
@@ -219,4 +219,8 @@
     <string name="status_51">模型未按要求完成工具调用测试，没有执行设备动作</string>
     <string name="device_controls">设备与控制</string>
     <string name="language_system">跟随系统</string>
+    <string name="ui_brief_approval">敏感操作前，会向你确认。</string>
+    <string name="ui_brief_logs">记录工具调用和 Token 用量，仅保存在本机。</string>
+    <string name="ui_show_details">查看详情</string>
+    <string name="ui_hide_details">收起详情</string>
 </resources>

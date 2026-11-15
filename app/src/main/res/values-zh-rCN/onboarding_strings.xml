@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sample_compare">买东西，先比价</string>
-    <string name="sample_compare_hint">商品与要求，例如：索尼 WH-1000XM5，黑色</string>
-    <string name="sample_compare_prompt">用我手机上可用的购物应用或浏览器，比较「%1$s」的价格，找最多3个可比较的选项，整理标价、运费、预计到货时间及来源。不购买、不加购物车，无法确认的信息请明确说明。</string>
-    <string name="sample_food">今晚吃什么</string>
-    <string name="sample_food_hint">地点与偏好，例如：杭州西湖文化广场，两人晚餐</string>
-    <string name="sample_food_prompt">用我手机上可用的地图、点评应用或浏览器，根据以下需求找最多3家餐厅：%1$s。比较可查到的评分、人均价格、与指定地点的距离，并注明来源。不预订、不下单、不支付，查不到的信息请明确说明。</string>
-    <string name="sample_trip">安排一次周末出游</string>
-    <string name="sample_trip_hint">出发地、目的地和时间，例如：本周六上海去苏州，两个人</string>
-    <string name="sample_trip_prompt">用我手机上可用的旅行、地图应用或浏览器，查询以下出行需求：%1$s。整理可查到的交通选择、参考费用和当天行程建议，注明来源。不订票、不支付，区分已查证的信息和建议。</string>
-    <string name="samples_heading">从一件有用的事开始</string>
+    <string name="sample_file">找下载的文件</string>
+    <string name="sample_file_hint">文件名或关键词，例如：发票 PDF</string>
+    <string name="sample_file_prompt">用手机上已安装的文件管理器查找下载的文件，文件名或关键词是：%1$s。优先查看下载目录，有搜索功能时使用搜索。整理匹配文件的名称和界面可见的位置，最后停在匹配文件列表。不要打开、移动、重命名、分享或删除文件。需要权限或找不到时明确说明。</string>
+    <string name="sample_web">搜问题和教程</string>
+    <string name="sample_web_hint">具体问题，例如：电水壶水垢怎么清理</string>
+    <string name="sample_web_prompt">用手机上已安装的浏览器打开 https://www.baidu.com，搜索：%1$s。阅读最多3个相关且可访问的结果，整理有用的答案、标题和来源链接。不要编造结果，不下载、不登录。网络不通或遇到登录、验证码时停下并说明情况。</string>
+    <string name="sample_app">在 App 里找内容</string>
+    <string name="sample_app_hint">应用和关键词，例如：快手，番茄炒蛋</string>
+    <string name="sample_app_prompt">根据以下需求，在手机上已安装的指定应用中找内容：%1$s。打开应用，使用搜索，最后停在搜索结果页并说明看到了什么。不要发送、关注、点赞、购买、下载或修改设置。应用未安装或需要登录、验证码时停下说明，不安装应用、不代为登录。</string>
+    <string name="samples_heading">试试这些</string>
     <string name="samples_detail">选一件事，补充你的需求；也可以在下面直接写任务。</string>
     <string name="sample_use">使用这个任务</string>
     <string name="sample_required">请先补充你的需求</string>
@@ -21,11 +21,11 @@
     <string name="setup_device">连接这台手机</string>
     <string name="setup_controls">保留随时停止的能力</string>
     <string name="setup_ready">准备好了</string>
-    <string name="setup_model_description">选择服务商并填入 API Key，悟空会自动填写标准 API 配置。</string>
+    <string name="setup_model_description">选择服务商，填入你的 API Key。</string>
     <string name="setup_provider">模型服务商</string>
     <string name="setup_custom">自定义兼容接口</string>
     <string name="setup_platform">前往 API 平台获取 Key</string>
-    <string name="setup_provider_terms">使用你自己的服务商账号及 API 余额，任务内容会发送给所选服务商。密钥加密保存在手机上。</string>
+    <string name="setup_provider_terms">Key 加密保存在本机，费用由模型服务商收取。</string>
     <string name="setup_region_note">百炼预设使用北京地域的标准 API，不适用于 Coding Plan 套餐；其他地域可在高级配置中修改。</string>
     <string name="setup_key_cleared">已切换服务商，请填写这个平台的 Key。</string>
     <string name="setup_advanced">高级配置</string>
@@ -72,7 +72,7 @@
     <string name="connect_pair_again">重新配对这台手机</string>
     <string name="connect_recheck">检查连接</string>
     <string name="setup_model_summary">%1$s · %2$s</string>
-    <string name="setup_goal_hint">例如：帮我比较想买的耳机，在不同平台的价格</string>
+    <string name="setup_goal_hint">例如：帮我找到下载的发票 PDF</string>
     <string name="provider_deepseek">DeepSeek</string>
     <string name="provider_qwen">阿里云百炼 · Qwen</string>
     <string name="provider_zhipu">智谱 · GLM</string>

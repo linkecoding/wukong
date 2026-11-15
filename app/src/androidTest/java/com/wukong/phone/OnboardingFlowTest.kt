@@ -28,23 +28,23 @@ class OnboardingFlowTest {
             store.clear()
             activity = launch(MainActivity::class.java)
             instrumentation.runOnMainSync {
-                val sample = views(root(activity!!)).filterIsInstance<Button>().single { it.text.toString() == activity!!.getString(R.string.sample_compare) }
+                val sample = views(root(activity!!)).filterIsInstance<Button>().single { it.text.toString() == activity!!.getString(R.string.sample_file) }
                 sample.performClick()
             }
             instrumentation.waitForIdleSync()
             instrumentation.runOnMainSync {
                 val windows = WindowInspector.getGlobalWindowViews().flatMap(::views)
                 val parameter = windows.filterIsInstance<EditText>().single { it.id == R.id.sample_parameter }
-                parameter.setText("wireless headphones")
+                parameter.setText("invoice PDF")
                 windows.filterIsInstance<Button>().single { it.text.toString() == activity!!.getString(R.string.sample_use) }.performClick()
-                assertTrue(store.goal().contains("wireless headphones"))
+                assertTrue(store.goal().contains("invoice PDF"))
                 assertFalse(TaskRuntime.active)
                 assertEquals(View.GONE, views(root(activity!!)).filterIsInstance<Spinner>().first().parent.let { it as View }.visibility)
                 activity!!.finish()
             }
             activity = launch(MainActivity::class.java)
             instrumentation.runOnMainSync {
-                assertTrue(activity!!.findViewById<EditText>(R.id.task_goal).text.toString().contains("wireless headphones"))
+                assertTrue(activity!!.findViewById<EditText>(R.id.task_goal).text.toString().contains("invoice PDF"))
                 assertFalse(TaskRuntime.active)
                 activity!!.finish()
             }

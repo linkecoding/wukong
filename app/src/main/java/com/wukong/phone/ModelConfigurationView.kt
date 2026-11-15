@@ -30,7 +30,7 @@ class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLa
     init {
         orientation = VERTICAL
         ui.add(this, ui.text(context.getString(R.string.setup_provider), 14f))
-        providerPicker.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, ModelPresets.all.map { context.getString(it.title) })
+        providerPicker.adapter = WukongUi.choiceAdapter(context, ModelPresets.all.map { context.getString(it.title) })
         providerPicker.setSelection(ModelPresets.all.indexOfFirst { it.id == chosen }.coerceAtLeast(0))
         ui.add(this, providerPicker)
         ui.add(this, summary)

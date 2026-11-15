@@ -16,8 +16,8 @@ class TaskDraftStore(context: Context) {
 object TaskTemplates {
     data class Template(val title: Int, val hint: Int, val prompt: Int)
     val all = listOf(
-        Template(R.string.sample_compare, R.string.sample_compare_hint, R.string.sample_compare_prompt),
-        Template(R.string.sample_food, R.string.sample_food_hint, R.string.sample_food_prompt),
-        Template(R.string.sample_trip, R.string.sample_trip_hint, R.string.sample_trip_prompt)
+        Template(R.string.sample_file, R.string.sample_file_hint, R.string.sample_file_prompt),
+        Template(R.string.sample_web, R.string.sample_web_hint, R.string.sample_web_prompt),
+        Template(R.string.sample_app, R.string.sample_app_hint, R.string.sample_app_prompt)
     )
 }

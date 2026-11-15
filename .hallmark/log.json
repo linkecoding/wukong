@@ -1,6 +1,15 @@
 [
   {
     "date": "2026-11-15",
+    "scope": "app refinement",
+    "macrostructure": "Task composer / quiet secondary rows",
+    "theme": "custom",
+    "theme_axes": "cool light / system sans / vivid blue",
+    "enrichment": "bright vector mask",
+    "brief": "Reduce buttons and explanatory text; brighten identity; disclose log payloads; replace broad commerce tasks with focused searches"
+  },
+  {
+    "date": "2026-11-15",
     "scope": "app",
     "macrostructure": "Workbench / guided setup",
     "theme": "custom",

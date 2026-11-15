@@ -31,7 +31,7 @@ Wukong includes wireless ADB pairing and its execution engine. **No root, enable
 
 Choose the **arm64-v8a APK** for most current phones, or the universal APK for other architectures. Release builds use the project's production signing identity and include SHA-256 checksums. You can also build from source below.
 
-1. Choose **Compare product prices**, **Find somewhere to eat**, or **Plan a day out**. Add a product, area, or trip requirement, or write your own task.
+1. Choose **Find a downloaded file**, **Search for answers**, or **Search inside an app**. Add a filename, a question, or an app and keyword—or write your own task.
 2. Tap **Continue setup**. Select DeepSeek, Alibaba Cloud / Qwen, Zhipu / GLM, Moonshot / Kimi, or a custom API. Follow the provider's API platform link if you need a key. Wukong fills the standard endpoint and model; a tool-call test checks the connection before saving.
 3. Follow **Connect this phone**. Android 11+ requires Wi-Fi, Developer options, and Wireless debugging authorization. Wukong guides the current step; ports and manual pairing are tucked into troubleshooting.
 4. Allow control buttons when prompted. Return to your saved task, review it, and tap **Run task**. Setup does not start the task automatically.

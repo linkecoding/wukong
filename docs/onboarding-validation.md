@@ -1,10 +1,10 @@
 # Onboarding validation — 2026-11-15
 
-Implemented locally and installed on Pixel 6 / Android 17. No GitHub upload or hosted trial deployment.
+Implemented and installed on Pixel 6 / Android 17. Updated for 0.0.1; no hosted trial service is included.
 
 ## Changes
 
-- Practical task templates with a required product, location/preference, or trip detail.
+- Focused templates with a required filename/keyword, web question, or app/search term. The earlier comparison/travel templates were replaced because their login and real-time data dependencies make poor first tasks.
 - App-private draft persistence across model configuration, system settings, and app restarts; preparation never automatically runs a task.
 - Guided model → phone → control permission → review flow. The primary preparation action stays visible at the bottom of the screen.
 - Four domestic provider presets with explicit platform links, provider-specific request adapters, and editable advanced configuration. Switching providers clears the key field. Failed tests and cancellation preserve the saved model.

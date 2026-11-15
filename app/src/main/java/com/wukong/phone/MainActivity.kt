@@ -32,7 +32,6 @@ class MainActivity : LocalizedActivity() {
     private lateinit var goalInput: EditText
     private lateinit var appPicker: Spinner
     private lateinit var root: LinearLayout
-    private lateinit var activationButton: Button
     private lateinit var activityHeading: TextView
     private lateinit var pageScroll: ScrollView
     private var taskOptionsOpen = false
@@ -73,19 +72,15 @@ class MainActivity : LocalizedActivity() {
         val header = row().apply { setPadding(dp(24), dp(12), dp(24), dp(12)) }
         header.addView(ImageView(this).apply { setImageResource(R.drawable.ic_wukong); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }, LinearLayout.LayoutParams(dp(40), dp(40)).apply { marginEnd = dp(12) })
         header.addView(column().apply {
-            addView(text("Wukong", 22f, bold = true).apply { letterSpacing = -0.03f })
-            addView(text(getString(R.string.brand_subtitle), 11f, muted = true))
+            addView(text("Wukong", 20f, bold = true).apply { letterSpacing = -0.03f })
         }, LinearLayout.LayoutParams(0, -2, 1f))
-        header.addView(text(getString(R.string.preview_label), 11f, muted = true).apply {
-            setPadding(dp(10), dp(6), dp(10), dp(6)); background = WukongUi.shape(this@MainActivity, R.color.paper, 20, R.color.line)
-        })
         root.addView(header)
         pageScroll = ScrollView(this).apply { isFillViewport = true; clipToPadding = false }
         body = object : LinearLayout(this) {
             override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
                 super.onMeasure(View.MeasureSpec.makeMeasureSpec(minOf(View.MeasureSpec.getSize(widthMeasureSpec), dp(680)), View.MeasureSpec.EXACTLY), heightMeasureSpec)
             }
-        }.apply { orientation = LinearLayout.VERTICAL; setPadding(dp(24), dp(24), dp(24), dp(32)) }
+        }.apply { orientation = LinearLayout.VERTICAL; setPadding(dp(24), dp(16), dp(24), dp(32)) }
         pageScroll.addView(body, FrameLayout.LayoutParams(-1, -2, Gravity.CENTER_HORIZONTAL))
         root.addView(pageScroll, LinearLayout.LayoutParams(-1, 0, 1f))
         root.addView(View(this).apply { setBackgroundColor(color(R.color.line)) }, LinearLayout.LayoutParams(-1, dp(1)))
@@ -94,7 +89,7 @@ class MainActivity : LocalizedActivity() {
             Triple(3, R.string.ui_logs, R.drawable.ic_nav_logs), Triple(2, R.string.ui_settings, R.drawable.ic_nav_settings)).forEach { (index, label, icon) ->
             val item = button(getString(label), primary = false) { navigate(index) }.apply {
                 tag = index; textSize = 11f; setPadding(dp(4), dp(8), dp(4), dp(4)); compoundDrawablePadding = dp(4)
-                setCompoundDrawablesRelativeWithIntrinsicBounds(null, getDrawable(icon), null, null)
+                setCompoundDrawablesRelativeWithIntrinsicBounds(null, getDrawable(icon)?.mutate(), null, null)
                 minHeight = dp(64); gravity = Gravity.CENTER; backgroundTintList = null
             }
             navigationButtons += item
@@ -139,37 +134,29 @@ class MainActivity : LocalizedActivity() {
             button.isSelected = selected
             button.setTextColor(color(if (selected) R.color.accent else R.color.muted))
             button.compoundDrawableTintList = ColorStateList.valueOf(color(if (selected) R.color.accent else R.color.muted))
-            button.background = WukongUi.feedback(this, if (selected) R.color.soft_accent else R.color.surface, 12, canDisable = false)
+            button.background = WukongUi.feedback(this, R.color.surface, 12, canDisable = false)
             button.background.state = button.drawableState
         }
         when (index) { 0 -> taskPage(); 1 -> historyPage(); 3 -> logsPage(); else -> settingsPage() }
     }
 
     private fun taskPage() {
-        body.addView(text(getString(R.string.ui_what_shall_we_do), 32f, bold = true).apply { letterSpacing = -0.035f })
-        body.addView(text(getString(R.string.ui_give_wukong_a_goal_let_your_phone_do_the_work), 15f, muted = true).spaced(8, 20))
+        body.addView(text(getString(R.string.ui_what_shall_we_do), 26f, bold = true).apply { letterSpacing = -0.035f })
         status = text("", 12f, bold = true).apply {
-            setPadding(dp(12), dp(10), dp(12), dp(10))
-            background = WukongUi.shape(this@MainActivity, R.color.soft_success, 12)
+            setPadding(0, dp(8), 0, dp(8))
         }
-        body.addView(status.spaced(0, 8))
-        activationButton = button(getString(R.string.setup_continue), primary = false) { openSetup() }
-        body.addView(activationButton.spaced(0, 12))
-        if (draft.isBlank() && !TaskRuntime.active) {
-            body.addView(text(getString(R.string.samples_heading), 18f, bold = true).spaced(12, 8))
-            body.addView(text(getString(R.string.samples_detail), 13f, muted = true).spaced(0, 12))
-            TaskTemplates.all.forEach { template ->
-                body.addView(button(getString(template.title), primary = false) { chooseTemplate(template) }.spaced(0, 8))
-            }
-        }
+        body.addView(status.spaced(4, 12))
         val composer = column().apply {
             setPadding(dp(16), dp(16), dp(16), dp(16))
             background = WukongUi.shape(this@MainActivity, R.color.surface, 16, R.color.line)
         }
-        composer.addView(text(getString(R.string.ui_your_task), 14f, bold = true).spaced(0, 8))
         goalInput = field(getString(R.string.setup_goal_hint), draft).apply {
             id = R.id.task_goal; isSaveEnabled = false
-            minLines = 3; maxLines = 6; gravity = Gravity.TOP; isSingleLine = false
+            minLines = 4; maxLines = 7; gravity = Gravity.TOP; isSingleLine = false
+            background = StateListDrawable().apply {
+                addState(intArrayOf(android.R.attr.state_focused), WukongUi.shape(this@MainActivity, R.color.surface, 12, R.color.accent, 2))
+                addState(intArrayOf(), WukongUi.shape(this@MainActivity, R.color.surface, 12))
+            }
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
         }
         goalInput.addTextChangedListener(object : TextWatcher {
@@ -189,7 +176,7 @@ class MainActivity : LocalizedActivity() {
         apps = listOf("" to getString(R.string.ui_home_screen_all_apps)) + resolved.map { it.activityInfo.packageName to it.loadLabel(packageManager).toString() }
             .distinctBy { it.first }.sortedBy { it.second.lowercase() }
         appPicker = Spinner(this).apply {
-            adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, apps.map { it.second })
+            adapter = WukongUi.choiceAdapter(this@MainActivity, apps.map { it.second })
             minimumHeight = dp(48)
             val existing = apps.indexOfFirst { it.first == selectedPackage }
             if (existing >= 0) setSelection(existing)
@@ -204,11 +191,19 @@ class MainActivity : LocalizedActivity() {
         stopButton = button(getString(R.string.ui_stop_task), primary = false) { TaskRuntime.stop() }
         composer.addView(stopButton.spaced(8, 0))
         body.addView(composer.spaced(8, 12))
-        body.addView(text(getString(R.string.ui_routine_actions_run_automatically_sensitive_actions_need_your_app), 12f, muted = true).spaced(0, 24))
+        body.addView(text(getString(R.string.ui_brief_approval), 12f, muted = true).spaced(0, 12))
+        if (draft.isBlank() && !TaskRuntime.active) {
+            body.addView(text(getString(R.string.samples_heading), 12f, muted = true).spaced(12, 4))
+            TaskTemplates.all.forEachIndexed { index, template ->
+                val icons = listOf(R.drawable.ic_sample_file, R.drawable.ic_sample_search, R.drawable.ic_nav_tasks)
+                body.addView(WukongUi.actionRow(this, getString(template.title), icons[index]) { chooseTemplate(template) })
+            }
+        }
+
         if (draft.isNotBlank() && !TaskRuntime.active) body.addView(button(getString(R.string.sample_change), primary = false) {
             draft = ""; TaskDraftStore(this).clear(); goalInput.setText(""); navigate(0)
         }.spaced(0, 12))
-        body.addView(button(getString(if (taskOptionsOpen) R.string.setup_hide_options else R.string.setup_show_options), primary = false) {
+        body.addView(WukongUi.actionRow(this, getString(if (taskOptionsOpen) R.string.setup_hide_options else R.string.setup_show_options)) {
             taskOptionsOpen = !taskOptionsOpen
             appOptions?.visibility = if (taskOptionsOpen) View.VISIBLE else View.GONE
             displayOptions?.visibility = if (taskOptionsOpen) View.VISIBLE else View.GONE
@@ -230,7 +225,6 @@ class MainActivity : LocalizedActivity() {
                 else VirtualScreenState.stop(this@MainActivity)
             }
         }.also { displayControls.addView(it) }
-        displayControls.addView(text(getString(R.string.display_description), 12f, muted = true))
         displayOptions = displayControls
         displayControls.visibility = if (taskOptionsOpen) View.VISIBLE else View.GONE
         body.addView(displayControls.spaced(0, 12))
@@ -250,11 +244,7 @@ class MainActivity : LocalizedActivity() {
             shellStatus
         } else phaseName(phase.name)
         status.setTextColor(color(if (phase == Phase.FAILED) R.color.danger else if (!connected && phase == Phase.IDLE) R.color.muted else R.color.success))
-        status.background = WukongUi.shape(this, when {
-            phase == Phase.FAILED || phase == Phase.PAUSED -> R.color.soft_accent
-            !connected && phase == Phase.IDLE -> R.color.line
-            else -> R.color.soft_success
-        }, 12)
+        status.background = null
         startButton.isEnabled = !TaskRuntime.active && !WirelessActivation.busy
         val modelReady = runCatching { SettingsStore(this).load()?.also { it.validate() } }.getOrNull() != null
         startButton.setText(if (shellReady && modelReady && Settings.canDrawOverlays(this)) R.string.ui_run_task else R.string.setup_continue)
@@ -262,12 +252,13 @@ class MainActivity : LocalizedActivity() {
         val virtualEnabled = VirtualScreenState.enabled(this)
         if (virtualToggle?.isChecked != virtualEnabled) virtualToggle?.isChecked = virtualEnabled
         virtualPreview?.visibility = if (virtualEnabled) View.VISIBLE else View.GONE
-        activationButton.visibility = View.GONE
         stopButton.visibility = if (TaskRuntime.active) View.VISIBLE else View.GONE
         stopButton.isEnabled = TaskRuntime.active && !TaskRuntime.stopRequested
         goalInput.isEnabled = !TaskRuntime.active
         appPicker.isEnabled = !TaskRuntime.active
         val events = TaskRuntime.events().takeLast(10)
+        activityHeading.visibility = if (events.isEmpty()) View.GONE else View.VISIBLE
+        detail.visibility = if (events.isEmpty()) View.GONE else View.VISIBLE
         detail.text = if (events.isEmpty()) getString(R.string.ui_steps_and_results_will_appear_here_when_a_task_starts) else events.joinToString("\n\n") {
             (if (it.step > 0) "${it.step} · " else "") + if (it.phase == Phase.COMPLETED) it.message else UiMessages.text(this, it.message)
         }
@@ -335,24 +326,22 @@ class MainActivity : LocalizedActivity() {
     }
 
     private fun settingsPage() {
-        body.addView(text(getString(R.string.ui_make_it_yours), 28f, bold = true))
-        body.addView(text(getString(R.string.ui_connect_a_model_choose_your_preferences_and_stay_in_control), muted = true).spaced(8, 24))
+        body.addView(text(getString(R.string.ui_make_it_yours), 26f, bold = true).spaced(0, 20))
         val store = SettingsStore(this)
         val saved = runCatching { store.load() }.getOrNull()
-        body.addView(text(if (saved == null) getString(R.string.setup_model_description) else getString(R.string.setup_model_summary,
-            getString(ModelPresets.all.firstOrNull { it.id == ModelPresets.provider(saved) }?.title ?: R.string.setup_custom), saved.model), 14f, muted = true).spaced(0, 12))
-        body.addView(button(getString(R.string.setup_open_model)) {
-            if (TaskRuntime.active) { errorDialog(getString(R.string.setup_stop_first)); return@button }
+        body.addView(WukongUi.actionRow(this, getString(R.string.setup_open_model), R.drawable.ic_nav_settings) {
+            if (TaskRuntime.active) { errorDialog(getString(R.string.setup_stop_first)); return@actionRow }
             startActivity(Intent(this, SetupActivity::class.java).putExtra("model_only", true))
-        }.spaced(0, 24))
-        body.addView(text(getString(R.string.device_controls), 18f, bold = true).spaced(8, 12))
-        body.addView(button(getString(R.string.ui_activate_on_device), primary = false) { startActivity(Intent(this, WirelessSetupActivity::class.java)) }.spaced(0, 8))
-        body.addView(button(getString(R.string.ui_allow_overlay_controls), primary = false) { allowOverlay() }.spaced(0, 24))
-        body.addView(text(getString(R.string.language_title), 18f, bold = true).spaced(8, 8))
-        body.addView(text(getString(R.string.language_description), 13f, muted = true))
+        })
+        if (saved != null) body.addView(text(getString(R.string.setup_model_summary,
+            getString(ModelPresets.all.firstOrNull { it.id == ModelPresets.provider(saved) }?.title ?: R.string.setup_custom), saved.model), 12f, muted = true).spaced(0, 20))
+        body.addView(text(getString(R.string.device_controls), 12f, muted = true).spaced(12, 4))
+        body.addView(WukongUi.actionRow(this, getString(R.string.ui_activate_on_device)) { startActivity(Intent(this, WirelessSetupActivity::class.java)) })
+        body.addView(WukongUi.actionRow(this, getString(R.string.ui_allow_overlay_controls)) { allowOverlay() }.spaced(0, 20))
+        body.addView(text(getString(R.string.language_title), 12f, muted = true).spaced(8, 4))
         body.addView(Spinner(this).apply {
             val choices = listOf("system", "en", "zh-CN")
-            adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, listOf(getString(R.string.language_system), "English", "简体中文"))
+            adapter = WukongUi.choiceAdapter(this@MainActivity, listOf(getString(R.string.language_system), "English", "简体中文"))
             minimumHeight = dp(52)
             setSelection(choices.indexOf(UiLanguage.code(this@MainActivity)))
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -361,43 +350,52 @@ class MainActivity : LocalizedActivity() {
                     val language = choices[position]
                     if (UiLanguage.code(this@MainActivity) == language) return
                     if (TaskRuntime.active || WirelessActivation.busy || VirtualScreenState.service != null) {
-                        errorDialog(getString(R.string.language_busy))
-                        setSelection(choices.indexOf(UiLanguage.code(this@MainActivity)))
-                        return
+                        errorDialog(getString(R.string.language_busy)); setSelection(choices.indexOf(UiLanguage.code(this@MainActivity))); return
                     }
-                    UiLanguage.set(this@MainActivity, language)
-                    recreate()
+                    UiLanguage.set(this@MainActivity, language); recreate()
                 }
             }
-        }.spaced(8, 24))
+        }.spaced(0, 20))
         val logs = RunLogStore(this)
         body.addView(Switch(this).apply {
             text = getString(R.string.ui_keep_run_logs); isChecked = logs.enabled; minHeight = dp(48)
-            setTextColor(getColor(R.color.ink))
+            setTextColor(getColor(R.color.ink)); textSize = 14f
             setOnCheckedChangeListener { _, enabled -> logs.enabled = enabled }
         })
-        body.addView(text(getString(R.string.ui_save_tool_calls_results_timing_and_provider_reported_tokens_local), 13f, muted = true).spaced(8, 20))
-        body.addView(text(getString(R.string.ui_data_permissions), 18f, bold = true))
-        body.addView(text(getString(R.string.ui_wireless_pairing_and_the_execution_engine_are_built_in_activate_o), 14f, muted = true).spaced(12, 12))
-        body.addView(text(getString(R.string.ui_your_goal_app_list_and_relevant_ui_text_are_sent_to_your_model_pr), 14f, muted = true).spaced(12, 20))
-        body.addView(button(getString(R.string.ui_clear_model_configuration), primary = false) {
-            if (TaskRuntime.active) { errorDialog(getString(R.string.ui_stop_the_current_task_first)); return@button }
-            AlertDialog.Builder(this).setTitle(R.string.ui_clear_model_configuration).setMessage(R.string.ui_clear_model_confirm)
-                .setPositiveButton(R.string.ui_clear) { _, _ -> store.clear(); navigate(2) }
-                .setNegativeButton(R.string.ui_cancel, null).show()
+        body.addView(text(getString(R.string.ui_brief_logs), 12f, muted = true).spaced(0, 20))
+        body.addView(WukongUi.actionRow(this, getString(R.string.ui_data_permissions)) {
+            AlertDialog.Builder(this).setTitle(R.string.ui_data_permissions)
+                .setMessage(getString(R.string.ui_wireless_pairing_and_the_execution_engine_are_built_in_activate_o) + "\n\n" + getString(R.string.ui_your_goal_app_list_and_relevant_ui_text_are_sent_to_your_model_pr))
+                .setPositiveButton(R.string.ui_got_it, null).show()
         })
+        body.addView(WukongUi.actionRow(this, getString(R.string.ui_clear_model_configuration)) {
+            if (TaskRuntime.active) { errorDialog(getString(R.string.ui_stop_the_current_task_first)); return@actionRow }
+            AlertDialog.Builder(this).setTitle(R.string.ui_clear_model_configuration).setMessage(R.string.ui_clear_model_confirm)
+                .setPositiveButton(R.string.ui_clear) { _, _ -> store.clear(); navigate(2) }.setNegativeButton(R.string.ui_cancel, null).show()
+        }.apply { setTextColor(color(R.color.danger)) }.spaced(16, 0))
     }
 
     private fun historyPage() {
-        body.addView(text(getString(R.string.ui_a_little_less_to_do), 28f, bold = true))
+        body.addView(text(getString(R.string.ui_a_little_less_to_do), 26f, bold = true))
         body.addView(text(getString(R.string.ui_your_last_30_tasks_stored_only_on_this_phone), muted = true).spaced(8, 24))
         val records = HistoryStore(this).read()
         if (records.isEmpty()) body.addView(text(getString(R.string.ui_a_fresh_start_nrun_your_first_task_and_find_its_results_here), muted = true).spaced(16, 32))
         val format = SimpleDateFormat("MM-dd HH:mm", resources.configuration.locales[0])
         records.forEach {
             body.addView(text("${UiMessages.text(this, it.app)} · ${format.format(Date(it.timestamp))}", 12f, muted = true))
-            body.addView(text(it.goal, 17f, bold = true).spaced(8, 8))
-            body.addView(text("${phaseName(it.phase)}\n${it.result}", 14f).apply { setTextIsSelectable(true) }.spaced(0, 20))
+            val record = it
+            val entry = row().apply {
+                minimumHeight = dp(56); isFocusable = true
+                background = WukongUi.feedback(this@MainActivity, android.R.color.transparent, canDisable = false)
+                addView(text(record.goal, 16f, bold = true).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END }, LinearLayout.LayoutParams(0, -2, 1f))
+                addView(ImageView(this@MainActivity).apply { setImageResource(R.drawable.ic_chevron); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }, LinearLayout.LayoutParams(dp(20), dp(20)))
+                setOnClickListener {
+                    AlertDialog.Builder(this@MainActivity).setTitle(phaseName(record.phase)).setMessage(record.goal + "\n\n" + record.result)
+                        .setPositiveButton(R.string.ui_got_it, null).show()
+                }
+            }
+            body.addView(entry.spaced(4, 4))
+            body.addView(text("${phaseName(it.phase)}\n${it.result}", 14f).apply { maxLines = 4; ellipsize = android.text.TextUtils.TruncateAt.END }.spaced(0, 20))
             body.addView(View(this).apply { setBackgroundColor(color(R.color.line)) }, LinearLayout.LayoutParams(-1, dp(1)).apply { bottomMargin = dp(20) })
         }
         if (records.isNotEmpty()) body.addView(button(getString(R.string.ui_clear_history), primary = false) {
@@ -408,7 +406,7 @@ class MainActivity : LocalizedActivity() {
 
     private fun logsPage() {
         val store = RunLogStore(this)
-        body.addView(text(getString(R.string.ui_behind_every_action), 28f, bold = true))
+        body.addView(text(getString(R.string.ui_behind_every_action), 26f, bold = true))
         body.addView(text(if (store.enabled) getString(R.string.ui_logging_is_on_change_this_in_settings) else getString(R.string.ui_logging_is_off), 14f, muted = true).spaced(8, 16))
         body.addView(button(getString(R.string.ui_refresh_logs), primary = false) { navigate(3) })
         val files = store.files()
@@ -417,8 +415,17 @@ class MainActivity : LocalizedActivity() {
         for (file in files) {
             val first = store.read(file.name).firstOrNull()
             val goal = first?.optJSONObject("data")?.optString("goal").orEmpty()
-            body.addView(button("${format.format(Date(first?.optLong("time") ?: file.lastModified()))}  ${goal.take(48)}", primary = false) { logDetail(file.name) }
-                .apply { ellipsize = android.text.TextUtils.TruncateAt.END }.spaced(8, 8))
+            val entry = row().apply {
+                minimumHeight = dp(72); isFocusable = true
+                background = WukongUi.feedback(this@MainActivity, android.R.color.transparent, canDisable = false)
+                addView(column().apply {
+                    addView(text(format.format(Date(first?.optLong("time") ?: file.lastModified())), 12f, muted = true))
+                    addView(text(goal, 14f, bold = true).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END })
+                }, LinearLayout.LayoutParams(0, -2, 1f))
+                addView(ImageView(this@MainActivity).apply { setImageResource(R.drawable.ic_chevron); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }, LinearLayout.LayoutParams(dp(20), dp(20)))
+                setOnClickListener { logDetail(file.name) }
+            }
+            body.addView(entry.spaced(8, 8))
         }
         if (files.isNotEmpty()) body.addView(button(getString(R.string.ui_clear_logs), primary = false) {
             AlertDialog.Builder(this).setTitle(getString(R.string.ui_clear_run_logs)).setMessage(getString(R.string.ui_this_deletes_the_run_logs_saved_on_this_device))
@@ -445,8 +452,23 @@ class MainActivity : LocalizedActivity() {
                 "model_error" -> getString(R.string.ui_model_error); "tool_call" -> getString(R.string.ui_tool_call); "device_action" -> getString(R.string.ui_device_action); "device_result" -> getString(R.string.ui_result)
                 "device_error" -> getString(R.string.ui_device_error); "approval_requested" -> getString(R.string.ui_approval_requested); "approval_result" -> getString(R.string.ui_approval_result); "end" -> getString(R.string.ui_finished); else -> getString(R.string.ui_task_status)
             }
-            body.addView(text("${format.format(Date(record.optLong("time")))} · $step$label", 14f, bold = true).spaced(12, 4))
-            body.addView(text(data.toString(2), 12f).apply { typeface = Typeface.MONOSPACE; setTextIsSelectable(true) }.spaced(0, 8))
+            val payload = text(data.toString(2), 12f).apply { typeface = Typeface.MONOSPACE; setTextIsSelectable(true); visibility = View.GONE; tag = "event-payload" }
+            val chevron = ImageView(this).apply { setImageResource(R.drawable.ic_expand); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
+            val entry = row().apply {
+                tag = "run-event"; minimumHeight = dp(64); isFocusable = true
+                setPadding(dp(4), dp(8), dp(4), dp(8))
+                background = WukongUi.feedback(this@MainActivity, android.R.color.transparent, canDisable = false)
+                addView(column().apply {
+                    addView(text("$step$label", 14f, bold = true))
+                    addView(text(format.format(Date(record.optLong("time"))), 12f, muted = true))
+                }, LinearLayout.LayoutParams(0, -2, 1f))
+                addView(chevron, LinearLayout.LayoutParams(dp(20), dp(20)))
+                setOnClickListener {
+                    payload.visibility = if (payload.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                    chevron.rotation = if (payload.visibility == View.VISIBLE) 180f else 0f
+                }
+            }
+            body.addView(entry.spaced(4, 0)); body.addView(payload.spaced(0, 8))
         }
     }
 

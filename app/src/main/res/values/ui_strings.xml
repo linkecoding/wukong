@@ -6,7 +6,7 @@
     <string name="ui_logs">Logs</string>
     <string name="ui_wukong">Wukong</string>
     <string name="ui_checking_the_execution_engine">Checking the execution engine…</string>
-    <string name="ui_what_shall_we_do">What shall we do?</string>
+    <string name="ui_what_shall_we_do">What can I do for you?</string>
     <string name="ui_give_wukong_a_goal_let_your_phone_do_the_work">Give Wukong a goal. Let your phone do the work.</string>
     <string name="ui_use_virtual_display">Use virtual display</string>
     <string name="ui_could_not_start_the_virtual_display">Could not start the virtual display</string>
@@ -219,4 +219,8 @@
     <string name="status_51">The model did not complete the tool-call test. No device action was performed.</string>
     <string name="device_controls">Device &amp; controls</string>
     <string name="language_system">Follow system</string>
+    <string name="ui_brief_approval">Sensitive actions ask for confirmation.</string>
+    <string name="ui_brief_logs">Tool calls and token usage, saved on this phone.</string>
+    <string name="ui_show_details">Inspect details</string>
+    <string name="ui_hide_details">Hide details</string>
 </resources>

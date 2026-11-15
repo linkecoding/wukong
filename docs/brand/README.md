@@ -8,7 +8,7 @@ These brand assets are stored locally. Nothing has been published.
 - PNG exports: [symbol](wukong-mark.png), [wordmark](wukong-wordmark.png), [social preview](social-preview.png).
 - [Shared design system](../../design.md) and [portable color/type tokens](../../tokens.css).
 
-Concept A, Cobalt, is the selected identity. The mark combines twin blue headband arcs with a geometric monkey mask on navy. Blue expresses the app’s active controls. The eyes remain legible at small sizes. Keep the mark upright and preserve space of at least one eye-width around it. Do not use the full-color launcher icon as a monochrome Android notification glyph.
+Concept A, Cobalt, is the selected identity. The mark combines ice-blue headband arcs and a white geometric monkey mask on vivid blue. Blue expresses the app’s active controls. The eyes remain legible at small sizes. Keep the mark upright and preserve space of at least one eye-width around it. Do not use the full-color launcher icon as a monochrome Android notification glyph.
 
 ## App previews
 

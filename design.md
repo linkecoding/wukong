@@ -6,7 +6,7 @@ A shared design system for the Android app and project identity, approved on 202
 
 ## Genre and structure
 
-Modern-minimal. App pages use a task workbench: compact identity header, scrollable content, persistent bottom navigation. Task composition comes before display options; history is chronological; logs expose measured data; settings use a readable form. Introduction assets use a short typographic statement with the actual logo. Do not invent statistics or endorsements.
+Modern-minimal. App pages use a task workbench: compact identity header, scrollable content, persistent bottom navigation. The task composer leads the first screen, with one filled primary action. Examples and secondary settings are flat icon/text rows; explanations are disclosed when needed. Task composition comes before display options; history is chronological; logs expose measured data; settings use a readable form. Introduction assets use a short typographic statement with the actual logo. Do not invent statistics or endorsements.
 
 ## Theme
 
@@ -26,7 +26,7 @@ Android's `app/src/main/res/values/colors.xml` is the runtime source of truth. `
 | Connected surface | soft_success | `#E6F2EB` |
 | Error | danger | `#A82A2A` |
 
-The light blue geometric eye and twin headband arcs belong to the Cobalt logo (selected concept A). Input outlines use control `#8193AE`. Keep functional accent areas small. No decorative gradients, fake phone frames, or ornamental dashboard metrics.
+Concept A was refined into a white mask and ice-blue headband arcs (`#A8D9FF`) on a vivid blue (`#2457D6`) background. Input outlines use control `#8193AE`. Keep functional accent areas small. No decorative gradients, fake phone frames, or ornamental dashboard metrics.
 
 ## Typography
 

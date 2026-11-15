@@ -18,5 +18,7 @@
     <color name="brand_ink">#14213B</color>
     <color name="brand_paper">#F3F6FC</color>
     <color name="control">#8193AE</color>
-    <color name="brand_blue">#79A4FF</color>
+    <color name="brand_mark">#FFFFFF</color>
+    <color name="brand_arc">#A8D9FF</color>
+    <color name="brand_background">#2457D6</color>
 </resources>

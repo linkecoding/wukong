@@ -20,8 +20,8 @@ class OnboardingLiveTest {
         val result = ChatModel(settings).test()
         assertTrue(result.contains("成功"))
     }
-    @Test fun researchTemplateRunsOnVirtualDisplay() {
-        assumeTrue(InstrumentationRegistry.getArguments().getString("live_research") == "true")
+    @Test fun downloadedFileTemplateRunsOnVirtualDisplay() {
+        assumeTrue(InstrumentationRegistry.getArguments().getString("live_file") == "true")
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val context = instrumentation.targetContext
         val settings = SettingsStore(context).load() ?: error("No configured model")
@@ -35,8 +35,8 @@ class OnboardingLiveTest {
         try {
             instrumentation.runOnMainSync { VirtualScreenState.enabled(context, true); VirtualScreenState.start(activity) }
             await(30_000) { VirtualScreenState.displayId > 0 && VirtualScreenState.bitmap != null }
-            val goal = UiLanguage.wrap(context).getString(R.string.sample_compare_prompt, "小米手环9")
-            instrumentation.runOnMainSync { TaskRuntime.start(context, goal, "com.android.chrome", settings) }
+            val goal = UiLanguage.wrap(context).getString(R.string.sample_file_prompt, "wukong-demo-note.txt")
+            instrumentation.runOnMainSync { TaskRuntime.start(context, goal, "com.google.android.apps.nbu.files", settings) }
             val deadline = System.currentTimeMillis() + 180_000
             while (TaskRuntime.active && System.currentTimeMillis() < deadline) {
                 TaskRuntime.pending?.let { TaskRuntime.answer(it, false) }
@@ -45,9 +45,11 @@ class OnboardingLiveTest {
             val event = TaskRuntime.event
             val report = JSONObject().put("phase", event.phase.name).put("message", event.message)
                 .put("steps", TaskRuntime.events().size)
-            context.openFileOutput("onboarding-research-result.json", 0).use { it.write(report.toString(2).toByteArray()) }
+            context.openFileOutput("onboarding-file-result.json", 0).use { it.write(report.toString(2).toByteArray()) }
             assertFalse("Research timed out", TaskRuntime.active)
             assertEquals(event.message, Phase.COMPLETED, event.phase)
+            val observed = ShellSession(context,VirtualScreenState.displayId).use { AndroidDriver(it).observe() }
+            assertTrue("File results should be visible", observed.nodes.any { it.text.contains("wukong-demo-note") })
         } finally {
             TaskRuntime.stop()
             instrumentation.runOnMainSync { VirtualScreenState.stop(context); activity.finish() }

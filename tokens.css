@@ -17,7 +17,10 @@
   --color-brand-ink: oklch(25.072% 0.05280 263.02);
   --color-brand-paper: oklch(97.258% 0.00862 264.52);
   --color-control: oklch(65.855% 0.04537 258.37);
-  --color-brand-blue: oklch(72.668% 0.14103 264.04);
+  --color-brand-mark: oklch(100.000% 0.00000 89.88);
+  --color-brand-arc: oklch(86.405% 0.07354 241.98);
+  --color-brand-background: oklch(50.512% 0.20279 263.88);
+
 
   --font-display: system-ui, sans-serif;
   --font-body: system-ui, sans-serif;

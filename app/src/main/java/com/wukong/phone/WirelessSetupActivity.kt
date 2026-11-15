@@ -72,10 +72,10 @@ class WirelessSetupActivity : LocalizedActivity() {
         renderedStep = step()
         content.removeAllViews()
         ui.back(content) { finish() }
-        ui.add(content, ui.text(getString(R.string.connect_heading), 28f), 12)
-        ui.add(content, ui.text(getString(R.string.connect_intro), 15f, true))
+        if (renderedStep != "done") ui.add(content, ui.text(getString(R.string.connect_heading), 24f), 12)
+        if (renderedStep != "done") ui.add(content, ui.text(getString(R.string.connect_intro), 14f, true))
         status = ui.text(UiMessages.text(this, WirelessActivation.message), 13f, true).apply { accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE }
-        ui.add(content, status)
+        if (renderedStep != "done") ui.add(content, status)
         val title = when (renderedStep) { "done" -> R.string.connect_done; "wifi" -> R.string.connect_wifi_title; "developer" -> R.string.connect_developer_title; "reconnect" -> R.string.connect_paired_title; else -> R.string.connect_pair_title }
         if (renderedStep == "unsupported") {
             ui.add(content, ui.text(getString(R.string.ui_on_device_wireless_activation_requires_android_11_or_later)))
@@ -96,7 +96,7 @@ class WirelessSetupActivity : LocalizedActivity() {
                 }
             }
         }.apply { id = R.id.setup_primary; isEnabled = !WirelessActivation.busy })
-        ui.add(content, ui.button(R.string.connect_recheck) { checkConnection() })
+        if (renderedStep != "done") ui.add(content, ui.button(R.string.connect_recheck) { checkConnection() })
         if (renderedStep == "reconnect") ui.add(content, ui.button(R.string.connect_pair_again) { forcePair = true; render() })
         ui.add(content, ui.button(if (advancedOpen) R.string.connect_hide_advanced else R.string.connect_advanced) { advancedOpen = !advancedOpen; render() }, 16)
         if (advancedOpen) advanced()

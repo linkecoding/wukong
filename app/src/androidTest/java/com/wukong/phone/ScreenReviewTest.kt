@@ -30,7 +30,9 @@ class ScreenReviewTest {
         fun views() = all(a!!.findViewById(android.R.id.content))
         fun click(id: Int) { i.runOnMainSync { views().filterIsInstance<Button>().single { it.text.toString() == a!!.getString(id) }.performClick() }; i.waitForIdleSync() }
         fun shot(name: String) {
-            i.waitForIdleSync(); Thread.sleep(350)
+            i.waitForIdleSync()
+            i.runOnMainSync { WindowInspector.getGlobalWindowViews().flatMap { all(it) }.forEach { it.invalidate() } }
+            Thread.sleep(700)
             val request = File(c.filesDir,"screen-review-request")
             val done = File(c.filesDir,"screen-review-done")
             done.delete(); request.writeText(name)
@@ -52,7 +54,12 @@ class ScreenReviewTest {
                 click(R.string.ui_history); page("$lang-history")
                 click(R.string.ui_logs); page("$lang-logs")
                 val file = RunLogStore(c).files().firstOrNull()
-                if(file != null) { i.runOnMainSync { MainActivity::class.java.getDeclaredMethod("logDetail",String::class.java).apply { isAccessible=true }.invoke(a,file.name) }; page("$lang-log-detail") }
+                if(file != null) { i.runOnMainSync { MainActivity::class.java.getDeclaredMethod("logDetail",String::class.java).apply { isAccessible=true }.invoke(a,file.name) }; page("$lang-log-detail")
+                    i.runOnMainSync {
+                        views().first { it.tag == "run-event" }.performClick()
+                        assertTrue("Expanded log payload visible", views().first { it.tag == "event-payload" }.visibility == View.VISIBLE)
+                    }; page("$lang-log-expanded")
+                }
                 click(R.string.ui_settings); page("$lang-settings")
                 i.runOnMainSync { a!!.finish() }; i.waitForIdleSync()
                 a = i.startActivitySync(Intent(c,SetupActivity::class.java).putExtra("model_only",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); i.waitForIdleSync()

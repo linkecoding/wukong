@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sample_compare">Compare product prices</string>
-    <string name="sample_compare_hint">Product and preferences, e.g. Sony WH-1000XM5, black</string>
-    <string name="sample_compare_prompt">Use shopping apps or the browser available on my phone to compare prices for %1$s. Find up to 3 comparable options and summarize the listed price, shipping, and delivery estimate with sources. Do not purchase or add to cart. Report anything you cannot verify.</string>
-    <string name="sample_food">Find somewhere to eat</string>
-    <string name="sample_food_hint">Area and preferences, e.g. near West Lake, dinner for two</string>
-    <string name="sample_food_prompt">Using map, review, or browser apps on my phone, find up to 3 restaurants for these needs: %1$s. Compare available ratings, per-person prices, and distance from the specified place, with sources. Do not book, order, or pay. Report unavailable information.</string>
-    <string name="sample_trip">Plan a day out</string>
-    <string name="sample_trip_hint">From, to, and date, e.g. Shanghai to Suzhou this Saturday, two people</string>
-    <string name="sample_trip_prompt">Use travel, map, or browser apps on my phone to research a day trip for: %1$s. Summarize available transport options, reference costs, and a practical itinerary with sources. Do not book tickets or pay. Distinguish verified information from suggestions.</string>
-    <string name="samples_heading">Start with something useful</string>
+    <string name="sample_file">Find a downloaded file</string>
+    <string name="sample_file_hint">File name or keyword, e.g. invoice PDF</string>
+    <string name="sample_file_prompt">Use an installed file manager to find downloaded files matching: %1$s. Check Downloads first and use search if available. Report the file names and visible locations, then stop on the matching file list. Do not open, move, rename, share or delete files. If permission is required or no match is found, explain it clearly.</string>
+    <string name="sample_web">Search for answers</string>
+    <string name="sample_web_hint">A specific question, e.g. how to remove limescale from a kettle</string>
+    <string name="sample_web_prompt">Use an installed browser to open https://www.baidu.com and search for: %1$s. Read up to 3 relevant accessible results and summarize useful answers with their titles and source links. Do not invent results, download anything or sign in. If the network or a login/captcha blocks progress, stop and explain what happened.</string>
+    <string name="sample_app">Search inside an app</string>
+    <string name="sample_app_hint">App and keyword, e.g. Kuaishou, tomato and egg recipe</string>
+    <string name="sample_app_prompt">Find content in an installed app for this request: %1$s. Open the specified app, use its search and stop on the results page. Report what results are visible. Do not send, follow, like, purchase, download or change settings. If the app is missing or requires login/captcha, stop and explain; do not install an app or sign in.</string>
+    <string name="samples_heading">Try a task</string>
     <string name="samples_detail">Choose a task and add your needs, or write your own below.</string>
     <string name="sample_use">Use this task</string>
     <string name="sample_required">Add your needs first</string>
@@ -21,11 +21,11 @@
     <string name="setup_device">Connect this phone</string>
     <string name="setup_controls">Keep you in control</string>
     <string name="setup_ready">Ready when you are</string>
-    <string name="setup_model_description">Choose your provider and enter its API key. Wukong fills in the standard API configuration.</string>
+    <string name="setup_model_description">Choose a provider and enter your API key.</string>
     <string name="setup_provider">Model provider</string>
     <string name="setup_custom">Custom compatible API</string>
     <string name="setup_platform">Get an API key</string>
-    <string name="setup_provider_terms">Uses your own provider account and its API balance. Task content is sent to that provider. Keys are encrypted on this phone.</string>
+    <string name="setup_provider_terms">Key encrypted on this phone. Your provider account is billed.</string>
     <string name="setup_region_note">Alibaba preset uses the standard Beijing API, not a Coding Plan subscription. Other regions can be configured in Advanced.</string>
     <string name="setup_key_cleared">Provider changed. Enter the key for this provider.</string>
     <string name="setup_advanced">Advanced configuration</string>
@@ -72,7 +72,7 @@
     <string name="connect_pair_again">Pair this phone again</string>
     <string name="connect_recheck">Check connection</string>
     <string name="setup_model_summary">%1$s · %2$s</string>
-    <string name="setup_goal_hint">e.g. Compare prices for the headphones I want to buy</string>
+    <string name="setup_goal_hint">e.g. Find the invoice PDF I downloaded</string>
     <string name="provider_deepseek">DeepSeek</string>
     <string name="provider_qwen">Alibaba Cloud · Qwen</string>
     <string name="provider_zhipu">Zhipu · GLM</string>

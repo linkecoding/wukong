@@ -45,7 +45,7 @@ class SetupActivity : LocalizedActivity() {
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
         actionBar = ui.column().apply {
             setPadding(ui.dp(24), ui.dp(12), ui.dp(24), ui.dp(12))
-            background = WukongUi.shape(this@SetupActivity, R.color.paper, 0, R.color.line)
+            background = WukongUi.shape(this@SetupActivity, R.color.surface, 0)
         }
         root.addView(actionBar)
         root.setOnApplyWindowInsetsListener { v, insets ->
@@ -82,7 +82,7 @@ class SetupActivity : LocalizedActivity() {
             })
         }
         val title = when (stage) { Stage.MODEL -> R.string.setup_model; Stage.PHONE -> R.string.setup_device; Stage.CONTROLS -> R.string.setup_controls; Stage.READY -> R.string.setup_ready }
-        ui.add(body, ui.text(getString(title), 28f), 12, 12)
+        ui.add(body, ui.text(getString(title), 24f), 12, 12)
         when (stage) {
             Stage.MODEL -> modelPage()
             Stage.PHONE -> {
