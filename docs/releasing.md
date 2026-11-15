@@ -1,6 +1,6 @@
 # Signing and releasing Wukong
 
-Current public version: **0.0.1**, Android version code **1**. Increase the version code for every subsequent public release. Keep the same signing identity so APK updates remain installable.
+Current source version: **0.0.2**, Android version code **2**. Increase the version code for every subsequent public release. Keep the same signing identity so APK updates remain installable.
 
 ## Local signing
 
@@ -38,7 +38,7 @@ Base64 is a transport encoding; secrecy comes from encrypted GitHub Secrets. Nev
 
 1. Complete device testing. Update `versionName`, increment `versionCode` in `app/build.gradle.kts`, and write `docs/releases/<version>.md`.
 2. Push the reviewed commit to `main` and let **Android checks** pass.
-3. Push the matching version tag, for example `git tag v0.0.1` then `git push origin v0.0.1`.
+3. Push the matching version tag, for example `git tag v0.0.2` then `git push origin v0.0.2`.
 4. **Signed release** builds universal and arm64 APKs, verifies signatures and ELF/ZIP 16 KB alignment, then publishes them with `SHA256SUMS.txt`. Its tag must match the app version. Manual retries must select the existing version tag.
 
 The workflow publishes APKs and checksums. It does not publish private signing material or model API keys. Existing releases are not overwritten silently; a retry that finds an already-published release requires inspection first.

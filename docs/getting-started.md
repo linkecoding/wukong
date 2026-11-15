@@ -26,3 +26,30 @@ See [provider presets](model-providers.md) for official sources and compatibilit
 ## Review a completed task
 
 Tap Execution details in a conversation task card, or open sidebar History and tap its status card. Task details show the full goal, result, reported token totals and grouped execution events. Tap an event to inspect its recorded JSON. Use the fixed top-left Back action or Android Back to return. Clear-all logs and clear history are in the History top-right menu; removing a single trace is in its task detail menu. Both deletion paths require confirmation. Clearing logs preserves task results and never redirects an old history entry to a different run. Connection tests are separate from tasks and are listed under Settings → Connection diagnostics.
+
+## Virtual display and manual takeover
+
+Open Execution options below the conversation composer and choose Virtual display. The starting-app row opens a searchable list; Automatic starts from the virtual desktop. The starting app does not limit subsequent cross-app navigation. Wait for the display to be ready before sending a task.
+
+Expand View screen in the task card. The preview is embedded while Wukong is in the foreground and floats when you leave the app. Drag its header to move it and the corner handle to resize it; the last geometry is remembered. Closing the preview hides it without stopping the task. Return to Wukong and leave again to show it.
+
+Tap Take over before touching the virtual screen. The agent pauses; you can tap, swipe and use Back/Home. Hand control back to let the agent read the current screen and continue. Stop ends the current run; it does not undo completed actions. Some apps restrict virtual displays, protected content or simultaneous instances; try the phone display when appropriate.
+
+## Logs and feedback
+
+Enable log retention in Settings before reproducing a problem. Open the task's Execution details and use the top-right menu to export that run. The ZIP contains `events.jsonl` and `manifest.json`, including device/app versions, tool calls and provider-reported token usage when supplied. Earlier runs without retained logs cannot be reconstructed. Token counts can be absent when the provider does not return usage.
+
+Review task text, tool arguments/results and device metadata before attaching an export to an issue. Do not share API keys, pairing codes, passwords or private screenshots. See [reporting guidance](../CONTRIBUTING.md).
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Pairing or connection fails | Connect Wi-Fi and enable Wireless debugging. Keep Android's pairing-code dialog open. Pairing and connection ports differ; use Connection troubleshooting if discovery fails. Reboots/network changes may require reconnecting. |
+| Model request returns 401/403 | Check the key, account permissions, balance and selected model with your provider. |
+| Model request returns 404 | Check the endpoint and model ID. Standard base URLs get `/chat/completions` appended; select exact-request-URL mode only for a complete endpoint. There is no required base-URL suffix. |
+| Model dropdown is empty | Some compatible endpoints do not provide a usable model-list API. Enter a provider-supported tool-calling model ID manually. |
+| App/preview is blank on the virtual display | The app may restrict multi-display use or protected content. Take over to inspect, or run on the phone display. |
+| Task reports a wrong result | Inspect the actual screen and execution details. Completion checks reduce errors but cannot prove arbitrary task correctness. Export a redacted run and report the minimal case. |
+
+For privacy, cost and autonomy limits, read the [disclaimer](../DISCLAIMER.md). For build/update signing differences, see [release documentation](releasing.md).

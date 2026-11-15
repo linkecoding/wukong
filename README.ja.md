@@ -6,7 +6,7 @@
 
 **Wukong（悟空）** は、自然言語で伝えた目標に沿って Android を操作する パーソナル AI エージェントです。自分のモデル API を接続し、アプリをまたぐ操作を見守りながら、いつでも手動操作に切り替えられます。
 
-現在は **v0.0.1 のプレビュー版** です。Pixel 6 で主要な動作を検証していますが、他の端末との互換性や実際のタスクには、さらに検証が必要です。Codex skill / MCP 連携は計画段階で、まだ実装されていません。
+現在の main ブランチは **v0.0.2 のプレビュー版** です。Pixel 6 で主要な動作を検証していますが、他の端末との互換性や実際のタスクには、さらに検証が必要です。Codex skill / MCP 連携は計画段階で、まだ実装されていません。
 
 <p align="center"><img src="docs/images/conversation/home-en.png" width="320" alt="Wukong Android task interface" /></p>
 
@@ -50,4 +50,8 @@ OCR は端末内で実行しますが、目標、追加依頼のための直近�
 
 ## ビルドとリリース
 
-`main` と PR ではビルド、単体テスト、lint を実行します。`v0.0.1` のようなタグで、署名付き arm64 / universal APK を構築し、署名と 16 KB アラインメントを確認して GitHub Release を公開します。秘密鍵は公開ソースに含めず、ローカルと Actions Secrets に保存します。[リリース手順](docs/releasing.md)を参照してください。
+`main` と PR ではビルド、単体テスト、lint を実行します。`v0.0.2` のようなタグで、署名付き arm64 / universal APK を構築し、署名と 16 KB アラインメントを確認して GitHub Release を公開します。秘密鍵は公開ソースに含めず、ローカルと Actions Secrets に保存します。[リリース手順](docs/releasing.md)を参照してください。
+
+## ドキュメントと参加
+
+[使用ガイド（英語）](docs/getting-started.md) · [変更履歴](CHANGELOG.md) · [貢献ガイド](CONTRIBUTING.md) · [免責事項・データの取り扱い](DISCLAIMER.md#日本語) · [セキュリティ報告](SECURITY.md)

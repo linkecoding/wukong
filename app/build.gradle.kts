@@ -10,8 +10,8 @@ android {
         applicationId = "com.wukong.phone"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = 2
+        versionName = "0.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         providers.gradleProperty("targetAbi").orNull?.let { requestedAbi ->
             require(requestedAbi in setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")) { "Unsupported targetAbi" }

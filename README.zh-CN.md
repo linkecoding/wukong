@@ -10,7 +10,7 @@ App 默认跟随系统语言，暂不支持的语言回退到英文；可在「�
 
 悟空是一款 Android Personal Agent（个人 AI 助手）：用自然语言描述目标，AI 在整台手机上跨应用操作，普通操作自主执行，敏感操作前等待确认。
 
-当前是 **0.0.1 早期预览版**。无线 ADB 配对、连接和执行引擎全部内置于悟空 APK，不依赖 Shizuku、LADB、Termux 或其他外部 App。执行底座采用 **内置 ADB → app_process → 独立 shell 进程（UID 2000）**，不需要启用无障碍服务或 root。Android App 保持普通应用权限，负责模型、任务调度、历史和悬浮控制。
+当前 main 分支版本为 **0.0.2 早期预览版**。无线 ADB 配对、连接和执行引擎全部内置于悟空 APK，不依赖 Shizuku、LADB、Termux 或其他外部 App。执行底座采用 **内置 ADB → app_process → 独立 shell 进程（UID 2000）**，不需要启用无障碍服务或 root。Android App 保持普通应用权限，负责模型、任务调度、历史和悬浮控制。
 
 <p align="center"><img src="docs/images/conversation/home-zh-CN.png" width="320" alt="Wukong Android task interface" /></p>
 
@@ -92,7 +92,7 @@ scripts/         构建辅助、开发用 USB 激活、真机和模拟器测试
 
 shell 进程通过 UiAutomation 读取 Android UI 节点，并注入触摸和按键事件。UiAutomation 使用 Android 的内部 UI 自动化基础设施；这不等同于安装或启用一个 AccessibilityService。App 清单没有 `BIND_ACCESSIBILITY_SERVICE` 或无障碍服务注册。
 
-连接只监听 `127.0.0.1:43219`，每次请求要求随机 256 位令牌。悟空内置激活直接在自己的进程中生成令牌；供开发脚本使用的外部激活入口需要 DUMP 权限且检查调用 UID 必须为 shell 2000，其他普通 App 不能取得或轮换令牌。ADB 身份私钥使用 Android Keystore 加密保存，配对码不落盘。令牌存在 App 私有目录，临时传递文件仅 shell 可读，并在启动时删除。不向模型发送令牌，也不开放任意 shell 命令接口。
+连接只监听 `127.0.0.2:43219`，每次请求要求随机 256 位令牌。悟空内置激活直接在自己的进程中生成令牌；供开发脚本使用的外部激活入口需要 DUMP 权限且检查调用 UID 必须为 shell 2000，其他普通 App 不能取得或轮换令牌。ADB 身份私钥使用 Android Keystore 加密保存，配对码不落盘。令牌存在 App 私有目录，临时传递文件仅 shell 可读，并在启动时删除。不向模型发送令牌，也不开放任意 shell 命令接口。
 
 任务目标、用于追问的最近会话需求与结果、可启动应用列表和必要界面文字会发送给你配置的模型服务。模型密钥通过 Android Keystore 加密，只在 App 中使用，不交给 shell 进程。会话最多保留 20 段、每段 20 次委托；追问带入最近 6 次的有限摘要，新对话不带入其他对话。历史保留最近 30 次任务的描述、时间和结果，可在 App 中清空。备份和设备迁移排除了应用数据。
 
@@ -100,7 +100,7 @@ shell 进程通过 UiAutomation 读取 Android UI 节点，并注入触摸和按
 
 ## 验证与后续接入
 
-已在 Pixel 6 / Android 17 验证内置配对、手机内激活、shell 读屏、中文输入、触摸注入、滚动、跨应用导航、鉴权、过期快照和取消；已用用户配置的 DeepSeek 真机验证真实工具调用；完整业务任务仍需验证。反射访问的系统内部 API 仍需要逐机型、逐系统版本验证。
+已在 Pixel 6 / Android 17 验证内置配对、手机内激活、shell 读屏、中文输入、触摸注入、滚动、跨应用导航、鉴权、过期快照和取消；已用用户配置的 DeepSeek 真机验证真实工具调用；已完成计算器、文件查找、秒表和设备信息任务的真机验证，结果与限制见[实际任务测试](docs/real-world-validation.md)；更广泛的任务和机型仍需验证。反射访问的系统内部 API 仍需要逐机型、逐系统版本验证。
 
 后续路径是 **Codex skill → MCP/本机桥接 → 悟空任务与设备接口**。skill 和 MCP 尚未实现，架构见 [Agent 接入规划](docs/agent-integration.md)、[执行架构](docs/architecture.md) 和 [验证记录](docs/validation.md)。
 
@@ -137,4 +137,11 @@ python3 scripts/activate-shell.py SERIAL --stop
 
 ## 构建和发布
 
-开发环境与模块结构见 [English README](README.md#build)。`main` 推送和 PR 自动构建、运行单元测试及 lint；推送 `v0.0.1` 这样的版本标签后，Actions 构建正式签名的 arm64 与通用 APK，检查签名和 16 KB 对齐并发布 GitHub Release。正式签名私钥不进入公开源码，保存在本机和 Actions Secrets 中。详见[签名与发布](docs/releasing.md)。
+开发环境与模块结构见 [English README](README.md#build)。`main` 推送和 PR 自动构建、运行单元测试及 lint；推送 `v0.0.2` 这样的版本标签后，Actions 构建正式签名的 arm64 与通用 APK，检查签名和 16 KB 对齐并发布 GitHub Release。正式签名私钥不进入公开源码，保存在本机和 Actions Secrets 中。详见[签名与发布](docs/releasing.md)。
+
+## 文档与参与
+
+- [完整使用说明与常见问题](docs/usage.zh-CN.md)
+- [更新日志](CHANGELOG.md) · [0.0.2 版本说明](docs/releases/0.0.2.md)
+- [贡献指南](CONTRIBUTING.md) · [问题反馈](https://github.com/linkecoding/wukong/issues)
+- [免责声明与数据处理](DISCLAIMER.md#简体中文) · [安全问题反馈](SECURITY.md)

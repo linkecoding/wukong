@@ -6,7 +6,7 @@
 
 **Wukong** is a personal AI agent for Android that turns a natural-language goal into actions across your phone, with requests, task cards, live previews and results in one conversation. Bring your own model, watch each step, and take over whenever you need to.
 
-**v0.0.1 · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. A Codex skill / MCP bridge is planned and is **not available yet**.
+**v0.0.2 on main · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. A Codex skill / MCP bridge is planned and is **not available yet**.
 
 The app follows your **system language** by default (Chinese or English, with English as the fallback). Settings also offers manual language selection. Project introductions are also available in Japanese.
 
@@ -88,7 +88,14 @@ The interface uses cream, moss and pale apricot. The conversation is home; a nat
 
 ## Releases
 
-`main` pushes and pull requests run build, unit tests and lint. A version tag such as `v0.0.1` builds signed arm64 and universal APKs, verifies APK signatures and 16 KB page alignment, and publishes a GitHub Release. Signing keys are stored locally and in encrypted Actions Secrets. See [release setup](docs/releasing.md).
+`main` pushes and pull requests run build, unit tests and lint. A version tag such as `v0.0.2` builds signed arm64 and universal APKs, verifies APK signatures and 16 KB page alignment, and publishes a GitHub Release. Signing keys are stored locally and in encrypted Actions Secrets. See [release setup](docs/releasing.md).
+
+## Community and project information
+
+- [User guide](docs/getting-started.md) · [中文使用说明](docs/usage.zh-CN.md)
+- [Changelog](CHANGELOG.md) · [0.0.2 release notes](docs/releases/0.0.2.md)
+- [Contributing](CONTRIBUTING.md) · [Issues](https://github.com/linkecoding/wukong/issues)
+- [Disclaimer and data handling](DISCLAIMER.md) · [Security reporting](SECURITY.md)
 
 ## Technical notes
 
