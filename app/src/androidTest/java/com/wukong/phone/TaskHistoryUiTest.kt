@@ -30,6 +30,10 @@ class TaskHistoryUiTest {
             i.runOnMainSync {
                 assertTrue(views().filterIsInstance<TextView>().any { it.text.toString() == activity.getString(R.string.ui_task_detail) })
                 assertFalse(views().filterIsInstance<Button>().any { it.text.toString() == activity.getString(R.string.ui_refresh_run) || it.text.toString() == activity.getString(R.string.ui_back_to_logs) })
+                @Suppress("DEPRECATION")
+                activity.onBackPressed()
+                assertTrue("Legacy Back returns to history", views().any { it.tag == "history-entry" })
+                views().first { it.tag == "history-entry" }.performClick()
                 views().filterIsInstance<Button>().first { it.contentDescription == activity.getString(R.string.setup_back) }.performClick()
             }
             i.waitForIdleSync()

@@ -107,6 +107,12 @@ class MainActivity : LocalizedActivity() {
         navigate(savedInstanceState?.getInt("tab") ?: 0)
     }
 
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+    override fun onBackPressed() {
+        val back = detailBack
+        if (back != null) back() else super.onBackPressed()
+    }
+
     override fun onResume() { super.onResume();
         val expectedLanguage = Locale.forLanguageTag(UiLanguage.effectiveCode(this)).language
         if (resources.configuration.locales[0].language != expectedLanguage) { recreate(); return }

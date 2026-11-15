@@ -22,7 +22,7 @@ New history entries retain the exact trace filename and an explicit association-
 
 - 26 JVM tests passed (23 core and 3 model settings).
 - 14 physical Pixel 6 tests passed: exact/legacy log association, retention/redaction, task detail navigation, cancellation of clear-log confirmation, language/draft persistence, visible model editing, provider request compatibility, localized previews, and real-model virtual-display takeover/handoff. The real task stored an exact history-to-log association.
-- Final fixed-toolbar checks rerun history/back/menu cancellation, navigation/language and localized previews.
+- Final fixed-toolbar checks reran history/back/menu cancellation, navigation/language and localized previews (5 checks). A separate Back-key regression covers the legacy callback and top-left action; physical ADB Back returned to History after the compatibility fix.
 - English/Chinese home/model layouts checked at 320, 375, 414 and 768 dp. Public model preview images clear the key field without saving changes.
 - 51 ADB screenshots cover home, options, history, task details, expanded events, settings, diagnostics, model configuration, connection guide, example dialog and embedded/manual/floating virtual display. Private review artifacts are under `.tooling/task-flow-review/`.
 - Debug/release builds and app/shell lint passed. Production source keeps the current version number; this work does not rewrite an existing release tag.
