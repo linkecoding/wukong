@@ -59,3 +59,10 @@ The Pixel 6 debug App and test APK built successfully, and lintDebug passed. Dev
 
 - `PreviewAndApprovalTest#everyPhysicalWukongPageHidesPreviewAndCloseOnlyDismissesTheWindow` passed: all physical Wukong pages hide the preview, Close retains the same virtual display, its hit target remains 48dp, header dragging does not navigate, and header tapping returns to Wukong.
 - Live-model `VirtualControlTest#embeddedBackgroundFloatingTakeoverAndHandoffContinueRealAgent` passed: background preview, manual takeover, closing during the task, returning to the App, handing control back, and model completion preserve the running task and associated history.
+
+
+## Floating resize, persistence and Home repair — 2026-11-15
+
+- `FloatingGeometryTest` passed on the Pixel 6: header movement, corner resizing, restored width/viewport height/position after dismiss/reopen and service recreation, and minimum/maximum size bounds. The test restores previous geometry preferences. The resized native panel was rendered on-device and inspected locally; personal installed-app content remains excluded from the repository.
+- Reproduced the old Home failure by opening a Settings page in the virtual launcher's task. Starting the launcher without CLEAR_TOP only brought the task forward, leaving Settings on top. Both manual Home and Agent Home now use NEW_TASK + CLEAR_TOP on the target display. The device test clicks the actual floating Home button, hands control back, and verifies the virtual launcher tree is visible. Manual input errors also produce a short visible message.
+- Existing foreground hiding/close behavior and the live-model takeover/close/handoff/completion regression passed (two additional device tests). Debug App, test APK and shell runtime builds plus lintDebug passed.

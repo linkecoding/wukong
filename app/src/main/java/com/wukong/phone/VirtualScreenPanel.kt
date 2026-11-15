@@ -21,6 +21,10 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
     private var downX = 0; private var downY = 0; private var downTime = 0L
     private val changed: () -> Unit = { refresh() }
     var onDrag: ((Float, Float) -> Unit)? = null
+    var onResize: ((Float, Float) -> Unit)? = null
+    var onGeometrySettled: (() -> Unit)? = null
+    val previewHeight get() = image.layoutParams.height
+    fun setPreviewHeight(height: Int) { image.layoutParams = image.layoutParams.apply { this.height=height } }
     init {
         orientation = VERTICAL; setPadding(dp(if(taskInline)0 else 8), dp(8), dp(if(taskInline)0 else 8), dp(if(taskInline)0 else 8)); background = if(taskInline) null else WukongUi.shape(context, R.color.surface, if(compact)20 else 16, R.color.line)
         status.textSize = if (compact) 11f else 14f; status.setTextColor(context.getColor(if(compact)R.color.muted else R.color.ink))
@@ -56,8 +60,8 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
                         if(dragging)onDrag?.invoke(event.rawX-lastX,event.rawY-lastY)
                         lastX=event.rawX;lastY=event.rawY
                     }
-                    MotionEvent.ACTION_UP -> if(!dragging)view.performClick()
-                    MotionEvent.ACTION_CANCEL -> dragging=false
+                    MotionEvent.ACTION_UP -> { if(!dragging)view.performClick() else onGeometrySettled?.invoke() }
+                    MotionEvent.ACTION_CANCEL -> { if(dragging)onGeometrySettled?.invoke();dragging=false }
                 }
                 true
             }
@@ -85,6 +89,26 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
         }.also { if (row.childCount < 2) manualInputs += it }, LayoutParams(0, dp(48), 1f).apply { marginEnd = dp(4) }) }
         button(context.getString(R.string.ui_back)) { VirtualScreenState.input(JSONObject().put("kind", "back")) }
         button(context.getString(R.string.ui_home)) { VirtualScreenState.input(JSONObject().put("kind", "home")) }
+        manualInputs.last().id=R.id.virtual_preview_home
+        if(compact) {
+            val hint=TextView(context).apply { text=context.getString(R.string.preview_resize_hint);textSize=11f;setTextColor(context.getColor(R.color.muted));gravity=android.view.Gravity.CENTER_VERTICAL }
+            row.addView(hint,LayoutParams(0,dp(48),1f))
+            val grip=ImageButton(context).apply {
+                id=R.id.virtual_preview_resize;contentDescription=context.getString(R.string.preview_resize)
+                setImageResource(R.drawable.ic_preview_resize);imageTintList=android.content.res.ColorStateList.valueOf(context.getColor(R.color.muted))
+                setPadding(dp(15),dp(15),dp(15),dp(15));background=WukongUi.feedback(context,android.R.color.transparent,24,canDisable=false)
+            }
+            var lastX=0f;var lastY=0f
+            grip.setOnTouchListener { view,event ->
+                when(event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> { lastX=event.rawX;lastY=event.rawY }
+                    MotionEvent.ACTION_MOVE -> { onResize?.invoke(event.rawX-lastX,event.rawY-lastY);lastX=event.rawX;lastY=event.rawY }
+                    MotionEvent.ACTION_UP -> { onGeometrySettled?.invoke();view.performClick() }
+                    MotionEvent.ACTION_CANCEL -> onGeometrySettled?.invoke()
+                };true
+            }
+            row.addView(grip,LayoutParams(dp(48),dp(48)))
+        }
         if(!compact && !taskInline) button(context.getString(R.string.ui_wukong_2)) { context.startActivity(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)) }
         manualRow=row; addView(row)
         if (!compact) {
@@ -133,7 +157,12 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
         }) else UiMessages.text(context,VirtualScreenState.message)
         if(compact)status.setTextColor(context.getColor(if(VirtualScreenState.frameError!=null)R.color.danger else R.color.muted))
         status.maxLines=if(compact)1 else 2; status.ellipsize=android.text.TextUtils.TruncateAt.END
-        manualRow?.visibility=if(VirtualScreenState.manual) VISIBLE else GONE
+        manualRow?.visibility=if(compact||VirtualScreenState.manual) VISIBLE else GONE
+        if(compact)manualRow?.let { row ->
+            row.getChildAt(0).visibility=if(VirtualScreenState.manual) VISIBLE else GONE
+            row.getChildAt(1).visibility=if(VirtualScreenState.manual) VISIBLE else GONE
+            row.getChildAt(2).visibility=if(VirtualScreenState.manual) GONE else VISIBLE
+        }
         manualText?.visibility=if(VirtualScreenState.manual) VISIBLE else GONE
         stopButton?.visibility=if(TaskRuntime.active) VISIBLE else GONE
         stopButton?.isEnabled=!TaskRuntime.stopRequested

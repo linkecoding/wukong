@@ -86,10 +86,16 @@ class VirtualScreenService : LocalizedService() {
         io.execute {
             if (closed) return@execute
             try { ShellClient(this).request("manualInput", value) }
-            catch (error: Exception) { VirtualScreenState.message = error.message ?: getString(R.string.ui_could_not_send_input); VirtualScreenState.changed() }
+            catch (error: Exception) {
+                VirtualScreenState.message = error.message ?: getString(R.string.ui_could_not_send_input)
+                val message=VirtualScreenState.message
+                android.os.Handler(mainLooper).post { android.widget.Toast.makeText(this,message,android.widget.Toast.LENGTH_SHORT).show() }
+                VirtualScreenState.changed()
+            }
         }
     }
     internal fun updateOverlay() {
+        if(android.os.Build.VERSION.SDK_INT<30) { hideOverlay();return }
         val visible = !closed && !VirtualScreenState.foreground && !VirtualScreenState.floatingDismissed && VirtualScreenState.displayId > 0 && Settings.canDrawOverlays(this)
         if (!visible) { hideOverlay(); return }
         if (overlay != null) return
@@ -100,23 +106,60 @@ class VirtualScreenService : LocalizedService() {
         val metrics = ui.resources.displayMetrics
         val manager = ui.getSystemService(WindowManager::class.java)
         val panel = VirtualScreenPanel(ui, compact = true)
-        val params = WindowManager.LayoutParams(minOf((208 * metrics.density).toInt(),metrics.widthPixels-(24*metrics.density).toInt()), WindowManager.LayoutParams.WRAP_CONTENT,
+        val preferences = getSharedPreferences("floating_preview", MODE_PRIVATE)
+        val density=metrics.density
+        fun px(value: Float)=(value*density).toInt()
+        val bounds=manager.currentWindowMetrics
+        val insets=bounds.windowInsets.getInsetsIgnoringVisibility(android.view.WindowInsets.Type.systemBars() or android.view.WindowInsets.Type.displayCutout())
+        val availableWidth=(bounds.bounds.width()-insets.left-insets.right).coerceAtLeast(1)
+        val availableHeight=(bounds.bounds.height()-insets.top-insets.bottom).coerceAtLeast(1)
+        val minWidth=minOf(px(208f),availableWidth)
+        val minPreview=minOf(px(120f),(availableHeight-px(172f)).coerceAtLeast(1))
+        val maxPreview=(availableHeight-px(172f)).coerceAtLeast(minPreview)
+        val previewHeight=px(preferences.getFloat("height",300f)).coerceIn(minPreview,maxPreview)
+        panel.setPreviewHeight(previewHeight)
+        val width=px(preferences.getFloat("width",208f)).coerceIn(minWidth,availableWidth)
+        val params = WindowManager.LayoutParams(width,WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT).apply {
-            gravity = Gravity.TOP or Gravity.END; y = (70 * metrics.density).toInt()
+            @Suppress("RtlHardcoded")
+            gravity = Gravity.TOP or Gravity.LEFT
+            x=px(preferences.getFloat("x",(availableWidth-width)/density)).coerceIn(0,availableWidth-width)
+            y=px(preferences.getFloat("y",70f)).coerceIn(0,(availableHeight-previewHeight-px(172f)).coerceAtLeast(0))
+        }
+        fun save() {
+            preferences.edit().putFloat("width",params.width/density).putFloat("height",panel.previewHeight/density)
+                .putFloat("x",params.x/density).putFloat("y",params.y/density).apply()
+        }
+        fun constrain(height: Int) {
+            params.x=params.x.coerceIn(0,(availableWidth-params.width).coerceAtLeast(0))
+            params.y=params.y.coerceIn(0,(availableHeight-height).coerceAtLeast(0))
         }
         panel.onDrag = { dx,dy ->
-            params.x = (params.x-dx).toInt().coerceIn(0,(metrics.widthPixels-panel.width).coerceAtLeast(0))
-            params.y = (params.y+dy).toInt().coerceIn(0,(metrics.heightPixels-panel.height).coerceAtLeast(0))
+            params.x=(params.x+dx).toInt();params.y=(params.y+dy).toInt()
+            constrain(panel.height)
             runCatching { manager.updateViewLayout(panel,params) }
         }
-        panel.addOnLayoutChangeListener { _,_,top,_,bottom,_,oldTop,_,oldBottom ->
-            if(bottom-top!=oldBottom-oldTop) {
-                val y=params.y.coerceIn(0,(metrics.heightPixels-panel.height).coerceAtLeast(0))
-                if(y!=params.y) { params.y=y;runCatching { manager.updateViewLayout(panel,params) } }
+        panel.onResize = { dx,dy ->
+            params.width=(params.width+dx).toInt().coerceIn(minWidth,availableWidth)
+            val height=(panel.previewHeight+dy).toInt().coerceIn(minPreview,maxPreview)
+            val chrome=panel.height-panel.previewHeight
+            panel.setPreviewHeight(height);constrain(height+chrome)
+            runCatching { manager.updateViewLayout(panel,params) }
+        }
+        panel.onGeometrySettled = { save() }
+        panel.addOnLayoutChangeListener { _,left,top,right,bottom,oldLeft,oldTop,oldRight,oldBottom ->
+            if(bottom-top!=oldBottom-oldTop||right-left!=oldRight-oldLeft) {
+                val oldX=params.x;val oldY=params.y
+                constrain(panel.height)
+                if(oldX!=params.x||oldY!=params.y)runCatching { manager.updateViewLayout(panel,params) }
             }
         }
         try { manager.addView(panel, params); overlay = panel; overlayManager = manager }
         catch (error: Exception) { VirtualScreenState.message = error.message ?: getString(R.string.ui_could_not_show_floating_preview) }
+    }
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        hideOverlay();updateOverlay()
     }
     internal fun closeFloatingPreview() { VirtualScreenState.dismissFloatingPreview(); hideOverlay() }
     private fun hideOverlay() { overlay?.let { runCatching { overlayManager?.removeView(it) } }; overlay = null; overlayManager = null }

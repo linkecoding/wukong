@@ -34,4 +34,6 @@
     <string name="preview_working">Working</string>
     <string name="preview_ready">Ready</string>
     <string name="preview_connection_lost">Connection interrupted</string>
+    <string name="preview_resize">Resize preview</string>
+    <string name="preview_resize_hint">Drag corner to resize</string>
 </resources>

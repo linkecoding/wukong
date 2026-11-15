@@ -183,7 +183,7 @@ public final class Main {
             if (virtualScreen == null) virtualScreen = new VirtualScreen();
             virtualScreen.ownerId = request.optString("ownerId");
             targetDisplay.set(virtualScreen.id);
-            command("/system/bin/am", "start", "--display", String.valueOf(virtualScreen.id), "-n", "com.wukong.phone/.VirtualHomeActivity");
+            command("/system/bin/am", "start", "--display", String.valueOf(virtualScreen.id), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
             return virtualScreen.status(false);
         }
         if (method.equals("virtualStop")) {
@@ -215,7 +215,9 @@ public final class Main {
         String kind = request.getString("kind");
         if (kind.equals("back")) { key(KeyEvent.KEYCODE_BACK); return "accepted"; }
         if (kind.equals("home")) {
-            command("/system/bin/am", "start", "--display", String.valueOf(virtualScreen.id), "-n", "com.wukong.phone/.VirtualHomeActivity"); return "accepted";
+            String result = command("/system/bin/am", "start", "--display", String.valueOf(virtualScreen.id), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
+            if (result.contains("Error:")) throw new IllegalStateException("无法返回虚拟桌面");
+            return "accepted";
         }
         if (kind.equals("text")) {
             String text = request.getString("text");
@@ -287,7 +289,7 @@ public final class Main {
                 break;
             case "home":
                 if (targetDisplay.get() == 0) success = key(KeyEvent.KEYCODE_HOME);
-                else success = !command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-n", "com.wukong.phone/.VirtualHomeActivity").contains("Error:");
+                else success = !command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity").contains("Error:");
                 break;
             case "back": success = key(KeyEvent.KEYCODE_BACK); break;
             case "launch":
