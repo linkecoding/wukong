@@ -72,6 +72,14 @@ App 默认跟随系统语言，暂不支持的语言回退到英文；可在「�
 
 虚拟屏预览当前采用约 3 帧/秒的 JPEG 更新，适合观察和轻量接管，不是高帧率视频。部分应用限制多屏、复用单任务或显示受保护内容，无法保证所有应用同时在主屏与虚拟屏独立运行。
 
+## 执行架构
+
+![悟空 Android 执行架构](docs/images/architecture/wukong-architecture.zh-CN.svg)
+
+模型负责提出动作，悟空在本机校验并通过 shell 引擎执行。QuickJS 在隔离进程中运行，只能经受限 SDK 回到任务校验层；无线 ADB 在系统授权后激活执行引擎。需要用户自行配置模型 API Key，OCR 在手机本机运行。
+
+[架构说明](docs/architecture.md) · [下载高清配图](docs/images/architecture/wukong-architecture.zh-CN.png) · [English diagram](docs/images/architecture/wukong-architecture.en.png)
+
 ## 工程与构建
 
 使用 JDK 17、Android SDK 35、Build Tools 35.0.0、NDK 28.2.13676358 和 CMake 3.22.1。项目固定 AGP 8.9.2、Gradle 8.11.1、Kotlin 2.1.10。

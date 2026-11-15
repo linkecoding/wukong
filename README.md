@@ -66,6 +66,14 @@ Virtual-display previews currently update at about 3 fps. Protected content and 
 
 To report a problem, open **task card > Execution details > top-right menu > Export this run** (also available from sidebar History). Save or share the ZIP containing `events.jsonl` and `manifest.json` (app/Android versions, device model and event count). It excludes screenshots and credentials from model configuration. Task text and tool arguments/results may still contain private information; review before sharing. Connection diagnostics support the same single-run export.
 
+## How it works
+
+![Wukong Android execution architecture](docs/images/architecture/wukong-architecture.en.svg)
+
+Your configured model proposes actions; Wukong validates and executes them through its local shell engine. QuickJS runs in an isolated process and calls the same task validator through a restricted SDK. Wireless ADB activates the engine after system authorization. Users supply their own model API key; OCR runs on-device.
+
+[Architecture details](docs/architecture.md) · [Download image](docs/images/architecture/wukong-architecture.en.png) · [中文架构图](docs/images/architecture/wukong-architecture.zh-CN.png)
+
 ## Build
 
 Required: JDK 17, Android SDK 35, Build Tools 35.0.0, NDK 28.2.13676358, CMake 3.22.1. Versions are pinned to Gradle 8.11.1, AGP 8.9.2, and Kotlin 2.1.10.

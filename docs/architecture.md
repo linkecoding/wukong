@@ -1,10 +1,14 @@
-# 悟空 shell 执行架构
+# 悟空 Android 执行架构
 
-悟空 0.4 通过 ADB 启动独立 app_process，不再使用或回退到用户授权的无障碍服务。Android App 与 shell 进程之间有清晰的权限和数据边界。
+悟空通过内置无线 ADB 启动独立 app_process，不需要启用无障碍服务。Android App、隔离 JS 进程与 shell 进程之间有独立的权限和数据边界。模型服务由用户选择，API Key 由用户自行配置。
 
-## 两个进程
+![悟空 Android 执行架构](images/architecture/wukong-architecture.zh-CN.svg)
 
-普通 App 运行 `MainActivity`、`TaskRuntime`、`ChatModel` 和 `WukongService`。其中 `WukongService` 是普通前台 Service，只展示应用悬浮窗和带停止动作的通知，不能读屏或注入输入。模型 API Key 保留在 App 中。
+[高清 PNG](images/architecture/wukong-architecture.zh-CN.png) · [English diagram](images/architecture/wukong-architecture.en.svg)
+
+## 进程与权限边界
+
+普通 App 运行 `MainActivity`、`TaskRuntime`、`ChatModel` 和 `WukongService`。其中 `WukongService` 是普通前台 Service，只展示应用悬浮窗和带停止动作的通知，不能读屏或注入输入。模型 API Key 由 App 管理，不交给 shell 或 JS。虚拟屏画面与接管由 VirtualScreenService 协调；JS 短流程在独立 isolated UID 的 Service 中运行，见下文。
 
 shell-runtime APK 包含 dex 入口 `com.wukong.shell.Main`，由 `adb shell` 设置 CLASSPATH 并调用 app_process。启动入口要求实际 UID 为 2000，App 自己运行该类不会获得权限。运行时通过反射创建 UiAutomationConnection 和 UiAutomation，使用独立事件线程；不向系统注册 AccessibilityService。隐藏 API 的兼容性需要真机验证。
 
@@ -43,21 +47,21 @@ shell-runtime APK 包含 dex 入口 `com.wukong.shell.Main`，由 `adb shell` �
 
 点击使用 shell UiAutomation 注入触摸；中文输入使用目标节点的 SET_TEXT；滚动使用节点滚动动作；返回和桌面通过按键事件注入。启动应用先解析 launcher 组件，再用参数数组启动该组件，不把包名拼进可执行 shell 文本。
 
-触摸前暂时收起 App 悬浮条，避免控制条拦截目标坐标，动作后恢复；前台通知始终保留停止入口。审批后 shell 再次核对快照，界面变化则拒绝，不做隐式重试。
+触摸前暂时收起 App 悬浮条，避免控制条拦截目标坐标，动作后恢复；前台通知始终保留停止入口。审批后 shell 再次核对快照，界面变化使旧审批失效。普通选择器动作只有在明确证明尚未注入输入的过期错误下，才能有界重读并重新解析；已接受或结果未知的动作不自动重放。
 
 ## 任务与取消
 
-默认整机操作，起始应用不限制后续范围。单任务最多 30 步，普通动作自动执行，敏感动作需一次性确认，审批最多等待两分钟。模型不能调用本机确认入口。
+默认整机操作，起始应用不限制后续范围。Android App 单次任务最多 50 轮模型决策（core 默认 30），普通动作自动执行，敏感动作需一次性确认，审批最多等待两分钟。模型不能调用本机确认入口。
 
 停止同时设置本地取消标记、中断工作线程、断开模型请求，并通过独立连接通知 shell。shell 在锁内检查任务状态后操作；已提交给 Android 的单次输入无法撤销。App 进程死亡不自动重放任务。
 
-shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 UID 下执行命令。重启后重新激活。会话在创建时绑定主屏或指定虚拟屏 ID；读屏、截图和输入都按该 ID 路由。0.4 使用内部协议版本 2，旧引擎需重新激活。
+shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 UID 下执行命令。重启后重新激活。会话在创建时绑定主屏或指定虚拟屏 ID；读屏、截图和输入都按该 ID 路由。当前使用内部协议版本 2，旧引擎需重新激活。
 
 无线 ADB 的 TLS 使用系统 adbd 自签名证书，按 ADB 配对协议处理，不能复用到模型 HTTPS 请求。该传输只允许手机回环地址；模型网络请求仍使用系统标准证书校验。
 
 ## 条件工具与完成验证
 
-模型新增 `phone_query`、`phone_wait_until`、`phone_verify`。通过已有 `observe` 接口获取带资源 ID、类型、父节点与控件状态的快照，在 App 工作线程筛选、分页和检查条件。默认只向模型展示最多 60 个节点的概览，可按需查询较大的底层快照。等待不要求整个页面停止变化。缺失且来源不完整的内容返回 unknown。成功结束前重新核对页面条件；未提供条件时用最新截图/OCR 单独复核，并在复核后检查页面是否变化。详情见 [查询、等待与完成证据](architecture/condition-tools.md)。
+模型新增 `phone_query`、`phone_wait_until`、`phone_verify`。通过已有 `observe` 接口获取带资源 ID、类型、父节点与控件状态的快照，在 App 工作线程筛选、分页和检查条件。默认只向模型展示最多 60 个节点的概览，可按需查询较大的底层快照。等待不要求整个页面停止变化。缺失且来源不完整的内容返回 unknown。成功结束前重新核对页面条件；App 配置的复核器还会核对目标、摘要与任务内原生证据。未提供条件时补充最新截图/OCR。复核后再次检查页面是否变化；显式基础算式另有独立算术校验。详情见 [查询、等待与完成证据](architecture/condition-tools.md)。
 
 ## JS 短流程
 

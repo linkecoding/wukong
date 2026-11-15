@@ -52,6 +52,14 @@ OCR は端末内で実行しますが、目標、追加依頼のための直近�
 
 [設計・検証・第三者ライセンスの資料](README.md#technical-notes)をご確認ください。Wukong 自体のソースライセンスはまだ選択していません。公開リポジトリであることだけでは、オープンソースの利用許諾にはなりません。
 
+## 実行アーキテクチャ
+
+![Wukong Android execution architecture](docs/images/architecture/wukong-architecture.en.svg)
+
+設定したモデルが操作を提案し、Wukong が検証して端末内の shell エンジンで実行します。QuickJS は分離プロセスで動作し、制限された SDK 経由で同じ検証層を呼び出します。モデルの API キーはユーザー自身で用意します。
+
+[アーキテクチャ](docs/architecture.md) · [PNG をダウンロード](docs/images/architecture/wukong-architecture.en.png)
+
 ## ビルドとリリース
 
 `main` と PR ではビルド、単体テスト、lint を実行します。`v0.0.2` のようなタグで、署名付き arm64 / universal APK を構築し、署名と 16 KB アラインメントを確認して GitHub Release を公開します。秘密鍵は公開ソースに含めず、ローカルと Actions Secrets に保存します。[リリース手順](docs/releasing.md)を参照してください。
