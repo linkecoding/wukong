@@ -80,4 +80,8 @@ ART, Binder, graphics and native-library runtime threads are outside these expli
 
 On the physical Pixel 6, controlled UI text transitions settled in 771 ms / 7 samples; continuous updates returned an unsettled latest snapshot in 1,817 ms / 15 samples. A fixture node action returned in 64 ms without a fixed post-action sleep. The stale repeat was rejected before a second click. OCR took 573 ms in that fixture run and its fresh capture supported a coordinate click. These are observations from one run, not cross-device benchmarks.
 
-Provider compatibility tests and a real-model virtual-display task with manual takeover/handoff passed. Debug/release builds and app/shell lint passed. New App builds require the runtime's uiEvents capability; older runtimes show the existing update/reactivation path. No new service app or enabled AccessibilityService is required.
+Provider compatibility tests and a real-model virtual-display task with manual takeover/handoff passed. Debug/release builds and app/shell lint passed. New App builds require the runtime's uiEvents and inspection capabilities; older runtimes show the existing update/reactivation path. No new service app or enabled AccessibilityService is required.
+
+## Condition-based tools
+
+The task loop now also exposes read-only query/wait/verify tools on the same worker. Condition waits sample fresh trees without global quiet settling, and cancellation/control epochs are checked between reads. The default model overview is compact; queries access the larger bounded source. Successful finish requires fresh deterministic evidence or a separate fresh screenshot/OCR review. See [condition tools](condition-tools.md) for contracts and limitations.

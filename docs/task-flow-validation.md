@@ -66,3 +66,7 @@ A physical Pixel 6 test exercised the real keyboard on the task field and model 
 The fixed post-action 650 ms sleep is replaced by UI-event-assisted snapshot settling. See [the implementation and thread inventory](architecture/observation-and-threads.md) for timing policy, compatibility and observed test results. Changes before injection now enter model history as unexecuted tool results; unknown effects remain non-retriable. A changed approval is discarded and requires a new decision/confirmation.
 
 [Browser-use and article review](architecture/browser-use-review.md) records recommendations separately from delivered features.
+
+## Target conditions and completion evidence (2026-11-15)
+
+Implemented `phone_query`, `phone_wait_until`, and `phone_verify`, compact/focused observations and paginated source queries. Successful finish checks fresh conditions or uses a separate screenshot/OCR review; incomplete tasks no longer receive COMPLETED. Failed finishes return evidence to the model without replaying device effects. Details, limits and current validation are in [condition tools](architecture/condition-tools.md).

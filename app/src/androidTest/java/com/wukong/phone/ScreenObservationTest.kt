@@ -83,6 +83,7 @@ class ScreenObservationTest {
                 val started = SystemClock.elapsedRealtime()
                 driver.execute(action, ready)
                 report.put("executeMs", SystemClock.elapsedRealtime() - started)
+                driver.execute(Action.WaitUntil(listOf(com.wukong.core.ScreenCondition(com.wukong.core.NodeSelector(textEquals = "settling-fixture-click-1")))), ready)
                 assertEquals(1, clicks.get())
                 val stale = runCatching { driver.execute(action, ready) }.exceptionOrNull()
                 assertTrue(stale?.message.orEmpty().startsWith("界面已更新，本次操作未执行"))
@@ -95,6 +96,7 @@ class ScreenObservationTest {
                 val frame = visual.visual ?: error("OCR must retain a current capture")
                 val target = frame.lines.firstOrNull { it.text.lowercase().contains("change") } ?: error("Fixture button must be recognized")
                 driver.execute(Action.TapAt((target.bounds.left + target.bounds.right) / 2, (target.bounds.top + target.bounds.bottom) / 2, frame.id), visual)
+                driver.execute(Action.WaitUntil(listOf(com.wukong.core.ScreenCondition(com.wukong.core.NodeSelector(textEquals = "settling-fixture-click-2")))), visual)
                 assertEquals("Coordinate path accepts the fresh capture exactly once", 2, clicks.get())
                 i.runOnMainSync {
                     assertTrue("Observe must reject UI-thread calls before doing IO", runCatching { driver.observe() }.exceptionOrNull() is IllegalStateException)

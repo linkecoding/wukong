@@ -119,7 +119,7 @@ public final class Main {
     private Object dispatch(JSONObject request) throws Exception {
         targetDisplay.set(0);
         String method = request.getString("method");
-        if (method.equals("status")) return new JSONObject().put("uid", android.os.Process.myUid()).put("protocol", 2).put("engine", "app_process").put("uiEvents", true);
+        if (method.equals("status")) return new JSONObject().put("uid", android.os.Process.myUid()).put("protocol", 2).put("engine", "app_process").put("uiEvents", true).put("inspection", true);
         if (method.startsWith("virtual") || method.equals("setControl") || method.equals("manualInput")) {
             synchronized (deviceLock) { return virtualRequest(method, request); }
         }
@@ -145,6 +145,7 @@ public final class Main {
             if (method.equals("capture")) {
                 try (Tree tree = read()) {
                     verifySnapshot(request, tree);
+                    if (tree.incomplete) throw new SecurityException("页面结构读取不完整，请手动处理");
                     if (tree.sensitive) throw new SecurityException("检测到受保护输入，请手动处理");
                     Bitmap image = captureDisplay();
                     if (image == null) throw new IllegalStateException("系统未提供截图，当前画面可能受保护");
@@ -167,6 +168,7 @@ public final class Main {
             JSONObject action = request.getJSONObject("action");
             try (Tree tree = read()) {
                 verifySnapshot(request, tree);
+                if (tree.incomplete) throw new SecurityException("页面结构读取不完整，请手动处理");
                 if (tree.sensitive) throw new SecurityException("检测到受保护输入，请手动处理");
                 checkTask(taskId);
                 execute(action, tree, taskId);
@@ -400,12 +402,13 @@ public final class Main {
             if (!relevant.contains(root.getWindowId())) relevant.add(root.getWindowId());
             StringBuilder signature = new StringBuilder(pkg).append('|').append(windowSignature.get());
             JSONArray nodes = new JSONArray();
-            visit(root, tree, nodes, signature, 0);
+            visit(root, tree, nodes, signature, 0, null);
+            signature.append(":truncated=").append(tree.truncated);
             byte[] digest = MessageDigest.getInstance("SHA-256").digest(signature.toString().getBytes(StandardCharsets.UTF_8));
             StringBuilder hash = new StringBuilder(); for (byte b : digest) hash.append(String.format(Locale.ROOT, "%02x", b));
             long[] change = uiChanges.snapshot(relevant, SystemClock.uptimeMillis());
             tree.json = new JSONObject().put("package", pkg).put("fingerprint", hash.toString()).put("nodes", nodes)
-                .put("uiEvents", true).put("uiRevision", change[0]).put("uiQuietMs", change[1]);
+                .put("uiEvents", true).put("uiRevision", change[0]).put("uiQuietMs", change[1]).put("truncated", tree.truncated);
             return tree;
         } catch (Exception e) { tree.close(); throw e; }
     }
@@ -445,28 +448,33 @@ public final class Main {
         return root;
     }
 
-    private void visit(AccessibilityNodeInfo node, Tree tree, JSONArray output, StringBuilder signature, int depth) throws Exception {
+    private void visit(AccessibilityNodeInfo node, Tree tree, JSONArray output, StringBuilder signature, int depth, Integer parentId) throws Exception {
         tree.all.add(node);
-        if (tree.all.size() > 1500 || depth > 40) throw new IllegalStateException("界面过于复杂");
+        if (tree.all.size() > 1500 || depth > 40) { tree.truncated = true; tree.incomplete = true; return; }
+        Integer currentParent = parentId;
         if (node.isVisibleToUser()) {
             String raw = join(node.getText(), node.getContentDescription(), node.getHintText());
+            if (raw.length() >= 300) tree.truncated = true;
             boolean sensitive = node.isPassword() || (node.isEditable() && SENSITIVE.matcher(raw).find());
             String text = sensitive ? "[受保护内容]" : raw;
             tree.sensitive |= sensitive;
-            boolean clickable = node.isClickable() && node.isEnabled();
-            boolean editable = node.isEditable() && node.isEnabled();
-            boolean scrollable = node.isScrollable() && node.isEnabled();
+            boolean clickable = node.isClickable();
+            boolean editable = node.isEditable();
+            boolean scrollable = node.isScrollable();
             Rect bounds = new Rect(); node.getBoundsInScreen(bounds);
-            signature.append('|').append(node.getViewIdResourceName()).append(':').append(node.getClassName()).append(':').append(bounds.toShortString()).append(':').append(text).append(':').append(clickable).append(editable).append(scrollable);
-            if (!text.isEmpty() || clickable || editable || scrollable || sensitive) {
-                if (output.length() >= 500) throw new IllegalStateException("界面节点过多");
-                int id = output.length() + 1; tree.nodes.put(id, node);
-                output.put(new JSONObject().put("id", id).put("text", text).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable).put("sensitive", sensitive)
-                    .put("bounds", new JSONObject().put("left", Math.max(0,bounds.left)*1000/tree.width).put("top", Math.max(0,bounds.top)*1000/tree.height)
-                        .put("right", Math.min(tree.width,bounds.right)*1000/tree.width).put("bottom", Math.min(tree.height,bounds.bottom)*1000/tree.height)));
-            }
+            signature.append('|').append(parentId).append(':').append(node.isCheckable()).append(':').append(node.getViewIdResourceName()).append(':').append(node.getClassName()).append(':').append(bounds.toShortString()).append(':').append(text).append(':').append(clickable).append(editable).append(scrollable).append(':').append(node.isEnabled()).append(':').append(node.isChecked()).append(':').append(node.isSelected());
+            int id = output.length() + 1; tree.nodes.put(id, node); currentParent = id;
+            output.put(new JSONObject().put("id", id).put("text", text).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable).put("sensitive", sensitive)
+                .put("resourceId", node.getViewIdResourceName() == null ? "" : node.getViewIdResourceName()).put("className", String.valueOf(node.getClassName()))
+                .put("parentId", parentId == null ? JSONObject.NULL : parentId).put("enabled", node.isEnabled())
+                .put("checked", node.isCheckable() ? node.isChecked() : JSONObject.NULL).put("selected", node.isSelected())
+                .put("bounds", new JSONObject().put("left", Math.max(0,bounds.left)*1000/tree.width).put("top", Math.max(0,bounds.top)*1000/tree.height)
+                    .put("right", Math.min(tree.width,bounds.right)*1000/tree.width).put("bottom", Math.min(tree.height,bounds.bottom)*1000/tree.height)));
         }
-        for (int i = 0; i < node.getChildCount(); i++) { AccessibilityNodeInfo child = node.getChild(i); if (child != null) visit(child, tree, output, signature, depth + 1); }
+        for (int i = 0; i < node.getChildCount(); i++) {
+            if (tree.all.size() >= 1500) { tree.truncated = true; tree.incomplete = true; break; }
+            AccessibilityNodeInfo child = node.getChild(i); if (child != null) visit(child, tree, output, signature, depth + 1, currentParent);
+        }
     }
 
     private static String join(CharSequence... values) {
@@ -489,7 +497,7 @@ public final class Main {
     private static final class Tree implements AutoCloseable {
         int width, height;
         JSONObject json;
-        boolean sensitive;
+        boolean sensitive, truncated, incomplete;
         final Map<Integer, AccessibilityNodeInfo> nodes = new HashMap<>();
         final List<AccessibilityNodeInfo> all = new ArrayList<>();
         @SuppressWarnings("deprecation") public void close() { for (AccessibilityNodeInfo node : all) node.recycle(); }

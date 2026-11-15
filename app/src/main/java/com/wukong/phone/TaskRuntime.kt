@@ -95,7 +95,7 @@ object TaskRuntime {
                     for (attempt in 0 until 40) { token.check(); if (WukongService.instance != null) break; Thread.sleep(50) }
                     val controls = WukongService.instance ?: error("无法启动任务控制条")
                     controls.onMain { controls.showControls() }
-                    val driver = AndroidDriver(session, token, trace)
+                    val driver = AndroidDriver(session, token, trace, control)
                     activeDriver = driver
                     if (control.epoch == 0L) {
                         try {
@@ -119,7 +119,7 @@ object TaskRuntime {
                         try { request.answer.get(120, TimeUnit.SECONDS).also { trace?.record("approval_result", JSONObject().put("allowed", it)) } }
                         catch (_: java.util.concurrent.TimeoutException) { false }
                         finally { pending = null; notifyChanged() }
-                    }, control = control).run(goal, token) { value ->
+                    }, control = control, completionVerifier = CompletionVerifier(model::verifyCompletion)).run(goal, token) { value ->
                         trace?.record("agent_event", JSONObject().put("step", value.step).put("phase", value.phase.name).put("message", value.message))
                         publish(value)
                     }

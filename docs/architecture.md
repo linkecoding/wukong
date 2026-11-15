@@ -8,7 +8,7 @@
 
 shell-runtime APK 包含 dex 入口 `com.wukong.shell.Main`，由 `adb shell` 设置 CLASSPATH 并调用 app_process。启动入口要求实际 UID 为 2000，App 自己运行该类不会获得权限。运行时通过反射创建 UiAutomationConnection 和 UiAutomation，使用独立事件线程；不向系统注册 AccessibilityService。隐藏 API 的兼容性需要真机验证。
 
-`agent-core` 仍是纯 Kotlin：模型提出动作、引擎校验、等待本机确认、驱动执行、读取新界面。`AndroidDriver` 现在只调用 `ShellSession`，所有设备观察与变更都在 shell 中执行。
+`agent-core` 仍是纯 Kotlin：模型提出动作、引擎校验、等待本机确认、驱动执行、读取新界面。`AndroidDriver` 现在只调用 `ShellSession`，底层设备读屏与变更都在 shell 中执行；查询筛选、条件等待编排与完成验证在 App 工作线程执行。
 
 ## 激活与通道
 
@@ -54,3 +54,7 @@ shell-runtime APK 包含 dex 入口 `com.wukong.shell.Main`，由 `adb shell` �
 shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 UID 下执行命令。重启后重新激活。会话在创建时绑定主屏或指定虚拟屏 ID；读屏、截图和输入都按该 ID 路由。0.4 使用内部协议版本 2，旧引擎需重新激活。
 
 无线 ADB 的 TLS 使用系统 adbd 自签名证书，按 ADB 配对协议处理，不能复用到模型 HTTPS 请求。该传输只允许手机回环地址；模型网络请求仍使用系统标准证书校验。
+
+## 条件工具与完成验证
+
+模型新增 `phone_query`、`phone_wait_until`、`phone_verify`。通过已有 `observe` 接口获取带资源 ID、类型、父节点与控件状态的快照，在 App 工作线程筛选、分页和检查条件。默认只向模型展示最多 60 个节点的概览，可按需查询较大的底层快照。等待不要求整个页面停止变化。缺失且来源不完整的内容返回 unknown。成功结束前重新核对页面条件；未提供条件时用最新截图/OCR 单独复核，并在复核后检查页面是否变化。详情见 [查询、等待与完成证据](architecture/condition-tools.md)。

@@ -619,6 +619,8 @@ class MainActivity : LocalizedActivity() {
                     "observation_error" -> R.string.ui_observation_failed; "model_request" -> R.string.ui_model_request
                     "model_response" -> R.string.ui_model_response_tokens; "model_error" -> R.string.ui_model_error
                     "tool_call" -> R.string.ui_tool_call; "device_action" -> R.string.ui_device_action; "device_result" -> R.string.ui_result
+                    "inspection_result" -> R.string.ui_inspection_result; "inspection_error" -> R.string.ui_observation_failed
+                    "completion_verification", "completion_review_started", "completion_review" -> R.string.ui_completion_verification
                     "device_error" -> R.string.ui_device_error; "approval_requested" -> R.string.ui_approval_requested
                     "approval_result" -> R.string.ui_approval_result; "end" -> R.string.ui_finished; else -> R.string.ui_task_status
                 }

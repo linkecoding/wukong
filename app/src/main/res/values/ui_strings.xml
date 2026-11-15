@@ -245,4 +245,6 @@
     <string name="ui_completed">Completed</string>
     <string name="ui_usage_note">Totals include reported usage only.</string>
     <string name="ui_preparation">Preparation</string>
+    <string name="ui_inspection_result">Query / condition result</string>
+    <string name="ui_completion_verification">Completion verification</string>
 </resources>

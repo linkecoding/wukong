@@ -22,6 +22,7 @@ The app follows your **system language** by default (Chinese or English, with En
 - **See beyond UI elements.** Screenshots, on-device PP-OCRv6 tiny OCR, coordinate taps, long presses, and swipes supplement structured UI automation.
 - **Watch and take over.** Run on the main display or a virtual display. Its preview is embedded in Wukong and floats when Wukong goes into the background. Manual takeover pauses the agent; handing back control triggers a fresh observation.
 - **Bring your own model.** Connect a tool-calling Chat Completions compatible endpoint. Configure any HTTPS base URL or an exact request URL. Thinking is off by default where supported; models that require thinking are identified in the UI.
+- **Wait for results and verify outcomes.** Query matching controls or regions, wait for result/error conditions, and check fresh evidence before reporting success. See [query and verification behavior](docs/architecture/condition-tools.md).
 - **Inspect each task.** Open a history card to see its result, provider-reported token usage and grouped execution timeline. Expand an event for the recorded tool arguments and results. Optional logs remain on the phone. Save or share one run as a ZIP from its top-right menu.
 
 Wukong includes wireless ADB pairing and its execution engine. **No root, enabled AccessibilityService, or companion app is required.** The app remains a normal Android app; user-authorized wireless debugging starts an `app_process` shell process (UID 2000).
@@ -59,7 +60,7 @@ Required: JDK 17, Android SDK 35, Build Tools 35.0.0, NDK 28.2.13676358, CMake 3
 
 ```sh
 # Configure JAVA_HOME and ANDROID_HOME first.
-./scripts/gradle-local.sh :agent-core:test :app:testDebugUnitTest :app:assembleDebug :app:lintDebug :shell-runtime:lintDebug
+./scripts/gradle-local.sh :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:assembleDebug :app:lintDebug :shell-runtime:lintDebug
 
 # Smaller development build for an arm64 phone
 ./scripts/gradle-local.sh -PtargetAbi=arm64-v8a :app:assembleDebug

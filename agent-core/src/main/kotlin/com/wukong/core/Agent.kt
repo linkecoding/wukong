@@ -8,6 +8,8 @@ data class UiNode(
     val clickable: Boolean = false, val scrollable: Boolean = false,
     val sensitive: Boolean = false,
     val bounds: Bounds? = null,
+    val resourceId: String = "", val className: String = "", val parentId: Int? = null,
+    val enabled: Boolean = true, val checked: Boolean? = null, val selected: Boolean = false,
 )
 
 data class Bounds(val left: Int, val top: Int, val right: Int, val bottom: Int) {
@@ -16,7 +18,7 @@ data class Bounds(val left: Int, val top: Int, val right: Int, val bottom: Int) 
 data class OcrLine(val text: String, val bounds: Bounds)
 data class VisualFrame(val id: String, val width: Int, val height: Int, val lines: List<OcrLine>, val jpegBase64: String? = null)
 data class Observation(val settled: Boolean, val samples: Int, val elapsedMillis: Long, val uiEvents: Boolean = false)
-data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null, val observation: Observation? = null, val uiRevision: Long = 0, val uiQuietMillis: Long = Long.MAX_VALUE, val uiEvents: Boolean = false)
+data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null, val observation: Observation? = null, val uiRevision: Long = 0, val uiQuietMillis: Long = Long.MAX_VALUE, val uiEvents: Boolean = false, val truncated: Boolean = false)
 
 sealed interface Action {
     data class Tap(val nodeId: Int) : Action
@@ -26,7 +28,10 @@ sealed interface Action {
     data object Home : Action
     data object Back : Action
     data class Wait(val milliseconds: Long) : Action
-    data class Finish(val summary: String) : Action
+    data class Finish(val summary: String, val outcome: TaskOutcome = TaskOutcome.SUCCESS, val evidence: List<ScreenCondition> = emptyList()) : Action
+    data class Query(val selector: NodeSelector = NodeSelector(), val limit: Int = 20, val offset: Int = 0) : Action
+    data class WaitUntil(val conditions: List<ScreenCondition>, val matchAll: Boolean = false, val timeoutMillis: Long = 5000) : Action
+    data class Verify(val conditions: List<ScreenCondition>, val matchAll: Boolean = true) : Action
     data object Screenshot : Action
     data object Ocr : Action
     data class TapAt(val x: Int, val y: Int, val captureId: String) : Action
@@ -42,7 +47,10 @@ fun Action.label(): String = when (this) {
     Action.Home -> "返回桌面"
     Action.Back -> "返回上一页"
     is Action.Wait -> "等待界面更新"
-    is Action.Finish -> "结束任务"
+    is Action.Finish -> "验证并结束任务"
+    is Action.Query -> "查询页面控件"
+    is Action.WaitUntil -> "等待目标条件"
+    is Action.Verify -> "核对页面结果"
     Action.Screenshot -> "截取当前画面"
     Action.Ocr -> "识别画面文字"
     is Action.TapAt -> "点击坐标 ($x, $y)"
@@ -56,6 +64,7 @@ interface DeviceDriver {
     fun observe(): Screen
     /** Must independently verify app scope and snapshot immediately before acting. */
     fun execute(action: Action, expected: Screen): String
+    fun verify(conditions: List<ScreenCondition>, screen: Screen): ConditionReport = Conditions.evaluate(screen, conditions, true)
 }
 fun interface Approval { fun request(action: Action, screen: Screen): Boolean }
 
@@ -74,6 +83,7 @@ class Agent(
     private val allowedPackage: String? = null, private val maxSteps: Int = 30,
     private val approvalRequired: (Action, Screen) -> Boolean = SensitiveActions::requiresApproval,
     private val control: ExecutionControl = ExecutionControl(),
+    private val completionVerifier: CompletionVerifier? = null,
 ) {
     init { require(allowedPackage == null || allowedPackage.isNotBlank()); require(maxSteps in 1..100) }
 
@@ -85,6 +95,7 @@ class Agent(
             val history = mutableListOf<Turn>()
             var staleRetries = 0
             var validationRetries = 0
+            var completionRetries = 0
             event(Phase.RUNNING, "正在读取目标应用")
             repeat(maxSteps) {
                 step = it + 1
@@ -113,8 +124,52 @@ class Agent(
                 }
                 validationRetries = 0
                 if (action is Action.Finish) {
-                    require(action.summary.isNotBlank() && action.summary.length <= 2000) { "模型返回的结果无效" }
-                    return event(Phase.COMPLETED, action.summary)
+                    try {
+                        require(action.summary.isNotBlank() && action.summary.length <= 2000) { "模型返回的结果无效" }
+                        if (action.outcome == TaskOutcome.INCOMPLETE) return event(Phase.FAILED, action.summary)
+                        event(Phase.RUNNING, "正在核对任务完成证据")
+                        var fresh = driver.observe()
+                        cancellation.check()
+                        if (control.epoch != epoch) return@repeat
+                        require(allowedPackage == null || fresh.packageName == allowedPackage) { "已离开授权应用，请接管后重新开始" }
+                        require(fresh.nodes.none { node -> node.sensitive }) { "检测到受保护输入，请手动处理" }
+                        var verdict = if (action.evidence.isNotEmpty()) {
+                            val report = driver.verify(action.evidence, fresh)
+                            CompletionCheck(report.state == CheckState.MET, "当前页面条件：${report.state}；${report.checks.map { it.state }}")
+                        } else if (completionVerifier != null) {
+                            // Visual/semantic completion needs fresh evidence, not a cached old image.
+                            driver.execute(Action.Screenshot, fresh)
+                            fresh = driver.observe()
+                            cancellation.check()
+                            if (control.epoch != epoch) return@repeat
+                            require(allowedPackage == null || fresh.packageName == allowedPackage) { "已离开授权应用，请接管后重新开始" }
+                            require(fresh.nodes.none { node -> node.sensitive }) { "检测到受保护输入，请手动处理" }
+                            completionVerifier.verify(goal, action.summary, fresh, history.takeLast(8))
+                        } else CompletionCheck(false, "缺少完成证据，请提供与任务目标对应的页面条件")
+                        if (action.evidence.isEmpty() && completionVerifier != null) {
+                            val afterReview = driver.observe()
+                            if (afterReview.packageName != fresh.packageName || afterReview.fingerprint != fresh.fingerprint) {
+                                verdict = CompletionCheck(false, "复核期间页面发生变化，请核对最新结果")
+                            }
+                            fresh = afterReview
+                            require(allowedPackage == null || fresh.packageName == allowedPackage) { "已离开授权应用，请接管后重新开始" }
+                            require(fresh.nodes.none { node -> node.sensitive }) { "检测到受保护输入，请手动处理" }
+                        }
+                        cancellation.check()
+                        if (control.epoch != epoch) return@repeat
+                        if (verdict.verified) return event(Phase.COMPLETED, action.summary)
+                        history += Turn(fresh, action, "完成验证未通过：${verdict.detail}。没有因此重放任何操作。请检查当前结果，继续完成任务；无法确认时用 incomplete 结束，不能再次盲目发送或支付。")
+                        if (++completionRetries >= 3) return event(Phase.FAILED, "无法确认任务完成：${verdict.detail}")
+                        event(Phase.RUNNING, "尚未确认完成，正在检查结果")
+                        return@repeat
+                    } catch (error: IllegalStateException) {
+                        if (control.epoch != epoch) return@repeat
+                        if ((error.message?.startsWith("界面已更新，本次操作未执行") == true || error.message?.startsWith("截图已过期") == true) && staleRetries++ < 6) {
+                            history += Turn(screen, action, "完成验证未执行：界面已更新，请根据新页面核对结果，没有重放设备操作。")
+                            return@repeat
+                        }
+                        throw error
+                    }
                 }
                 if (approvalRequired(action, screen)) {
                     event(Phase.AWAITING_APPROVAL, action.label())
@@ -169,6 +224,7 @@ class Agent(
             else -> null
         }
         val node = nodeId?.let { id -> screen.nodes.singleOrNull { it.id == id } ?: error("模型引用了不存在的节点") }
+        require(node == null || node.enabled) { "目标控件尚未启用，请等待可操作状态" }
         when (action) {
             is Action.TapAt -> coordinates(action.x, action.y, action.captureId)
             is Action.LongPress -> { coordinates(action.x, action.y, action.captureId); require(action.duration in 400..2000) { "长按时长须为 400–2000 毫秒" } }
@@ -182,6 +238,8 @@ class Agent(
                 require(action.text.length in 1..2000) { "输入文本长度无效" }
             }
             is Action.Scroll -> require(node!!.scrollable) { "目标节点不可滚动" }
+            is Action.Query, is Action.WaitUntil, is Action.Verify -> Inspector.validate(action)
+            is Action.Finish -> { require(action.summary.isNotBlank() && action.summary.length <= 2000) { "模型返回的结果无效" }; if (action.evidence.isNotEmpty()) Conditions.validate(action.evidence) }
             is Action.Wait -> require(action.milliseconds in 200..2000) { "等待时间超出范围" }
             is Action.Launch -> require(Regex("[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)+").matches(action.packageName)) { "应用包名无效" }
             else -> Unit

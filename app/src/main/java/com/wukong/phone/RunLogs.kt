@@ -6,7 +6,7 @@ import org.json.JSONArray
 import java.io.File
 import java.util.UUID
 
-/** Bounded, app-private JSONL traces. Never records request headers or raw screen contents. */
+/** Bounded, app-private JSONL traces. Records selected query/verification evidence, never request headers or screenshot bytes. */
 class RunLogStore(context: Context, private val namespace: String = "") {
     init { require(namespace.matches(Regex("(-[a-z]+)?"))) }
     private val app = context.applicationContext

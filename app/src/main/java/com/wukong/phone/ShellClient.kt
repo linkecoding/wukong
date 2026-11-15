@@ -25,12 +25,12 @@ class ShellClient(context: Context, private val credentialOverride: String? = nu
                 socket.getOutputStream().flush()
                 val out = java.io.ByteArrayOutputStream()
                 val input = java.io.BufferedInputStream(socket.getInputStream())
-                while (out.size() < 1_048_576) {
+                while (out.size() < 4_194_304) {
                     val next = input.read()
                     if (next < 0 || next == 10) break
                     out.write(next)
                 }
-                require(out.size() < 1_048_576) { "设备响应过大" }
+                require(out.size() < 4_194_304) { "设备响应过大" }
                 val response = JSONObject(out.toString("UTF-8"))
                 check(response.getBoolean("ok")) { response.optString("error", "设备操作失败") }
                 return response.get("result")
@@ -38,7 +38,7 @@ class ShellClient(context: Context, private val credentialOverride: String? = nu
         } catch (e: java.io.IOException) { throw IllegalStateException("执行引擎连接不可用，请在手机内重新激活") }
     }
     fun status(): JSONObject = (request("status") as JSONObject).also {
-        check(it.getInt("uid") == 2000 && it.getInt("protocol") == 2 && it.getString("engine") == "app_process" && it.optBoolean("uiEvents")) { "执行引擎需更新，请在手机内重新激活" }
+        check(it.getInt("uid") == 2000 && it.getInt("protocol") == 2 && it.getString("engine") == "app_process" && it.optBoolean("uiEvents") && it.optBoolean("inspection")) { "执行引擎需更新，请在手机内重新激活" }
     }
     companion object { const val PORT = 43219 }
 }
@@ -53,13 +53,18 @@ class ShellSession(context: Context, val displayId: Int = 0) : AutoCloseable {
     override fun close() { client.request("finishTask", JSONObject().put("taskId", id)) }
 }
 
-fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fingerprint"), getJSONArray("nodes").toNodes(), uiRevision = optLong("uiRevision", 0), uiQuietMillis = optLong("uiQuietMs", Long.MAX_VALUE), uiEvents = optBoolean("uiEvents"))
+fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fingerprint"), getJSONArray("nodes").toNodes(), uiRevision = optLong("uiRevision", 0), uiQuietMillis = optLong("uiQuietMs", Long.MAX_VALUE), uiEvents = optBoolean("uiEvents"), truncated = optBoolean("truncated"))
 private fun JSONArray.toNodes() = (0 until length()).map { index -> getJSONObject(index).let {
-    UiNode(it.getInt("id"), it.getString("text"), it.getBoolean("editable"), it.getBoolean("clickable"), it.getBoolean("scrollable"), it.getBoolean("sensitive"), it.optJSONObject("bounds")?.toBounds())
+    UiNode(it.getInt("id"), it.getString("text"), it.getBoolean("editable"), it.getBoolean("clickable"), it.getBoolean("scrollable"), it.getBoolean("sensitive"), it.optJSONObject("bounds")?.toBounds(),
+        it.optString("resourceId"), it.optString("className"), if (it.isNull("parentId")) null else it.getInt("parentId"),
+        it.optBoolean("enabled", true), if (it.isNull("checked")) null else it.getBoolean("checked"), it.optBoolean("selected"))
 } }
 fun JSONObject.toBounds() = Bounds(getInt("left"), getInt("top"), getInt("right"), getInt("bottom"))
 fun Action.toJson(): JSONObject = JSONObject().apply {
     when (val action = this@toJson) {
+        is Action.Query -> put("kind", "query").put("selector", action.selector.toJson()).put("limit", action.limit).put("offset", action.offset)
+        is Action.WaitUntil -> put("kind", "wait_until").put("conditions", JSONArray(action.conditions.map { it.toJson() })).put("matchAll", action.matchAll).put("timeoutMs", action.timeoutMillis)
+        is Action.Verify -> put("kind", "verify").put("conditions", JSONArray(action.conditions.map { it.toJson() })).put("matchAll", action.matchAll)
         is Action.Tap -> put("kind", "tap").put("nodeId", action.nodeId)
         is Action.Input -> put("kind", "input").put("nodeId", action.nodeId).put("text", action.text)
         is Action.Scroll -> put("kind", "scroll").put("nodeId", action.nodeId).put("forward", action.forward)

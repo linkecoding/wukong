@@ -59,7 +59,7 @@ class VirtualDisplayTest {
                 var screen = driver.observe()
                 assertEquals(context.packageName, screen.packageName)
                 assertTrue(screen.nodes.any { it.text.contains("悟空虚拟屏") })
-                val opened = Agent(Model { _, state, _ -> if (state.packageName == "com.android.settings") Action.Finish("opened") else Action.Launch("com.android.settings") },
+                val opened = Agent(Model { _, state, _ -> if (state.packageName == "com.android.settings") Action.Finish("opened", evidence = listOf(com.wukong.core.ScreenCondition(packageName = "com.android.settings"))) else Action.Launch("com.android.settings") },
                     driver, Approval { _, _ -> false }, maxSteps = 6).run("打开系统设置",Cancellation()) { }
                 assertEquals(opened.message,Phase.COMPLETED,opened.phase)
                 screen = driver.observe(); assertEquals("com.android.settings", screen.packageName)

@@ -255,4 +255,6 @@
     <string name="export_saved">日志已保存</string>
     <string name="export_missing">本次日志已不存在。</string>
     <string name="export_failed">日志导出失败</string>
+    <string name="ui_inspection_result">查询与条件结果</string>
+    <string name="ui_completion_verification">任务完成验证</string>
 </resources>

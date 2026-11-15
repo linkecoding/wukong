@@ -7,17 +7,25 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 
 /** Observations and mutations are performed by the separate UID 2000 app_process. */
-class AndroidDriver(private val session: ShellSession, private val cancellation: Cancellation = Cancellation(), private val trace: RunLog? = null) : DeviceDriver {
+class AndroidDriver(private val session: ShellSession, private val cancellation: Cancellation = Cancellation(), private val trace: RunLog? = null, private val control: ExecutionControl? = null) : DeviceDriver {
     @Volatile private var visual: VisualFrame? = null
     @Volatile private var visualFingerprint: String? = null
     fun invalidateVisual() { visual = null; visualFingerprint = null }
     private val settler = ScreenSettler()
+    private fun readNow(): Screen {
+        check(android.os.Looper.myLooper() != android.os.Looper.getMainLooper()) { "界面读取必须在后台线程运行" }
+        cancellation.check()
+        return (session.request("observe") as JSONObject).toScreen().also { cancellation.check() }
+    }
+    override fun verify(conditions: List<ScreenCondition>, screen: Screen): ConditionReport = super.verify(conditions, screen).also {
+        trace?.record("completion_verification", it.toJson())
+    }
     override fun observe(): Screen {
         check(android.os.Looper.myLooper() != android.os.Looper.getMainLooper()) { "界面读取必须在后台线程运行" }
         val started = android.os.SystemClock.elapsedRealtime()
         try {
             // Shell reads TYPE_APPLICATION windows; overlays need no UI-thread hide/show for node reads.
-            val screen = settler.observe({ (session.request("observe") as JSONObject).toScreen() }, cancellation::check)
+            val screen = settler.observe(::readNow, cancellation::check)
             if (screen.fingerprint != visualFingerprint) { visual = null; visualFingerprint = null }
             return screen.copy(visual = visual).also {
                 trace?.record("device_observation", JSONObject().put("package", it.packageName).put("nodeCount", it.nodes.size)
@@ -33,6 +41,23 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
     }
     override fun execute(action: Action, expected: Screen): String {
         cancellation.check()
+        check(android.os.Looper.myLooper() != android.os.Looper.getMainLooper()) { "设备操作必须在后台线程运行" }
+        if (action is Action.Query || action is Action.WaitUntil || action is Action.Verify) {
+            val epoch = control?.epoch
+            trace?.record("device_action", JSONObject().put("action", action.toJson()).put("package", expected.packageName))
+            try {
+                val result = Inspector(::readNow, {
+                    cancellation.check()
+                    check(control == null || !control.paused && control.epoch == epoch) { "用户正在接管，Agent 已暂停" }
+                }).run(action)
+                val json = result.toJson()
+                trace?.record("inspection_result", JSONObject().put("action", action.toJson()).put("result", json).put("durationMs", result.elapsedMillis))
+                return json.toString()
+            } catch (error: Exception) {
+                trace?.record("inspection_error", JSONObject().put("action", action.toJson()).put("message", error.message))
+                throw error
+            }
+        }
         if (action is Action.Wait) {
             Thread.sleep(action.milliseconds)
             trace?.record("device_result", JSONObject().put("action", JSONObject().put("kind", "wait").put("milliseconds", action.milliseconds)).put("result", "等待完成"))

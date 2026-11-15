@@ -28,9 +28,9 @@ class VisualControlTest {
         val model = Model { _,_,history ->
             decisions++
             if (decisions == 1) { control.pause(true); control.pause(false); Action.TapAt(200,150,"capture") }
-            else if (history.isEmpty()) Action.TapAt(200,150,"capture") else Action.Finish("done")
+            else if (history.isEmpty()) Action.TapAt(200,150,"capture") else Action.Finish("done", evidence = listOf(ScreenCondition(packageName = "demo.app")))
         }
         assertEquals(Phase.COMPLETED, Agent(model, driver, Approval { _,_ -> false }, control = control).run("test", Cancellation()) { }.phase)
-        assertEquals(1, executed); assertEquals(3, observations); assertEquals(3, decisions)
+        assertEquals(1, executed); assertEquals(4, observations); assertEquals(3, decisions)
     }
 }
