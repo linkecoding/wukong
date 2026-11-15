@@ -9,10 +9,10 @@
 現在 **[v0.0.2 のプレビュー版](https://github.com/linkecoding/wukong/releases/tag/v0.0.2)** を公開しています。Pixel 6 で主要な動作を検証していますが、他の端末との互換性や実際のタスクには、さらに検証が必要です。Codex skill / MCP 連携は計画段階で、まだ実装されていません。
 
 <p align="center">
-  <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4"><img src="docs/demo/wukong-demo.gif" width="320" alt="Android 実機で予算計算、手動操作への切り替え、実行結果を表示" /></a>
+  <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-cross-app-demo.mp4"><img src="docs/demo/wukong-cross-app.gif" width="320" alt="Android 実機で Chrome から時計へ。フローティング画面と手動操作への切り替えを表示" /></a>
 </p>
 
-<p align="center">実機デモ：買い物の予算を計算し、仮想画面を確認。手動操作に切り替えてからエージェントに戻し、結果を確認します。<br /><a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4">編集済みハイライト · 全編（48 秒、MP4）</a> · <a href="docs/demo/README.md">Demo notes</a></p>
+<p align="center">実機デモ：Chrome のレシピから時計のタイマーへ。フローティング画面で手動操作に切り替え、エージェントに戻して続行します。<br /><a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-cross-app-demo.mp4">編集済みハイライト · 全編（40 秒、MP4）</a> · <a href="docs/demo/README.md">デモについて</a></p>
 
 問題の報告には 会話内の **タスクカード > Execution details > 右上メニュー > Export this run**（サイドバーの History からも利用できます） から ZIP を保存・共有できます。`events.jsonl` と `manifest.json` に実行イベント、アプリ・Android バージョン、端末モデル、イベント数を収録します。スクリーンショットやモデル設定の認証情報は含みません。タスク内容やツール引数・結果は共有前に確認してください。接続診断からも個別にエクスポートできます。
 

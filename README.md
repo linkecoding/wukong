@@ -12,10 +12,10 @@ The app follows your **system language** by default (Chinese or English, with En
 
 
 <p align="center">
-  <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4"><img src="docs/demo/wukong-demo.gif" width="320" alt="Real Android recording: Wukong calculates a shopping budget with manual takeover and execution details" /></a>
+  <a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-cross-app-demo.mp4"><img src="docs/demo/wukong-cross-app.gif" width="320" alt="Real Android cross-app recording: read a recipe in Chrome, use the floating preview, take over and prepare a timer in Clock" /></a>
 </p>
 
-<p align="center">A real shopping-budget task: watch the virtual screen, take over, hand back control and inspect the result.<br /><a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-demo.mp4">Edited highlights · Full recording (48 s, MP4)</a> · <a href="docs/demo/README.md">Demo notes</a></p>
+<p align="center">From a recipe in Chrome to a timer in Clock. Watch the floating screen, take over, then let the agent continue.<br /><a href="https://github.com/linkecoding/wukong/releases/download/v0.0.2/wukong-v0.0.2-cross-app-demo.mp4">Edited highlights · Full recording (40 s, MP4)</a> · <a href="docs/demo/README.md">Demo notes</a></p>
 
 <details>
 <summary>More screenshots</summary>
