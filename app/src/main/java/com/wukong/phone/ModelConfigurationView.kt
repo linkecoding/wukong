@@ -25,7 +25,7 @@ class ModelConfigurationView @JvmOverloads constructor(context: Context, saved: 
     val model = AutoCompleteTextView(android.view.ContextThemeWrapper(context, R.style.Theme_Wukong_Dropdown)).apply {
         id = R.id.model_name; hint = context.getString(R.string.model_pick_hint); textSize = 15f
         setSingleLine(); minHeight = ui.dp(52); threshold = 1
-        gravity = Gravity.END or Gravity.CENTER_VERTICAL; textAlignment = View.TEXT_ALIGNMENT_VIEW_END
+        gravity = Gravity.START or Gravity.CENTER_VERTICAL; textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         typeface = Typeface.create("sans-serif", Typeface.NORMAL)
         setTextColor(context.getColor(R.color.ink)); setHintTextColor(context.getColor(R.color.muted))
