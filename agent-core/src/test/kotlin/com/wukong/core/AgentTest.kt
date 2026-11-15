@@ -118,4 +118,46 @@ class AgentTest {
         assertEquals(Phase.FAILED, run(driver, Action.Launch("app; command")).phase)
         assertTrue(driver.executed.isEmpty())
     }
+
+    @Test fun invalidTargetIsReturnedToModelBeforeAnyInjectionOrApproval() {
+        val driver = Driver(screen.copy(nodes = screen.nodes + UiNode(2, "non-clickable label")))
+        var calls = 0
+        var approvals = 0
+        val model = Model { _, _, history ->
+            when (++calls) {
+                1 -> Action.Tap(2)
+                2 -> {
+                    assertTrue(history.single().result.contains("操作未执行"))
+                    assertTrue(driver.executed.isEmpty())
+                    assertEquals(0, approvals)
+                    Action.Tap(1)
+                }
+                else -> Action.Finish("done")
+            }
+        }
+        val result = Agent(model, driver, Approval { _, _ -> approvals++; true }, "demo.app", approvalRequired = { _, _ -> true }).run("task", Cancellation()) {}
+        assertEquals(Phase.COMPLETED, result.phase)
+        assertEquals(listOf(Action.Tap(1)), driver.executed)
+        assertEquals(1, approvals)
+    }
+    @Test fun repeatedInvalidActionsHaveABoundedRetryBudget() {
+        val driver = Driver(screen.copy(nodes = listOf(UiNode(1, "label"))))
+        var calls = 0
+        val result = Agent(Model { _, _, _ -> calls++; Action.Tap(1) }, driver, Approval { _, _ -> error("must not ask") }).run("task", Cancellation()) {}
+        assertEquals(Phase.FAILED, result.phase)
+        assertEquals(4, calls)
+        assertTrue(driver.executed.isEmpty())
+    }
+    @Test fun ambiguousDriverFailuresAreNotRetriedAsValidationErrors() {
+        var calls = 0
+        var injections = 0
+        val driver = object : DeviceDriver {
+            override fun observe() = screen
+            override fun execute(action: Action, expected: Screen): String { injections++; error("目标不可点击") }
+        }
+        val result = Agent(Model { _, _, _ -> calls++; Action.Tap(1) }, driver, Approval { _, _ -> true }).run("task", Cancellation()) {}
+        assertEquals(Phase.FAILED, result.phase)
+        assertEquals(1, calls)
+        assertEquals(1, injections)
+    }
 }

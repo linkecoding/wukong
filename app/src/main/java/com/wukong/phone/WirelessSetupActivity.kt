@@ -1,10 +1,10 @@
 package com.wukong.phone
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -12,21 +12,32 @@ import android.text.InputType
 import android.view.View
 import android.view.WindowInsets
 import android.widget.*
+import java.util.concurrent.Executors
 
-class WirelessSetupActivity : Activity() {
+/** Guide one Android authorization at a time; manual ports are troubleshooting only. */
+class WirelessSetupActivity : LocalizedActivity() {
+    private lateinit var content: LinearLayout
+    private lateinit var ui: SetupViews
     private lateinit var status: TextView
-    private lateinit var discovered: TextView
-    private lateinit var pairPort: EditText
-    private lateinit var code: EditText
-    private lateinit var connectPort: EditText
-    private lateinit var pairButton: Button
-    private lateinit var activateButton: Button
     private var discovery: WirelessDiscovery? = null
-    private val changed: () -> Unit = { refresh() }
-
+    private val worker = Executors.newSingleThreadExecutor()
+    private var connected = false
+    private var checking = false
+    private var advancedOpen = false
+    private var forcePair = false
+    private var renderedStep = ""
+    private var pairPort: EditText? = null
+    private var code: EditText? = null
+    private var connectPort: EditText? = null
+    private val changed: () -> Unit = {
+        if (::status.isInitialized) status.text = UiMessages.text(this, WirelessActivation.message)
+        findViewById<Button>(R.id.setup_primary)?.isEnabled = !WirelessActivation.busy
+        if (!WirelessActivation.busy) checkConnection()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val content = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(24), dp(20), dp(24), dp(32)); setBackgroundColor(getColor(R.color.paper)) }
+        ui = SetupViews(this)
+        content = ui.column().apply { setPadding(ui.dp(24), ui.dp(20), ui.dp(24), ui.dp(32)); setBackgroundColor(getColor(R.color.paper)) }
         val scroll = ScrollView(this).apply { addView(content) }
         scroll.setOnApplyWindowInsetsListener { view, insets ->
             if (Build.VERSION.SDK_INT >= 30) {
@@ -36,65 +47,99 @@ class WirelessSetupActivity : Activity() {
             insets
         }
         setContentView(scroll)
-        fun text(value: String, size: Float = 15f) = TextView(this).apply { text = value; textSize = size; setTextColor(getColor(R.color.ink)); setPadding(0, dp(8), 0, dp(12)) }
-        fun button(label: String, action: () -> Unit) = Button(this).apply {
-            text = label; isAllCaps = false; setSingleLine(); minHeight = dp(48)
-            setTextColor(getColor(R.color.accent_ink)); backgroundTintList = ColorStateList.valueOf(getColor(R.color.accent))
-            setOnClickListener { runCatching { action() }.onFailure { status.text = it.message ?: "操作失败，请重试" } }
-        }
-        fun field(hint: String, secret: Boolean = false) = EditText(this).apply {
-            this.hint = hint; textSize = 15f; setSingleLine(); minHeight = dp(52)
-            inputType = InputType.TYPE_CLASS_NUMBER or if (secret) InputType.TYPE_NUMBER_VARIATION_PASSWORD else 0
-            importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
-            isSaveEnabled = !secret
-        }
-        content.addView(text("手机内激活", 28f))
-        content.addView(text("无需电脑，无需另装工具。首次配对后，重启手机通常只需重新激活。"))
-        status = text("").apply { setTextColor(getColor(R.color.success)) }
-        content.addView(status)
-        content.addView(text("1. 连接 Wi-Fi，开启开发者选项中的无线调试。\n2. 启动配对助手，在系统页面选择“使用配对码配对设备”。\n3. 保持配对窗口打开，下拉通知栏，在悟空通知中输入六位配对码。\n4. 悟空会自动连接本机并启动执行引擎。"))
-        content.addView(button("启动配对助手") { startAssistant() })
-        content.addView(button("打开无线调试设置") { openWirelessSettings() })
-        discovered = text("")
-        content.addView(discovered)
-        content.addView(text("已配对？直接重新激活", 20f))
-        content.addView(text("连接端口在无线调试主页显示，与配对窗口中的端口不同。留空时使用本机自动发现结果。"))
-        connectPort = field("连接端口（可留空，自动发现）")
-        content.addView(connectPort)
-        activateButton = button("激活执行引擎") { WirelessActivation.activate(this, port(connectPort)) }
-        content.addView(activateButton)
-        content.addView(text("手动配对", 20f))
-        content.addView(text("自动发现失败时填写配对端口。请保持系统配对窗口打开，可用分屏或通知栏助手完成。配对码不会保存。"))
-        pairPort = field("配对端口（可留空，自动发现）")
-        code = field("六位配对码", secret = true)
-        content.addView(pairPort); content.addView(code)
-        pairButton = button("配对并激活") {
-            val value = code.text.toString().trim()
-            code.setText("")
-            WirelessActivation.pair(this, value, port(pairPort))
-        }
-        content.addView(pairButton)
-        content.addView(button("返回悟空") { finish() })
         WirelessActivation.listen(changed)
-        if (Build.VERSION.SDK_INT >= 30) discovery = WirelessDiscovery(this, WirelessActivation::discovered).also { it.start() }
-        refresh()
+        if (Build.VERSION.SDK_INT >= 30) discovery = WirelessDiscovery(this) { pairing, port ->
+            WirelessActivation.discovered(pairing, port)
+            if (!pairing) runOnUiThread { checkConnection() }
+        }.also { it.start() }
+        render(); checkConnection()
     }
+    override fun onResume() { super.onResume(); if (::content.isInitialized) { renderIfNeeded(); checkConnection() } }
+    private fun hasWifi(): Boolean {
+        val manager = getSystemService(ConnectivityManager::class.java)
+        return manager.allNetworks.any { manager.getNetworkCapabilities(it)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true }
+    }
+    private fun step(): String = when {
+        connected -> "done"
+        Build.VERSION.SDK_INT < 30 -> "unsupported"
+        !hasWifi() -> "wifi"
+        Settings.Global.getInt(contentResolver, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 0 -> "developer"
+        getSharedPreferences("wireless", 0).getBoolean("paired", false) && !forcePair -> "reconnect"
+        else -> "pair"
+    }
+    private fun renderIfNeeded() { if (step() != renderedStep) render() }
+    private fun render() {
+        renderedStep = step()
+        content.removeAllViews()
+        ui.back(content) { finish() }
+        ui.add(content, ui.text(getString(R.string.connect_heading), 28f), 12)
+        ui.add(content, ui.text(getString(R.string.connect_intro), 15f, true))
+        status = ui.text(UiMessages.text(this, WirelessActivation.message), 13f, true).apply { accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE }
+        ui.add(content, status)
+        val title = when (renderedStep) { "done" -> R.string.connect_done; "wifi" -> R.string.connect_wifi_title; "developer" -> R.string.connect_developer_title; "reconnect" -> R.string.connect_paired_title; else -> R.string.connect_pair_title }
+        if (renderedStep == "unsupported") {
+            ui.add(content, ui.text(getString(R.string.ui_on_device_wireless_activation_requires_android_11_or_later)))
+            return
+        }
+        ui.add(content, ui.text(getString(title), 20f), 12)
+        val description = when (renderedStep) { "done" -> R.string.connect_done_body; "wifi" -> R.string.connect_wifi_body; "developer" -> R.string.connect_developer_body; "reconnect" -> R.string.connect_paired_body; else -> R.string.connect_pair_body }
+        ui.add(content, ui.text(getString(description), 15f, true), 0, 20)
+        val action = when (renderedStep) { "done" -> R.string.setup_return_task; "wifi" -> R.string.connect_wifi_action; "developer" -> R.string.connect_developer_action; else -> R.string.connect_pair_action }
+        ui.add(content, ui.button(action, true) {
+            safely {
+                when (renderedStep) {
+                    "done" -> { setResult(RESULT_OK); finish() }
+                    "wifi" -> startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+                    "developer" -> startActivity(Intent(Settings.ACTION_DEVICE_INFO_SETTINGS))
+                    "reconnect" -> openWirelessSettings()
+                    else -> startAssistant()
+                }
+            }
+        }.apply { id = R.id.setup_primary; isEnabled = !WirelessActivation.busy })
+        ui.add(content, ui.button(R.string.connect_recheck) { checkConnection() })
+        if (renderedStep == "reconnect") ui.add(content, ui.button(R.string.connect_pair_again) { forcePair = true; render() })
+        ui.add(content, ui.button(if (advancedOpen) R.string.connect_hide_advanced else R.string.connect_advanced) { advancedOpen = !advancedOpen; render() }, 16)
+        if (advancedOpen) advanced()
+    }
+    private fun advanced() {
+        val details = ui.column()
+        ui.add(details, ui.text(getString(R.string.discovery_summary, WirelessActivation.pairingPort ?: "—", WirelessActivation.connectPort ?: "—"), 12f, true))
+        ui.add(details, ui.text(getString(R.string.ui_use_the_connection_port_on_the_main_wireless_debugging_screen_not), 13f, true))
+        connectPort = ui.field(getString(R.string.ui_connection_port_auto_if_empty)).apply { inputType = InputType.TYPE_CLASS_NUMBER }
+        ui.add(details, connectPort!!)
+        ui.add(details, ui.button(R.string.ui_activate_engine) { safely { WirelessActivation.activate(this, port(connectPort!!)) } })
+        ui.add(details, ui.text(getString(R.string.ui_manual_pairing), 18f), 12)
+        pairPort = ui.field(getString(R.string.ui_pairing_port_auto_if_empty)).apply { inputType = InputType.TYPE_CLASS_NUMBER }
+        code = ui.field(getString(R.string.ui_six_digit_pairing_code), secret = true).apply { inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD }
+        ui.add(details, pairPort!!); ui.add(details, code!!)
+        ui.add(details, ui.button(R.string.ui_pair_activate) {
+            val value = code!!.text.toString().trim(); code!!.setText("")
+            safely { WirelessActivation.pair(this, value, port(pairPort!!)) }
+        })
+        content.addView(details)
+    }
+    private fun checkConnection() {
+        if (checking || isFinishing || isDestroyed) return
+        checking = true
+        worker.execute {
+            val ready = runCatching { ShellClient(this).status() }.isSuccess
+            if (!ready) ConnectionRecovery.restore(this)
+            runOnUiThread {
+                checking = false
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                connected = ready
+                if (ready && intent.getBooleanExtra("return_when_ready", false)) { setResult(RESULT_OK); finish(); return@runOnUiThread }
+                renderIfNeeded()
+            }
+        }
+    }
+    private fun safely(action: () -> Unit) { runCatching(action).onFailure { status.text = UiMessages.text(this, it.message.orEmpty()) } }
     private fun port(input: EditText): Int? {
         val raw = input.text.toString().trim()
-        if (raw.isEmpty()) return null
-        val number = raw.toIntOrNull()
-        require(number != null && number in 1..65535) { "端口须在 1–65535 之间" }
-        return number
-    }
-    private fun refresh() {
-        if (!::status.isInitialized) return
-        status.text = if (Build.VERSION.SDK_INT < 30) "此系统版本不支持手机内无线调试激活，需要 Android 11 或以上" else WirelessActivation.message
-        discovered.text = "本机自动发现 · 配对端口：${WirelessActivation.pairingPort ?: "等待配对窗口"} · 连接端口：${WirelessActivation.connectPort ?: "等待无线调试"}"
-        pairButton.isEnabled = !WirelessActivation.busy && Build.VERSION.SDK_INT >= 30
-        activateButton.isEnabled = pairButton.isEnabled
+        if (raw.isBlank()) return null
+        return raw.toIntOrNull()?.takeIf { it in 1..65535 } ?: error(getString(R.string.ui_port_must_be_between_1_and_65535))
     }
     private fun startAssistant() {
-        require(Build.VERSION.SDK_INT >= 30) { "免电脑激活需要 Android 11 或以上" }
         if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 41); return
         }
@@ -104,12 +149,11 @@ class WirelessSetupActivity : Activity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 41 && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) startAssistant()
-        else if (requestCode == 41) status.text = "未允许通知，可使用手动配对；通知助手需要通知权限。"
+        else if (requestCode == 41) status.setText(R.string.connect_notification_needed)
     }
     private fun openWirelessSettings() {
         val wireless = Intent("android.settings.WIRELESS_DEBUGGING_SETTINGS")
         startActivity(if (wireless.resolveActivity(packageManager) != null) wireless else Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
     }
-    override fun onDestroy() { WirelessActivation.unlisten(changed); discovery?.close(); super.onDestroy() }
-    private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()
+    override fun onDestroy() { WirelessActivation.unlisten(changed); discovery?.close(); worker.shutdownNow(); super.onDestroy() }
 }

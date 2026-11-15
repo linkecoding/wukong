@@ -1,0 +1,44 @@
+/* Hallmark · modern-minimal · Workbench · design-system: design.md
+ * Portable export; Android runtime tokens live in res/values/colors.xml. */
+:root {
+  --color-paper: oklch(97.258% 0.00862 264.52);
+  --color-surface: oklch(100.000% 0.00000 89.88);
+  --color-ink: oklch(25.072% 0.05280 263.02);
+  --color-muted: oklch(49.500% 0.04388 257.02);
+  --color-accent: oklch(50.512% 0.20279 263.88);
+  --color-accent-ink: oklch(100.000% 0.00000 89.88);
+  --color-line: oklch(87.639% 0.02461 259.82);
+  --color-success: oklch(46.128% 0.08693 159.72);
+  --color-danger: oklch(48.603% 0.16273 25.67);
+  --color-soft-accent: oklch(94.887% 0.02412 267.93);
+  --color-soft-success: oklch(95.022% 0.01573 160.62);
+  --color-gold: oklch(72.668% 0.14103 264.04);
+  --color-brand-red: oklch(50.512% 0.20279 263.88);
+  --color-brand-ink: oklch(25.072% 0.05280 263.02);
+  --color-brand-paper: oklch(97.258% 0.00862 264.52);
+  --color-control: oklch(65.855% 0.04537 258.37);
+  --color-brand-blue: oklch(72.668% 0.14103 264.04);
+
+  --font-display: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+  --font-outlier: ui-monospace, monospace;
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-display: 2rem;
+  --radius-input: 12px;
+  --radius-card: 16px;
+  --radius-pill: 20px;
+  --rule-fine: 1px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+}

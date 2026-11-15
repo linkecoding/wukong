@@ -83,6 +83,7 @@ class Agent(
             require(goal.isNotBlank() && goal.length <= 4000) { "任务描述须为 1–4000 字" }
             val history = mutableListOf<Turn>()
             var staleRetries = 0
+            var validationRetries = 0
             event(Phase.RUNNING, "正在读取目标应用")
             repeat(maxSteps) {
                 step = it + 1
@@ -98,7 +99,18 @@ class Agent(
                 val action = model.decide(goal, screen, history.takeLast(8))
                 cancellation.check()
                 if (control.epoch != epoch) return@repeat
-                validate(action, screen)
+                try {
+                    validate(action, screen)
+                } catch (error: RuntimeException) {
+                    if (error !is IllegalArgumentException && error !is IllegalStateException) throw error
+                    // Validation is entirely local and runs before approval or device injection.
+                    // Return a failed tool result, not a replay of a potentially accepted action.
+                    if (validationRetries++ >= 3) throw error
+                    history += Turn(screen, action, "操作未执行（校验拒绝）：${error.message}。请重新观察，选择可操作节点；必要时先用 OCR 或截图，再使用坐标工具。不要重复无效操作。")
+                    event(Phase.RUNNING, "操作未执行，正在重新观察并调整")
+                    return@repeat
+                }
+                validationRetries = 0
                 if (action is Action.Finish) {
                     require(action.summary.isNotBlank() && action.summary.length <= 2000) { "模型返回的结果无效" }
                     return event(Phase.COMPLETED, action.summary)

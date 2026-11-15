@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-15",
+  "framework": "native Android Views",
+  "palette": "app/src/main/res/values/colors.xml",
+  "typography": "system sans-serif",
+  "motion": "native feedback only",
+  "scope": "app"
+}

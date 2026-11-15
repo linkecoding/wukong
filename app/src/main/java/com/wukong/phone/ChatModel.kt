@@ -83,10 +83,19 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         return action
     }
 
-    internal fun buildRequest(messages: JSONArray): JSONObject = JSONObject().put("model", settings.model).put("messages", messages)
-        .put("tools", tools())
-        .put("thinking", JSONObject().put("type", if (settings.thinkingEnabled) "enabled" else "disabled"))
-        .put("tool_choice", if (settings.thinkingEnabled) "auto" else "required")
+    internal fun buildRequest(messages: JSONArray): JSONObject {
+        val thinking = settings.effectiveThinking
+        return JSONObject().put("model", settings.model).put("messages", messages).put("tools", tools())
+            .put("tool_choice", if (thinking) "auto" else "required").apply {
+                when (ModelPresets.provider(settings)) {
+                    "qwen" -> put("enable_thinking", thinking)
+                    "kimi" -> if (ModelPresets.thinkingRequired(settings)) put("reasoning_effort", "low")
+                        else put("thinking", JSONObject().put("type", if (thinking) "enabled" else "disabled"))
+                    "deepseek", "zhipu" -> put("thinking", JSONObject().put("type", if (thinking) "enabled" else "disabled"))
+                    else -> if (thinking || settings.providerId == "auto") put("thinking", JSONObject().put("type", if (thinking) "enabled" else "disabled"))
+                }
+            }
+    }
 
     private fun tools(): JSONArray {
         val tools = JSONArray().put(JSONObject().put("type", "function").put("function", schema()))
@@ -124,7 +133,7 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         connection = conn
         val started = android.os.SystemClock.elapsedRealtime()
         var status: Int? = null
-        trace?.record("model_request", JSONObject().put("step", step).put("thinking", settings.thinkingEnabled).put("model", settings.model))
+        trace?.record("model_request", JSONObject().put("step", step).put("thinking", settings.effectiveThinking).put("model", settings.model))
         try {
             check(!cancelled && !Thread.currentThread().isInterrupted) { "请求已取消" }
             conn.requestMethod = "POST"

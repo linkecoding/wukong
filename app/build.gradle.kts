@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins { id("com.android.application"); kotlin("android") }
 android {
     namespace = "com.wukong.phone"
@@ -7,8 +9,8 @@ android {
         applicationId = "com.wukong.phone"
         minSdk = 29
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.4.1"
+        versionCode = 1
+        versionName = "0.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         providers.gradleProperty("targetAbi").orNull?.let { requestedAbi ->
             require(requestedAbi in setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")) { "Unsupported targetAbi" }
@@ -17,13 +19,25 @@ android {
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }
+    val signingFile = rootProject.file("signing.properties")
+    if (signingFile.isFile) {
+        val releaseKeys = Properties().apply { signingFile.inputStream().use { load(it) } }
+        signingConfigs.create("production") {
+            storeFile = rootProject.file(releaseKeys.getProperty("storeFile"))
+            storePassword = releaseKeys.getProperty("storePassword")
+            keyAlias = releaseKeys.getProperty("keyAlias")
+            keyPassword = releaseKeys.getProperty("keyPassword")
+        }
+    }
     buildTypes {
         getByName("release") {
+            if (signingFile.isFile) signingConfig = signingConfigs.getByName("production")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    bundle { language { enableSplit = false } }
     packaging { resources.excludes += setOf("META-INF/versions/9/OSGI-INF/MANIFEST.MF") }
 }
 dependencies {

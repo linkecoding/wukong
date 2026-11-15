@@ -1,5 +1,5 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="48dp" android:height="48dp" android:viewportWidth="48" android:viewportHeight="48">
-    <path android:fillColor="@color/accent" android:pathData="M0,0h48v48h-48z" />
-    <path android:fillColor="@color/accent_ink" android:pathData="M10,17L15,14L20,24L24,17L28,24L33,14L38,17L29,35L24,28L19,35Z" />
-    <path android:fillColor="@color/accent_ink" android:pathData="M15,9h18v3h-18z" />
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="64dp" android:height="64dp" android:viewportWidth="64" android:viewportHeight="64">
+<path android:fillColor="@color/brand_ink" android:pathData="M16,0 H48 Q64,0 64,16 V48 Q64,64 48,64 H16 Q0,64 0,48 V16 Q0,0 16,0 Z"/>
+<path android:pathData="M14 24 C14 12 27 10 32 23 C37 10 50 12 50 24" android:fillColor="@android:color/transparent" android:strokeColor="@color/brand_blue" android:strokeWidth="5" android:strokeLineCap="round"/>
+<path android:pathData="M13 29 L25 34 L32 28 L39 34 L51 29 L48 44 L32 55 L16 44 Z M20 36 L28 38 L25 42 L22 41 Z M44 36 L36 38 L39 42 L42 41 Z" android:fillColor="@color/brand_blue" android:fillType="evenOdd"/>
 </vector>

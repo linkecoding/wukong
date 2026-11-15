@@ -1,0 +1,21 @@
+{
+  "id": "c",
+  "name": "筋斗黑橙",
+  "english": "Signal",
+  "idea": "开放金箍轨道 + W 核心",
+  "feel": "利落、有行动感、辨识鲜明。保留悟空的活力。",
+  "recommend": "偏品牌传播",
+  "paper": "#F6F7F8",
+  "surface": "#FFFFFF",
+  "ink": "#20262C",
+  "muted": "#58636D",
+  "line": "#D4DADF",
+  "control": "#87939E",
+  "accent": "#BA431F",
+  "accentInk": "#FFFFFF",
+  "soft": "#F8EAE3",
+  "success": "#2C684B",
+  "successBg": "#E8F2EB",
+  "iconBg": "#20262C",
+  "logo": "#FF885B"
+}

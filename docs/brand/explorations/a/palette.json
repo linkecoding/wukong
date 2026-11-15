@@ -1,0 +1,21 @@
+{
+  "id": "a",
+  "name": "灵眸蓝白",
+  "english": "Cobalt",
+  "idea": "金箍双弧 + 几何灵眸",
+  "feel": "清爽、可信、轻盈。更适合日常使用与大众传播。",
+  "recommend": "推荐优先考虑",
+  "paper": "#F3F6FC",
+  "surface": "#FFFFFF",
+  "ink": "#14213B",
+  "muted": "#52637B",
+  "line": "#CDD7E7",
+  "control": "#8193AE",
+  "accent": "#2457D6",
+  "accentInk": "#FFFFFF",
+  "soft": "#E7EEFF",
+  "success": "#226747",
+  "successBg": "#E6F2EB",
+  "iconBg": "#14213B",
+  "logo": "#79A4FF"
+}

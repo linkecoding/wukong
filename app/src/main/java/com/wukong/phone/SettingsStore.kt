@@ -18,17 +18,20 @@ data class ModelSettings(
     val apiKey: String,
     val useFullEndpoint: Boolean = false,
     val thinkingEnabled: Boolean = false,
+    val providerId: String = "auto",
 ) {
+    val effectiveThinking get() = thinkingEnabled || ModelPresets.thinkingRequired(this)
+
     fun requestEndpoint(): String = if (useFullEndpoint) endpoint else endpoint.trimEnd('/') + "/chat/completions"
 
     fun toJson(): JSONObject = JSONObject().put("endpoint", endpoint).put("model", model).put("key", apiKey)
-        .put("useFullEndpoint", useFullEndpoint).put("thinkingEnabled", thinkingEnabled)
+        .put("useFullEndpoint", useFullEndpoint).put("thinkingEnabled", thinkingEnabled).put("providerId", providerId)
 
     companion object {
         fun fromJson(json: JSONObject): ModelSettings {
             val endpoint = json.getString("endpoint")
             val full = if (json.has("useFullEndpoint")) json.getBoolean("useFullEndpoint") else legacyUsesFullEndpoint(endpoint)
-            return ModelSettings(endpoint, json.getString("model"), json.getString("key"), full, json.optBoolean("thinkingEnabled", false))
+            return ModelSettings(endpoint, json.getString("model"), json.getString("key"), full, json.optBoolean("thinkingEnabled", false), json.optString("providerId", "auto"))
         }
         // Older releases stored a complete request URL. Recognize the common base
         // addresses without rewriting existing custom request routes.

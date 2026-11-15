@@ -1,0 +1,51 @@
+/* Hallmark · macrostructure: Comparison workbench · genre: modern-minimal
+ * Proposal set, not the installed Android theme. P4 H5 E4 S5 R5 V4.
+ * Three parallel candidates are intentional for direct comparison. */
+:root {
+ --board: oklch(96.9% 0.005 250); --board-ink: oklch(23% 0.025 255); --board-muted: oklch(46% 0.023 255); --board-line: oklch(84% 0.012 255);
+ --font-display: "Avenir Next", "PingFang SC", sans-serif; --font-body: "Avenir Next", "PingFang SC", sans-serif;
+ --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 32px; --space-2xl: 48px;
+ --radius-panel: 16px; --radius-button: 12px; --text-body: 15px; --text-display: 40px; --focus: oklch(48% .18 265);
+}
+[data-theme="a"] {
+ --paper: oklch(97.258% 0.00862 264.52);
+ --surface: oklch(100.000% 0.00000 89.88);
+ --ink: oklch(25.072% 0.05280 263.02);
+ --muted: oklch(49.500% 0.04388 257.02);
+ --line: oklch(87.639% 0.02461 259.82);
+ --control: oklch(65.855% 0.04537 258.37);
+ --accent: oklch(50.512% 0.20279 263.88);
+ --accentInk: oklch(100.000% 0.00000 89.88);
+ --soft: oklch(94.887% 0.02412 267.93);
+ --success: oklch(46.128% 0.08693 159.72);
+ --successBg: oklch(95.022% 0.01573 160.62);
+ --iconBg: oklch(25.072% 0.05280 263.02);
+}
+[data-theme="b"] {
+ --paper: oklch(20.041% 0.01605 244.58);
+ --surface: oklch(24.949% 0.02174 240.29);
+ --ink: oklch(95.327% 0.01011 228.89);
+ --muted: oklch(75.571% 0.02405 241.99);
+ --line: oklch(38.362% 0.02756 234.25);
+ --control: oklch(57.001% 0.03972 231.72);
+ --accent: oklch(83.775% 0.11355 172.48);
+ --accentInk: oklch(24.523% 0.02871 172.51);
+ --soft: oklch(32.954% 0.03341 180.53);
+ --success: oklch(86.852% 0.08022 164.28);
+ --successBg: oklch(30.115% 0.02918 174.31);
+ --iconBg: oklch(24.949% 0.02174 240.29);
+}
+[data-theme="c"] {
+ --paper: oklch(97.566% 0.00171 247.84);
+ --surface: oklch(100.000% 0.00000 89.88);
+ --ink: oklch(26.526% 0.01418 248.36);
+ --muted: oklch(49.388% 0.02101 245.67);
+ --line: oklch(88.521% 0.00948 242.85);
+ --control: oklch(65.719% 0.02148 245.78);
+ --accent: oklch(54.359% 0.16104 36.69);
+ --accentInk: oklch(100.000% 0.00000 89.88);
+ --soft: oklch(94.620% 0.01795 48.53);
+ --success: oklch(46.881% 0.07898 160.03);
+ --successBg: oklch(95.169% 0.01408 155.58);
+ --iconBg: oklch(26.526% 0.01418 248.36);
+}

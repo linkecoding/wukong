@@ -7,14 +7,14 @@ import android.os.Bundle
 import android.widget.*
 
 /** Safe launcher content for our independent display, without moving the physical launcher. */
-class VirtualHomeActivity : Activity() {
+class VirtualHomeActivity : LocalizedActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(24, 80, 24, 24) }
-        column.addView(TextView(this).apply { text = "悟空虚拟屏"; textSize = 24f })
+        val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(WukongUi.dp(this@VirtualHomeActivity, 24), WukongUi.dp(this@VirtualHomeActivity, 48), WukongUi.dp(this@VirtualHomeActivity, 24), WukongUi.dp(this@VirtualHomeActivity, 24)); setBackgroundColor(getColor(R.color.paper)) }
+        column.addView(TextView(this).apply { text = getString(R.string.ui_wukong_virtual_display); textSize = 24f })
         @Suppress("DEPRECATION") val apps = packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0)
             .distinctBy { it.activityInfo.packageName }.filter { it.activityInfo.packageName != packageName }.sortedBy { it.loadLabel(packageManager).toString() }
-        for (app in apps) column.addView(Button(this).apply {
+        for (app in apps) column.addView(WukongUi.button(this, app.loadLabel(packageManager).toString()) {}.apply {
             text = app.loadLabel(packageManager); isAllCaps = false
             setOnClickListener {
                 val intent = packageManager.getLaunchIntentForPackage(app.activityInfo.packageName) ?: return@setOnClickListener

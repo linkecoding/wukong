@@ -1,0 +1,21 @@
+{
+  "id": "b",
+  "name": "玄甲深色",
+  "english": "Ion",
+  "idea": "金箍折线 + 连续 W 字形",
+  "feel": "冷静、精密、工具感强。更突出 Agent 的科技属性。",
+  "recommend": "偏技术用户",
+  "paper": "#10171D",
+  "surface": "#18232B",
+  "ink": "#E9F1F5",
+  "muted": "#A3B2BE",
+  "line": "#354650",
+  "control": "#607C8B",
+  "accent": "#72E2C2",
+  "accentInk": "#11251F",
+  "soft": "#213B36",
+  "success": "#A2E5C6",
+  "successBg": "#1E332D",
+  "iconBg": "#18232B",
+  "logo": "#72E2C2"
+}

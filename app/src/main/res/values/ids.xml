@@ -1,0 +1,13 @@
+<resources>
+    <item name="task_run" type="id"/>
+    <item name="task_goal" type="id"/>
+    <item name="provider_picker" type="id"/>
+    <item name="model_key" type="id"/>
+    <item name="model_endpoint" type="id"/>
+    <item name="model_name" type="id"/>
+    <item name="model_thinking" type="id"/>
+    <item name="model_advanced" type="id"/>
+    <item name="setup_primary" type="id"/>
+    <item name="sample_parameter" type="id"/>
+    <item name="task_options" type="id"/>
+</resources>

@@ -10,12 +10,13 @@ import org.json.JSONObject
 class VirtualScreenPanel(context: Context, private val compact: Boolean = false) : LinearLayout(context) {
     private val status = TextView(context)
     private val image = ImageView(context).apply { scaleType = ImageView.ScaleType.FIT_CENTER; setBackgroundColor(Color.BLACK) }
-    private val control = Button(context)
+    private val control = WukongUi.button(context, "", true) { VirtualScreenState.control(!VirtualScreenState.manual) }
+    private val manualInputs = mutableListOf<android.view.View>()
     private var downX = 0; private var downY = 0; private var downTime = 0L
     private val changed: () -> Unit = { refresh() }
     var onDrag: ((Float, Float) -> Unit)? = null
     init {
-        orientation = VERTICAL; setPadding(dp(8), dp(8), dp(8), dp(8)); setBackgroundColor(context.getColor(R.color.paper))
+        orientation = VERTICAL; setPadding(dp(8), dp(8), dp(8), dp(8)); background = WukongUi.shape(context, R.color.surface, 16, R.color.line)
         status.textSize = if (compact) 11f else 14f; status.setTextColor(context.getColor(R.color.ink)); addView(status)
         if (compact) {
             var lastX = 0f; var lastY = 0f
@@ -26,24 +27,27 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false)
         }
         val screenHeight = resources.displayMetrics.heightPixels / resources.displayMetrics.density
         addView(image, LayoutParams(-1, dp(if (compact) minOf(280, (screenHeight-210).toInt()).coerceAtLeast(100) else 390)))
-        control.isAllCaps = false; control.textSize = 13f; control.minHeight = dp(42)
-        control.setOnClickListener { VirtualScreenState.control(!VirtualScreenState.manual) }; addView(control, LayoutParams(-1, dp(44)))
+        control.isAllCaps = false; control.textSize = 13f; control.minHeight = dp(48)
+        control.setOnClickListener { VirtualScreenState.control(!VirtualScreenState.manual) }; addView(control, LayoutParams(-1, dp(48)).apply { topMargin = dp(8); bottomMargin = dp(8) })
         val row = LinearLayout(context)
-        fun button(label: String, action: () -> Unit) { row.addView(Button(context).apply {
+        fun button(label: String, action: () -> Unit) { row.addView(WukongUi.button(context, label, false, action).apply {
             text = label; textSize = 11f; isAllCaps = false; minimumWidth = 0; minWidth = 0; setPadding(0, 0, 0, 0); setOnClickListener { action() }
-        }, LayoutParams(0, dp(42), 1f)) }
-        button("返回") { VirtualScreenState.input(JSONObject().put("kind", "back")) }
-        button("桌面") { VirtualScreenState.input(JSONObject().put("kind", "home")) }
-        button("回悟空") { context.startActivity(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)) }
+        }.also { if (row.childCount < 2) manualInputs += it }, LayoutParams(0, dp(48), 1f).apply { marginEnd = dp(4) }) }
+        button(context.getString(R.string.ui_back)) { VirtualScreenState.input(JSONObject().put("kind", "back")) }
+        button(context.getString(R.string.ui_home)) { VirtualScreenState.input(JSONObject().put("kind", "home")) }
+        button(context.getString(R.string.ui_wukong_2)) { context.startActivity(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)) }
         addView(row)
         if (!compact) {
-            val text = EditText(context).apply { hint = "接管后：输入文字到虚拟屏的焦点输入框"; setSingleLine(); isSaveEnabled = false }
-            addView(text)
-            addView(Button(context).apply { this.text = "输入文字"; isAllCaps = false; setOnClickListener {
-                val value = text.text.toString(); text.setText(""); VirtualScreenState.input(JSONObject().put("kind", "text").put("text", value))
-            } })
-            addView(Button(context).apply { this.text = "关闭虚拟屏"; isAllCaps = false; setOnClickListener { VirtualScreenState.stop(context) } })
+            val text = SetupViews(context).field(context.getString(R.string.ui_text_for_the_focused_field_manual_control)).apply { isSaveEnabled = false }
+            manualInputs += text
+            addView(text, LayoutParams(-1, -2).apply { topMargin = dp(12); bottomMargin = dp(8) })
+            addView(WukongUi.button(context, context.getString(R.string.ui_send_text)) {
+                val value = text.text.toString()
+                if (value.isNotBlank()) { text.setText(""); VirtualScreenState.input(JSONObject().put("kind", "text").put("text", value)) }
+            }.also { manualInputs += it }, LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
+            addView(WukongUi.button(context, context.getString(R.string.ui_close_display)) { VirtualScreenState.stop(context) })
         }
+        image.contentDescription = context.getString(R.string.virtual_preview_description)
         image.setOnTouchListener { view, event ->
             if (!VirtualScreenState.manual) return@setOnTouchListener false
             val bitmap = VirtualScreenState.bitmap ?: return@setOnTouchListener false
@@ -66,10 +70,11 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false)
         refresh()
     }
     private fun refresh() {
-        status.text = VirtualScreenState.message
+        status.text = UiMessages.text(context, VirtualScreenState.message)
         image.setImageBitmap(VirtualScreenState.bitmap)
-        control.text = if (VirtualScreenState.manual) { if (compact) "交还 Agent" else "交还 Agent，重新读屏继续" } else "接管，暂停 Agent"
+        control.text = if (VirtualScreenState.manual) { if (compact) context.getString(R.string.ui_resume_agent) else context.getString(R.string.ui_resume_agent_observe_again) } else context.getString(R.string.ui_take_over_pause_agent)
         control.isEnabled = VirtualScreenState.displayId > 0
+        manualInputs.forEach { it.isEnabled = VirtualScreenState.displayId > 0 && VirtualScreenState.manual }
     }
     override fun onAttachedToWindow() { super.onAttachedToWindow(); VirtualScreenState.listen(changed); refresh() }
     override fun onDetachedFromWindow() { VirtualScreenState.unlisten(changed); super.onDetachedFromWindow() }

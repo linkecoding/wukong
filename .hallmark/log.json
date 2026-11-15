@@ -1,0 +1,35 @@
+[
+  {
+    "date": "2026-11-15",
+    "scope": "app",
+    "macrostructure": "Workbench / guided setup",
+    "theme": "custom",
+    "theme_axes": "cool light / system sans / cobalt blue",
+    "enrichment": "original vector identity",
+    "brief": "Apply selected Cobalt A identity and review all native pages on physical Pixel 6"
+  },
+  {
+    "date": "2026-11-15",
+    "scope": "brand proposals only",
+    "macrostructure": "Comparison workbench",
+    "theme": "Three candidates: Cobalt / Ion / Signal",
+    "enrichment": "Original vector marks",
+    "brief": "Modern and technical Wukong logo and palette alternatives; no production changes"
+  },
+  {
+    "date": "2026-11-15",
+    "scope": "app",
+    "macrostructure": "Workbench / task-first onboarding",
+    "theme": "Wukong warm paper / vermilion",
+    "enrichment": "none in app",
+    "brief": "Practical templates, guided preparation, domestic provider presets and authorized connection recovery"
+  },
+  {
+    "date": "2026-11-15",
+    "scope": "app",
+    "macrostructure": "Workbench",
+    "theme": "Wukong warm paper / vermilion",
+    "enrichment": "original vector identity, marketing assets only",
+    "brief": "Android redesign and multilingual public introduction"
+  }
+]

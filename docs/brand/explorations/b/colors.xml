@@ -1,0 +1,12 @@
+<resources>
+    <color name="paper">#10171D</color>
+    <color name="surface">#18232B</color>
+    <color name="ink">#E9F1F5</color>
+    <color name="muted">#A3B2BE</color>
+    <color name="accent">#72E2C2</color>
+    <color name="accent_ink">#11251F</color>
+    <color name="line">#354650</color>
+    <color name="success">#A2E5C6</color>
+    <color name="soft_accent">#213B36</color>
+    <color name="soft_success">#1E332D</color>
+</resources>

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 import java.lang.ref.WeakReference
 
 /** Visible task controls only. This service has no device-control privileges. */
-class WukongService : Service() {
+class WukongService : LocalizedService() {
     private val main = Handler(Looper.getMainLooper())
     private var overlay: View? = null
     private val update: () -> Unit = {
@@ -33,12 +33,12 @@ class WukongService : Service() {
     }
     override fun onCreate() {
         super.onCreate()
-        getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel("tasks", "悟空任务", NotificationManager.IMPORTANCE_LOW))
+        getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel("tasks", getString(R.string.ui_wukong_tasks), NotificationManager.IMPORTANCE_LOW))
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
         val stop = PendingIntent.getService(this, 1, Intent(this, WukongService::class.java).setAction("stop"), PendingIntent.FLAG_IMMUTABLE)
-        startForeground(1, Notification.Builder(this, "tasks").setSmallIcon(R.drawable.ic_wukong)
-            .setContentTitle("悟空任务控制").setContentText("普通操作自动执行，敏感操作需确认；可随时停止")
-            .setContentIntent(open).setOngoing(true).addAction(Notification.Action.Builder(null, "停止", stop).build()).build())
+        startForeground(1, Notification.Builder(this, "tasks").setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(getString(R.string.ui_wukong_task_controls)).setContentText(getString(R.string.ui_routine_actions_run_automatically_sensitive_actions_need_approval))
+            .setContentIntent(open).setOngoing(true).addAction(Notification.Action.Builder(null, getString(R.string.ui_stop), stop).build()).build())
         serviceReference = WeakReference(this); TaskRuntime.listen(update); VirtualScreenState.listen(update); TaskRuntime.connectionChanged()
     }
     override fun onBind(intent: Intent?): IBinder? = null
@@ -61,7 +61,7 @@ class WukongService : Service() {
     fun showControls() {
         if (VirtualScreenState.foreground && TaskRuntime.displayId > 0 && TaskRuntime.pending == null) return
         if (overlay != null) return
-        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(12), dp(16), dp(12)); setBackgroundColor(getColor(R.color.paper)) }
+        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(12), dp(16), dp(12)); background = WukongUi.shape(this@WukongService, R.color.paper, 16, R.color.line) }
         overlay = box
         val width = minOf(dp(340), resources.displayMetrics.widthPixels - dp(24))
         val params = WindowManager.LayoutParams(width, WindowManager.LayoutParams.WRAP_CONTENT,
@@ -79,9 +79,12 @@ class WukongService : Service() {
         fun text(value: String, size: Float = 14f) = TextView(this).apply {
             text = value; textSize = size; setTextColor(getColor(R.color.ink)); setPadding(0, 0, 0, dp(8))
         }
-        box.addView(text("悟空 · ${TaskRuntime.appLabel}", 16f))
+        box.addView(text(getString(R.string.overlay_title, UiMessages.text(this, TaskRuntime.appLabel)), 16f))
         val request = TaskRuntime.pending
-        val detail = if (request == null) TaskRuntime.event.message else {
+        val detail = if (request == null) {
+            val event = TaskRuntime.event
+            if (event.phase == Phase.COMPLETED) event.message else UiMessages.text(this, event.message)
+        } else {
             val id = when (val action = request.action) {
                 is Action.Tap -> action.nodeId
                 is Action.Input -> action.nodeId
@@ -90,24 +93,24 @@ class WukongService : Service() {
             }
             val target = id?.let { nodeId -> request.screen.nodes.find { it.id == nodeId }?.text }.orEmpty()
             buildString {
-                append("允许这一步？\n所在应用：${request.screen.packageName}\n${request.action.label()}")
-                if (target.isNotBlank()) append("\n目标：$target")
-                if (request.action is Action.Input) append("\n输入内容（替换原文本）：${request.action.text}")
+                append(getString(R.string.approval_prompt, request.screen.packageName, request.action.label()))
+                if (target.isNotBlank()) append(getString(R.string.approval_target, target))
+                if (request.action is Action.Input) append(getString(R.string.approval_input, request.action.text))
             }
         }
         val scroll = ScrollView(this).apply { addView(text(detail)) }
         box.addView(scroll, LinearLayout.LayoutParams(-1, -2).apply { height = if (request != null) dp(132) else dp(64) })
         val row = LinearLayout(this)
         fun button(label: String, click: () -> Unit) {
-            row.addView(Button(this).apply { text = label; textSize = 13f; isAllCaps = false; setSingleLine(); minWidth = 0; minimumWidth = 0; setPadding(dp(4), 0, dp(4), 0); setOnClickListener { click() } }, LinearLayout.LayoutParams(0, dp(48), 1f))
+            row.addView(WukongUi.button(this, label, false, click).apply { text = label; textSize = 13f; isAllCaps = false; setSingleLine(); minWidth = 0; minimumWidth = 0; setPadding(dp(4), 0, dp(4), 0); setOnClickListener { click() } }, LinearLayout.LayoutParams(0, dp(48), 1f))
         }
         if (request != null && !TaskRuntime.stopRequested) {
-            button("允许一次") { TaskRuntime.answer(request, true) }
-            button("拒绝") { TaskRuntime.answer(request, false) }
+            button(getString(R.string.ui_allow_once)) { TaskRuntime.answer(request, true) }
+            button(getString(R.string.ui_decline)) { TaskRuntime.answer(request, false) }
         }
-        if (TaskRuntime.active) button(if (TaskRuntime.stopRequested) "停止中" else "停止") { TaskRuntime.stop() }
-        else button("收起") { hideControls() }
-        button("回悟空") { startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)) }
+        if (TaskRuntime.active) button(if (TaskRuntime.stopRequested) getString(R.string.ui_stopping_2) else getString(R.string.ui_stop)) { TaskRuntime.stop() }
+        else button(getString(R.string.ui_dismiss)) { hideControls() }
+        button(getString(R.string.ui_wukong_2)) { startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)) }
         box.addView(row)
     }
 
