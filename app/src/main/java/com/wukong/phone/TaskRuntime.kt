@@ -26,6 +26,8 @@ object TaskRuntime {
     private var cancellation: Cancellation? = null
     private var client: ChatModel? = null
     private var control = ExecutionControl()
+    @Volatile var conversationId: String? = null; private set
+    @Volatile var conversationTurnId: String? = null; private set
     @Volatile var displayId = 0; private set
     @Volatile private var activeTrace: RunLog? = null
     @Volatile private var activeDriver: AndroidDriver? = null
@@ -57,7 +59,7 @@ object TaskRuntime {
     }
 
     /** Invoked on main by the explicit Start button. */
-    fun start(context: Context, taskGoal: String, initialPackage: String?, settings: ModelSettings) {
+    fun start(context: Context, taskGoal: String, initialPackage: String?, settings: ModelSettings, threadId: String? = null) {
         require(taskGoal.isNotBlank() && taskGoal.length <= 4000) { "请输入 1–4000 字的任务" }
         settings.validate()
         check(!WirelessActivation.busy) { "请等待执行引擎激活完成" }
@@ -75,7 +77,12 @@ object TaskRuntime {
         control = ExecutionControl()
         displayId = targetDisplay
         trace?.record("display_target", JSONObject().put("displayId", displayId))
-        val model = ChatModel(settings, apps, trace)
+        val conversations = ConversationStore(appContext)
+        val priorContext = threadId?.let { conversations.context(it) }
+        val turnId = try { threadId?.let { conversations.begin(it, taskGoal.trim(), trace?.name) } } catch (error: Exception) { busy.set(false); throw error }
+        conversationId = threadId; conversationTurnId = turnId
+        val startedAt = android.os.SystemClock.elapsedRealtime()
+        val model = ChatModel(settings, apps, trace, conversationContext = priorContext)
         goal = taskGoal.trim(); appLabel = "整机任务"
         cancellation = token; client = model; stopRequested = false
         synchronized(timeline) { timeline.clear() }
@@ -98,7 +105,9 @@ object TaskRuntime {
                     controls.onMain { controls.showControls() }
                     val driver = AndroidDriver(session, token, trace, control)
                     activeDriver = driver
-                    if (control.epoch == 0L) {
+                    // Follow-ups keep the current display; earlier summaries never replay actions.
+                    val followUp = priorContext != null && JSONArray(priorContext).length() > 0
+                    if (control.epoch == 0L && (!followUp || initialPackage != null)) {
                         try {
                             val startScreen = driver.observe()
                             if (control.epoch == 0L) driver.execute(initialPackage?.let { Action.Launch(it) } ?: Action.Home, startScreen)
@@ -139,12 +148,16 @@ object TaskRuntime {
                     displayId = 0; activeTrace = null; activeDriver = null
                     val record = TaskRecord(goal, "整机任务", result.phase.name, result.message, System.currentTimeMillis(), trace?.name, true)
                     runCatching { HistoryStore(appContext).append(record) }
+                    if (threadId != null && turnId != null) runCatching { conversations.finish(threadId, turnId, result.phase.name, result.message, android.os.SystemClock.elapsedRealtime()-startedAt) }
+                    conversationId = null; conversationTurnId = null
                     pending = null; client = null; cancellation = null; worker = null
                     busy.set(false)
                     notifyChanged()
                 }
             }
         } catch (e: Exception) {
+            if (threadId != null && turnId != null) runCatching { conversations.finish(threadId, turnId, "FAILED", e.message.orEmpty(), android.os.SystemClock.elapsedRealtime()-startedAt) }
+            conversationId = null; conversationTurnId = null
             busy.set(false)
             context.stopService(controlsIntent)
             throw e

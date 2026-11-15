@@ -99,7 +99,7 @@ class VirtualScreenService : LocalizedService() {
         val metrics = ui.resources.displayMetrics
         val manager = ui.getSystemService(WindowManager::class.java)
         val panel = VirtualScreenPanel(ui, compact = true)
-        val params = WindowManager.LayoutParams((220 * metrics.density).toInt(), WindowManager.LayoutParams.WRAP_CONTENT,
+        val params = WindowManager.LayoutParams((280 * metrics.density).toInt(), WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT).apply {
             gravity = Gravity.TOP or Gravity.END; y = (70 * metrics.density).toInt()
         }

@@ -27,7 +27,7 @@ class WukongService : LocalizedService() {
     private val main = Handler(Looper.getMainLooper())
     private var overlay: View? = null
     private val update: () -> Unit = {
-        if (VirtualScreenState.foreground && TaskRuntime.displayId > 0 && TaskRuntime.pending == null) hideControls()
+        if ((VirtualScreenState.foreground || VirtualScreenState.service?.floatingVisible == true) && TaskRuntime.displayId > 0 && TaskRuntime.pending == null) hideControls()
         else if (TaskRuntime.active && TaskRuntime.displayId > 0) { if (overlay == null) showControls() else renderControls() }
         else if (overlay != null) renderControls()
     }
@@ -59,7 +59,7 @@ class WukongService : LocalizedService() {
     }
 
     fun showControls() {
-        if (VirtualScreenState.foreground && TaskRuntime.displayId > 0 && TaskRuntime.pending == null) return
+        if ((VirtualScreenState.foreground || VirtualScreenState.service?.floatingVisible == true) && TaskRuntime.displayId > 0 && TaskRuntime.pending == null) return
         if (overlay != null) return
         val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(12), dp(16), dp(12)); background = WukongUi.shape(this@WukongService, R.color.paper, 16, R.color.line) }
         overlay = box

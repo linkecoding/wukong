@@ -49,7 +49,7 @@
     <string name="ui_save_tool_calls_results_timing_and_provider_reported_tokens_local">记录工具参数、执行结果、耗时和服务端 token 用量，不记录 API Key 或完整界面。日志只保存在本机，保留最近 20 次，每次最多 512 KB。关闭后停止新增，已有日志仍可查看或清空。</string>
     <string name="ui_data_permissions">数据与权限</string>
     <string name="ui_wireless_pairing_and_the_execution_engine_are_built_in_activate_o">悟空内置无线调试配对和执行引擎。Android 11 及以上可在手机内激活，无需电脑或另装工具，也无需启用无障碍服务。重启后需要重新激活。悬浮窗权限仅用于显示确认和停止按钮。</string>
-    <string name="ui_your_goal_app_list_and_relevant_ui_text_are_sent_to_your_model_pr">任务目标、应用列表和必要的界面文字会发送给上述模型服务；调用截图工具时也会发送当前画面。\n\nOCR 使用内置 PP-OCRv6 tiny 检测和识别模型，在手机本地运行，无需下载模型或安装其他 App。OCR 文字会作为任务上下文发送给上述模型服务。\n\n密钥通过 Android Keystore 加密，任务历史与日志保存在本机，可随时清除。可在主屏或虚拟屏跨应用操作，支持 OCR、截图与坐标手势；密码、验证码和自动解锁仍需你手动处理。</string>
+    <string name="ui_your_goal_app_list_and_relevant_ui_text_are_sent_to_your_model_pr">任务目标、用于追问的最近会话需求和结果、应用列表和必要的界面文字会发送给上述模型服务；调用截图工具时也会发送当前画面。\n\nOCR 使用内置 PP-OCRv6 tiny 检测和识别模型，在手机本地运行，无需下载模型或安装其他 App。OCR 文字会作为任务上下文发送给上述模型服务。\n\n密钥通过 Android Keystore 加密，任务历史与日志保存在本机，可随时清除。可在主屏或虚拟屏跨应用操作，支持 OCR、截图与坐标手势；密码、验证码和自动解锁仍需你手动处理。</string>
     <string name="ui_clear_model_configuration">清除模型配置</string>
     <string name="ui_stop_the_current_task_first">请先停止当前任务</string>
     <string name="ui_model_configuration_cleared">模型配置已清除</string>

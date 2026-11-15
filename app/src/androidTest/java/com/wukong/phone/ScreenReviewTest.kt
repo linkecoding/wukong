@@ -103,7 +103,7 @@ class ScreenReviewTest {
                 click(R.string.connect_advanced); page("$lang-connection-advanced")
                 i.runOnMainSync { a!!.finish() }; i.waitForIdleSync()
                 a = i.startActivitySync(Intent(c,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); i.waitForIdleSync()
-                i.runOnMainSync { MainActivity::class.java.getDeclaredMethod("chooseTemplate",TaskTemplates.Template::class.java).apply { isAccessible=true }.invoke(a,TaskTemplates.all.first()) }; shot("$lang-example-dialog")
+                i.runOnMainSync { WorkspaceActivity::class.java.getDeclaredMethod("chooseTemplate",TaskTemplates.Template::class.java).apply { isAccessible=true }.invoke(a,TaskTemplates.all.first()) }; shot("$lang-example-dialog")
                 i.runOnMainSync { WindowInspector.getGlobalWindowViews().flatMap { all(it) }.filterIsInstance<Button>().first { it.text.toString() == a!!.getString(R.string.ui_cancel) }.performClick(); a!!.finish() }; i.waitForIdleSync()
             }
             a = i.startActivitySync(Intent(c,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

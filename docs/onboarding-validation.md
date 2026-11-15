@@ -39,3 +39,15 @@ The existing device was already paired. Recovery was tested; the redesigned fres
 - [Provider presets and official sources](model-providers.md)
 
 Private logs: `.tooling/onboarding-*.log`. Test model keys are dummy strings in UI-only tests; saved configuration comparisons avoid printing credential values. Original UI language, virtual-display preference, and saved model settings were preserved. Temporary example drafts are cleared before handing the phone back.
+
+
+## Conversation UI and native navigation — 2026-11-15
+
+Validated on the connected Pixel 6 with the existing saved model configuration. The UI now uses a persistent conversation, native AndroidX DrawerLayout + Material NavigationView, separate Activity destinations for History/Settings/task details/diagnostics, and a Material execution-options bottom sheet. The shared WorkspaceActivity renderer does not own a synthetic cross-page back stack.
+
+- `ConversationFlowTest` verifies isolated/bounded stored summaries and drafts, 320/375/414/768 dp content/composer measurements, drawer destination ordering, native Back closing the drawer, separate resumed History/Settings Activities and return to the original home instance, native bottom-sheet location controls, phone/virtual switching without starting a task, and the real IME keeping Send above the keyboard.
+- Multi-display keyboard validation waits for display readiness and actually touches the physical input field before requesting IME focus. A programmatic-focus-only attempt can otherwise leave focus on the newly launched virtual display.
+- Two live-model conversation rounds passed: start a harmless Settings-opening task, expand its preview, pause for takeover, background Wukong, close the floating preview without stopping the task, return and hand back control, receive the result, then ask a follow-up. The follow-up trace contains no automatic home/relaunch/tap/input action. Task details push a separate Activity and return to the same two-turn conversation.
+- Existing onboarding, single-run log export and ordinary/high-risk approval fixtures passed after the navigation changes. Native layouts and English/Chinese views were inspected from captured device renders. Final JVM suite: 57 tests passed; debug App/test builds and lintDebug passed.
+
+Screenshots in `docs/images/conversation/` show actual native Android views and harmless test conversations. No signing material, model keys, personal app content or external messages are included. The test APK is not part of the release. Full arbitrary-App task reliability and general long-term personal memory are outside this UI validation.

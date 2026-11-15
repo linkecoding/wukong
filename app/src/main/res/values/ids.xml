@@ -17,4 +17,16 @@
     <item name="main_navigation" type="id"/>
     <item name="setup_actions" type="id"/>
     <item name="virtual_preview_close" type="id" />
+    <item name="chat_menu" type="id" />
+    <item name="chat_new" type="id" />
+    <item name="chat_drawer" type="id" />
+    <item name="chat_preview" type="id" />
+    <item name="chat_preview_slot" type="id" />
+    <item name="chat_options" type="id" />
+    <item name="chat_drawer_layout" type="id" />
+    <item name="chat_history" type="id" />
+    <item name="chat_settings" type="id" />
+    <item name="execution_options_sheet" type="id" />
+    <item name="execution_virtual" type="id" />
+    <item name="execution_phone" type="id" />
 </resources>

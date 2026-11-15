@@ -28,6 +28,7 @@ class OnboardingFlowTest {
             store.clear()
             activity = launch(MainActivity::class.java)
             instrumentation.runOnMainSync {
+                activity!!.findViewById<View>(R.id.chat_new).performClick()
                 val sample = views(root(activity!!)).filterIsInstance<Button>().single { it.text.toString() == activity!!.getString(R.string.sample_file) }
                 sample.performClick()
             }
@@ -39,7 +40,7 @@ class OnboardingFlowTest {
                 windows.filterIsInstance<Button>().single { it.text.toString() == activity!!.getString(R.string.sample_use) }.performClick()
                 assertTrue(store.goal().contains("invoice PDF"))
                 assertFalse(TaskRuntime.active)
-                assertEquals(View.GONE, views(root(activity!!)).filterIsInstance<Spinner>().first().parent.let { it as View }.visibility)
+                assertTrue("Execution options stay disclosed", views(root(activity!!)).filterIsInstance<Spinner>().isEmpty())
                 activity!!.finish()
             }
             activity = launch(MainActivity::class.java)

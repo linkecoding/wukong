@@ -88,11 +88,9 @@ class RunLogExportTest {
         val store = RunLogStore(context)
         val file = store.files().firstOrNull() ?: return
         val before = store.read(file.name).toString()
-        val activity = i.startActivitySync(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        val activity = i.startActivitySync(Intent(context, RunDetailActivity::class.java).putExtra("log",file.name).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         try {
             i.runOnMainSync {
-                MainActivity::class.java.getDeclaredMethod("logDetail", String::class.java).apply { isAccessible = true }.invoke(activity, file.name)
-                val views = all(activity.findViewById(android.R.id.content))
                 activity.findViewById<View>(R.id.page_menu).performClick()
             }
             i.waitForIdleSync()

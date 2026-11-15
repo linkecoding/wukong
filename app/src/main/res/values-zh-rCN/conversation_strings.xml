@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_input">把想做的事交给悟空…</string>
+    <string name="chat_welcome">有什么交给我？</string>
+    <string name="chat_welcome_detail">说一件想做的事，我们在这里一起完成。</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_new">新对话</string>
+    <string name="chat_menu">打开侧边栏</string>
+    <string name="chat_close_menu">关闭侧边栏</string>
+    <string name="chat_personal_agent">你的个人 AI 助手</string>
+    <string name="chat_show_screen">查看画面</string>
+    <string name="chat_hide_screen">收起画面</string>
+    <string name="chat_run_details">执行详情</string>
+    <string name="chat_interrupted">这次运行已中断，可以发送新需求继续。</string>
+    <string name="chat_main_display">正在手机主屏执行，可切换到目标应用查看。</string>
+    <string name="chat_confirm_high_risk">请确认这一步高危操作</string>
+    <string name="chat_mode_virtual">虚拟屏 · 执行选项</string>
+    <string name="chat_mode_phone">手机屏幕 · 执行选项</string>
+    <string name="chat_execution">执行选项</string>
+    <string name="chat_duration">%1$d 秒</string>
+    <string name="chat_take_over">接管</string>
+    <string name="chat_interacting">正在操作页面</string>
+    <string name="chat_typing">正在填写内容</string>
+    <string name="chat_processing">正在处理下一步</string>
+    <string name="chat_observing">正在查看页面</string>
+    <string name="chat_waiting">等待结果出现</string>
+    <string name="chat_return_active">返回正在执行的任务</string>
+    <string name="chat_location_phone">手机屏幕</string>
+    <string name="chat_location_virtual">虚拟屏</string>
+    <string name="chat_location_phone_detail">在手机当前页面执行。</string>
+    <string name="chat_display_ready">已就绪 · 独立执行，可随时接管。</string>
+    <string name="chat_display_preparing">正在准备虚拟屏…</string>
+</resources>

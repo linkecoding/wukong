@@ -7,12 +7,13 @@ import androidx.core.view.WindowInsetsCompat
 
 /** Footers stay at the physical bottom; only scrollable content avoids the IME overlay. */
 internal object PageInsets {
-    fun bind(root: View, content: View, footer: View) {
+    fun bind(root: View, content: View, footer: View, liftComposer: Boolean = false) {
         val originalBottom = content.paddingBottom
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
             val bars = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-            val covered = (insets.getInsets(WindowInsetsCompat.Type.ime()).bottom - bars.bottom - footer.height).coerceAtLeast(0)
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.setPadding(bars.left, bars.top, bars.right, if (liftComposer) maxOf(bars.bottom, ime) else bars.bottom)
+            val covered = if (liftComposer) 0 else (ime - bars.bottom - footer.height).coerceAtLeast(0)
             val bottom = originalBottom + covered
             val bringInputIntoView = bottom > content.paddingBottom
             if (bottom != content.paddingBottom) {

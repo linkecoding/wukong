@@ -1,6 +1,22 @@
 [
   {
     "date": "2026-11-15",
+    "scope": "personal-agent conversation and native navigation",
+    "macrostructure": "Conversation workbench / native side drawer / pushed pages",
+    "theme": "Cream, moss, pale apricot",
+    "enrichment": "none",
+    "brief": "Persistent task conversations, bounded follow-up context, DrawerLayout/NavigationView, real Activity stack, Material execution sheet, compact floating preview",
+    "critique": {
+      "philosophy": 4,
+      "hierarchy": 4,
+      "execution": 4,
+      "specificity": 5,
+      "restraint": 4,
+      "variety": 4
+    }
+  },
+  {
+    "date": "2026-11-15",
     "scope": "model settings page",
     "macrostructure": "Compact header / grouped form",
     "theme": "Cream, moss, pale apricot",

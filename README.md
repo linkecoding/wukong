@@ -4,7 +4,7 @@
 
 # Your words. Your phone in action.
 
-**Wukong** is an Android AI agent that turns a natural-language goal into actions across your phone. Bring your own model, watch each step, and take over whenever you need to.
+**Wukong** is a personal AI agent for Android that turns a natural-language goal into actions across your phone, with requests, task cards, live previews and results in one conversation. Bring your own model, watch each step, and take over whenever you need to.
 
 **v0.0.1 · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. A Codex skill / MCP bridge is planned and is **not available yet**.
 
@@ -12,7 +12,7 @@ The app follows your **system language** by default (Chinese or English, with En
 
 
 <p align="center">
-  <img src="docs/images/onboarding/home-en.png" width="280" alt="Wukong task interface" />
+  <img src="docs/images/conversation/home-en.png" width="280" alt="Wukong conversation interface" />
   <img src="docs/images/onboarding/model-en.png" width="280" alt="Model provider setup" />
 </p>
 
@@ -24,7 +24,7 @@ The app follows your **system language** by default (Chinese or English, with En
 - **Bring your own model.** Connect a tool-calling Chat Completions compatible endpoint. Configure any HTTPS base URL or an exact request URL. Thinking is off by default where supported; models that require thinking are identified in the UI.
 - **Program short workflows.** The model can use embedded QuickJS JavaScript for loops, conditions, UI-change listeners and phone operations, with explicit selectors, named outcome waits and desired-state setters. Each action retains local approvals and takeover checks. See [the JS runtime](docs/architecture/javascript-runtime.md).
 - **Wait for results and verify outcomes.** Query matching controls or regions, wait for result/error conditions, and check fresh evidence before reporting success. See [query and verification behavior](docs/architecture/condition-tools.md).
-- **Inspect each task.** Open a history card to see its result, provider-reported token usage and grouped execution timeline. Expand an event for the recorded tool arguments and results. Optional logs remain on the phone. Save or share one run as a ZIP from its top-right menu.
+- **Inspect each task.** Open a task card in the conversation or History to see its result, provider-reported token usage and grouped execution timeline. Expand an event for the recorded tool arguments and results. Optional logs remain on the phone. Save or share one run as a ZIP from its top-right menu.
 
 Wukong includes wireless ADB pairing and its execution engine. **No root, enabled AccessibilityService, or companion app is required.** The app remains a normal Android app; user-authorized wireless debugging starts an `app_process` shell process (UID 2000).
 
@@ -36,10 +36,10 @@ Screenshots and descriptions track the current `main` branch; tagged releases ar
 
 Choose the **arm64-v8a APK** for most current phones, or the universal APK for other architectures. Release builds use the project's production signing identity and include SHA-256 checksums. You can also build from source below.
 
-1. Choose **Find a downloaded file**, **Search for answers**, or **Search inside an app**. Add a filename, a question, or an app and keyword—or write your own task.
-2. Tap **Continue setup**. Select DeepSeek, Alibaba Cloud / Qwen, Zhipu / GLM, Moonshot / Kimi, or a custom API. Follow the provider's API platform link if you need a key. Wukong fills the standard endpoint; the connection and model fields use separate cards. After entering your key, open the model dropdown to load available IDs, or type an ID manually. A tool-call test checks the connection before saving and leaves you on the page. Clear a saved configuration from this page’s top-right menu.
+1. Choose **Find a downloaded file** or **Search for answers**. Add a filename, a question, or an app and keyword—or write your own task.
+2. Tap Send; if setup is incomplete, the guided setup opens. Select DeepSeek, Alibaba Cloud / Qwen, Zhipu / GLM, Moonshot / Kimi, or a custom API. Follow the provider's API platform link if you need a key. Wukong fills the standard endpoint; the connection and model fields use separate cards. After entering your key, open the model dropdown to load available IDs, or type an ID manually. A tool-call test checks the connection before saving and leaves you on the page. Clear a saved configuration from this page’s top-right menu.
 3. Follow **Connect this phone**. Android 11+ requires Wi-Fi, Developer options, and Wireless debugging authorization. Wukong guides the current step; ports and manual pairing are tucked into troubleshooting.
-4. Allow control buttons when prompted. Return to your saved task, review it, and tap **Run task**. Setup does not start the task automatically.
+4. Allow control buttons when prompted. Return to your saved task, review it, and tap the Send arrow. Setup does not start the task automatically.
 5. On later launches, Wukong attempts to restore an already-paired connection when wireless debugging is available. Your pending task survives setup screens and app restarts.
 
 Provider accounts and API balances are your own; no hosted trial service is included. See [the first-task guide](docs/getting-started.md) and [provider presets](docs/model-providers.md).
@@ -49,11 +49,11 @@ Android 10 can use the development USB activation script, but cannot use the bui
 
 Routine actions run automatically. Only payments/transfers and destructive operations such as deleting files, erasing app data or resetting the device require local confirmation. Sending, publishing, sharing and routine permission changes proceed autonomously when needed for your task. This detection is heuristic and cannot recognize every sensitive control. Stop controls remain available; actions already accepted by Android cannot be undone. Passwords, verification codes, and device unlock require manual handling.
 
-OCR runs locally, but **model inference uses your configured provider**. Task goals, app lists, and relevant UI text are sent to that provider; using the screenshot tool also sends the captured image. This is not a fully offline agent. API keys and ADB identities are encrypted with Android Keystore. History and logs stay on the device; logs omit API keys and full screenshots / UI trees. The app retains up to 30 history entries and 20 logs of up to 512 KB each.
+OCR runs locally, but **model inference uses your configured provider**. Task goals, recent conversation requests/results used for follow-ups, app lists, and relevant UI text are sent to that provider; using the screenshot tool also sends the captured image. This is not a fully offline agent. API keys and ADB identities are encrypted with Android Keystore. History and logs stay on the device; logs omit API keys and full screenshots / UI trees. The app retains up to 20 conversations with 20 turns each, 30 history entries and 20 logs of up to 512 KB each. Follow-ups include up to six recent turns with bounded summaries; a new conversation starts without that context.
 
 Virtual-display previews currently update at about 3 fps. Protected content and apps with multi-display or single-task restrictions may not work independently on both displays.
 
-To report a problem, open **History > task > top-right menu > Export this run**. Save or share the ZIP containing `events.jsonl` and `manifest.json` (app/Android versions, device model and event count). It excludes screenshots and credentials from model configuration. Task text and tool arguments/results may still contain private information; review before sharing. Connection diagnostics support the same single-run export.
+To report a problem, open **task card > Execution details > top-right menu > Export this run** (also available from sidebar History). Save or share the ZIP containing `events.jsonl` and `manifest.json` (app/Android versions, device model and event count). It excludes screenshots and credentials from model configuration. Task text and tool arguments/results may still contain private information; review before sharing. Connection diagnostics support the same single-run export.
 
 ## Build
 
@@ -84,7 +84,7 @@ python3 scripts/activate-shell.py SERIAL
 python3 scripts/activate-shell.py SERIAL --stop
 ```
 
-The interface uses cream, moss and pale apricot, with three main destinations: Tasks, History and Settings. Model settings, device access, preferences and data controls have separate groups. Task logs open from history; connection-test diagnostics remain under Settings.
+The interface uses cream, moss and pale apricot. The conversation is home; a native side drawer holds recent conversations, History and Settings. Secondary pages use the Android Activity back stack. Execution options open as a Material bottom sheet. Model settings, device access, preferences and data controls have separate groups. Task logs open from history; connection-test diagnostics remain under Settings.
 
 ## Releases
 
