@@ -6,8 +6,11 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
-/** One bounded tool call per observation; generated shell/code execution is not exposed. */
-class ChatModel(private val settings: ModelSettings, private val apps: List<Pair<String, String>> = emptyList(), private val trace: RunLog? = null) : Model {
+/** Explicit capability policies allow paired evaluations; ordinary App tasks keep AUTO. */
+enum class PlanningMode { AUTO, TOOLS_ONLY, SCRIPT_ONLY }
+
+/** One bounded tool call per observation; phone actions remain in the trusted execution layer. */
+class ChatModel(private val settings: ModelSettings, private val apps: List<Pair<String, String>> = emptyList(), private val trace: RunLog? = null, private val mode: PlanningMode = PlanningMode.AUTO) : Model {
     private var step = 0
     private var visionAvailable = true
     private val completedTools = mutableListOf<Pair<JSONObject, JSONObject>>()
@@ -40,7 +43,7 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         fun messages(withImage: Boolean): JSONArray {
             val content: Any = if (withImage) JSONArray().put(JSONObject().put("type", "text").put("text", state.toString()))
                 .put(JSONObject().put("type", "image_url").put("image_url", JSONObject().put("url", "data:image/jpeg;base64,${screen.visual!!.jpegBase64}"))) else state.toString()
-            val messages = JSONArray().put(JSONObject().put("role", "system").put("content", SYSTEM))
+            val messages = JSONArray().put(JSONObject().put("role", "system").put("content", planningSystemPrompt()))
                 .put(JSONObject().put("role", "user").put("content", "执行目标：$goal"))
             completedTools.forEach { (assistant, result) -> messages.put(assistant); messages.put(result) }
             return messages.put(JSONObject().put("role", "user").put("content", content))
@@ -58,6 +61,8 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         require(calls.length() == 1) { "模型必须每次只返回一个操作" }
         val function = calls.getJSONObject(0).getJSONObject("function")
         val name = function.getString("name")
+        require(mode != PlanningMode.TOOLS_ONLY || name != "phone_run_js") { "当前模式未提供 JS 工具" }
+        require(mode != PlanningMode.SCRIPT_ONLY || name in setOf("phone_run_js", "phone_action")) { "当前模式仅提供 JS 与结束工具" }
         val args = JSONObject(function.getString("arguments"))
         trace?.record("tool_call", JSONObject().put("step", step).put("name", name).put("arguments", args))
         val action = when (name) {
@@ -87,6 +92,7 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
             }
             else -> error("模型返回未知工具")
         }
+        require(mode != PlanningMode.SCRIPT_ONLY || action is Action.Script || action is Action.Finish) { "编程模式的手机操作须通过 JS 执行" }
         lastAction = action; lastMessage = assistant
         return action
     }
@@ -130,7 +136,28 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         add("phone_tap_at", "Tap normalized 0–1000 coordinates. Prefer node tap; for labeled targets use the center of the OCR text bounds.", coordinates(), listOf("captureId", "x", "y"))
         add("phone_swipe", "Swipe between normalized screenshot coordinates. duration is milliseconds (100–2000).", coordinates(swipe = true), listOf("captureId", "x", "y", "endX", "endY"))
         add("phone_long_press", "Long press normalized screenshot coordinates. duration is milliseconds (400–2000).", coordinates(duration = true), listOf("captureId", "x", "y"))
-        return tools
+        return JSONArray((0 until tools.length()).map { tools.getJSONObject(it) }.filter {
+            val name = it.getJSONObject("function").getString("name")
+            when (mode) {
+                PlanningMode.AUTO -> true
+                PlanningMode.TOOLS_ONLY -> name != "phone_run_js"
+                PlanningMode.SCRIPT_ONLY -> name in setOf("phone_run_js", "phone_action")
+            }
+        })
+    }
+
+    internal fun planningSystemPrompt(): String = when (mode) {
+        PlanningMode.AUTO -> SYSTEM
+        PlanningMode.TOOLS_ONLY -> SYSTEM.lines().filterNot { it.startsWith("Use phone_run_js") }.joinToString("\n") +
+            "\nExecution policy: individual tools only. No JavaScript tool is available. Use the supplied tools for all observations, waits and operations."
+        PlanningMode.SCRIPT_ONLY -> SYSTEM.replace("Prefer an individual tool when the next step is uncertain.", "Return findings to the planner when the next step is uncertain.")
+            .replace("phone_query", "wukong.query").replace("phone_wait_until", "wukong.waitUntil").replace("phone_verify", "wukong.verify")
+            .replace("phone_ocr", "wukong.ocr").replace("phone_screenshot", "wukong.screenshot") +
+            "\nExecution policy: all device queries, waits and mutations must use phone_run_js. phone_action only accepts finish. " +
+            "Each JS cell starts with a fresh context; only state survives successful cells. Selectors: " + InspectionSchemas.selector().toString() +
+            ". Conditions: " + InspectionSchemas.conditions().toString() +
+            ". waitUntil defaults to ANY, verify defaults to ALL; condition results are in result.verification.state/checks, using met/not_met/unknown. " +
+            "When using only one selector, wukong.waitUntil(selector, options) wraps it as a presence condition. Use conditions with selector/state/packageName for advanced cases."
     }
 
     fun verifyCompletion(goal: String, summary: String, screen: Screen, history: List<Turn>): CompletionCheck {
@@ -237,6 +264,8 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         "summary":{"type":"string","maxLength":2000}
       },"required":["action"],"additionalProperties":false}
     }""").also { schema ->
+        if (mode == PlanningMode.SCRIPT_ONLY) schema.getJSONObject("parameters").getJSONObject("properties")
+            .getJSONObject("action").put("enum", JSONArray(listOf("finish")))
         schema.getJSONObject("parameters").getJSONObject("properties")
             .put("outcome", JSONObject().put("type", "string").put("enum", JSONArray(listOf("success", "incomplete"))).put("description", "For finish: success needs current result evidence; incomplete explains limitations without claiming completion."))
             .put("evidence", InspectionSchemas.conditions().put("description", "For successful finish: ALL goal-relevant conditions will be checked on a fresh screen. Use result text/state, not merely the clicked button. If omitted, a separate fresh screenshot/OCR review is required."))

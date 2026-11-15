@@ -1,0 +1,86 @@
+{"time":1794735736915,"type":"start","data":{"kind":"benchmark","goal":"只操作当前资料核对测试页，不打开其他应用。在第一步填写姓名悟空测试、城市杭州，并关闭接收演示通知。进入下一步，填写活动时间周六下午、人数2，选择步行。点校验信息，确认全部信息核对通过后总结所有填写内容。","model":"deepseek-flash","thinking":false}}
+{"time":1794735736924,"type":"benchmark_config","data":{"case":"wizard","mode":"TOOLS_ONLY","repetition":1,"systemPromptSha256":"0782436958c979e49915dc689c18d5b223f2e91e060c32d502b6443f545dbbad","step":0}}
+{"time":1794735736924,"type":"agent_event","data":{"phase":"RUNNING","message":"正在读取目标应用","step":0}}
+{"time":1794735737360,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":11,"durationMs":435,"settled":true,"samples":4,"uiEvents":true,"uiRevision":1630,"uiQuietMs":396,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":0}}
+{"time":1794735737362,"type":"observation","data":{"step":1,"package":"com.wukong.phone","nodeCount":11}}
+{"time":1794735737370,"type":"model_request","data":{"step":1,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735738440,"type":"model_response","data":{"step":1,"httpStatus":200,"durationMs":1070,"usage":{"prompt_tokens":4360,"completion_tokens":83,"total_tokens":4443,"prompt_tokens_details":{"cached_tokens":4096},"prompt_cache_hit_tokens":4096,"prompt_cache_miss_tokens":264}}}
+{"time":1794735738442,"type":"tool_call","data":{"step":1,"name":"phone_action","arguments":{"action":"input","nodeId":7,"text":"悟空测试","summary":"填写姓名"}}}
+{"time":1794735738445,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 7 输入文本","step":1}}
+{"time":1794735738446,"type":"device_action","data":{"action":{"kind":"input","nodeId":7,"text":"悟空测试"},"package":"com.wukong.phone","step":1}}
+{"time":1794735738516,"type":"device_result","data":{"action":{"kind":"input","nodeId":7,"text":"悟空测试"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":70,"step":1}}
+{"time":1794735738896,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":11,"durationMs":377,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1631,"uiQuietMs":376,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":1}}
+{"time":1794735738898,"type":"observation","data":{"step":2,"package":"com.wukong.phone","nodeCount":11}}
+{"time":1794735738907,"type":"model_request","data":{"step":2,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735739856,"type":"model_response","data":{"step":2,"httpStatus":200,"durationMs":949,"usage":{"prompt_tokens":4491,"completion_tokens":83,"total_tokens":4574,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":1291}}}
+{"time":1794735739857,"type":"tool_call","data":{"step":2,"name":"phone_action","arguments":{"action":"input","nodeId":8,"text":"杭州","summary":"填写城市杭州"}}}
+{"time":1794735739859,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 8 输入文本","step":2}}
+{"time":1794735739859,"type":"device_action","data":{"action":{"kind":"input","nodeId":8,"text":"杭州"},"package":"com.wukong.phone","step":2}}
+{"time":1794735739907,"type":"device_result","data":{"action":{"kind":"input","nodeId":8,"text":"杭州"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":48,"step":2}}
+{"time":1794735740205,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":11,"durationMs":297,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1632,"uiQuietMs":293,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":2}}
+{"time":1794735740207,"type":"observation","data":{"step":3,"package":"com.wukong.phone","nodeCount":11}}
+{"time":1794735740218,"type":"model_request","data":{"step":3,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735741186,"type":"model_response","data":{"step":3,"httpStatus":200,"durationMs":968,"usage":{"prompt_tokens":4636,"completion_tokens":68,"total_tokens":4704,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":1436}}}
+{"time":1794735741188,"type":"tool_call","data":{"step":3,"name":"phone_action","arguments":{"action":"tap","nodeId":9,"summary":"关闭接收演示通知"}}}
+{"time":1794735741191,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 9","step":3}}
+{"time":1794735741192,"type":"device_action","data":{"action":{"kind":"tap","nodeId":9},"package":"com.wukong.phone","step":3}}
+{"time":1794735741265,"type":"device_result","data":{"action":{"kind":"tap","nodeId":9},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":74,"step":3}}
+{"time":1794735741713,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":11,"durationMs":447,"settled":true,"samples":4,"uiEvents":true,"uiRevision":1634,"uiQuietMs":349,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":3}}
+{"time":1794735741715,"type":"observation","data":{"step":4,"package":"com.wukong.phone","nodeCount":11}}
+{"time":1794735741722,"type":"model_request","data":{"step":4,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735742682,"type":"model_response","data":{"step":4,"httpStatus":200,"durationMs":960,"usage":{"prompt_tokens":4747,"completion_tokens":66,"total_tokens":4813,"prompt_tokens_details":{"cached_tokens":3328},"prompt_cache_hit_tokens":3328,"prompt_cache_miss_tokens":1419}}}
+{"time":1794735742684,"type":"tool_call","data":{"step":4,"name":"phone_action","arguments":{"action":"tap","nodeId":11,"summary":"点击下一步"}}}
+{"time":1794735742685,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 11","step":4}}
+{"time":1794735742686,"type":"device_action","data":{"action":{"kind":"tap","nodeId":11},"package":"com.wukong.phone","step":4}}
+{"time":1794735742748,"type":"device_result","data":{"action":{"kind":"tap","nodeId":11},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":62,"step":4}}
+{"time":1794735743062,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":11,"durationMs":313,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1636,"uiQuietMs":314,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":4}}
+{"time":1794735743064,"type":"observation","data":{"step":5,"package":"com.wukong.phone","nodeCount":11}}
+{"time":1794735743081,"type":"model_request","data":{"step":5,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735744121,"type":"model_response","data":{"step":5,"httpStatus":200,"durationMs":1040,"usage":{"prompt_tokens":4864,"completion_tokens":68,"total_tokens":4932,"prompt_tokens_details":{"cached_tokens":3456},"prompt_cache_hit_tokens":3456,"prompt_cache_miss_tokens":1408}}}
+{"time":1794735744122,"type":"tool_call","data":{"step":5,"name":"phone_action","arguments":{"action":"tap","nodeId":11,"summary":"点击下一步进入第二步"}}}
+{"time":1794735744124,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 11","step":5}}
+{"time":1794735744124,"type":"device_action","data":{"action":{"kind":"tap","nodeId":11},"package":"com.wukong.phone","step":5}}
+{"time":1794735744187,"type":"device_error","data":{"action":{"kind":"tap","nodeId":11},"message":"界面已更新，本次操作未执行","durationMs":63,"step":5}}
+{"time":1794735744188,"type":"agent_event","data":{"phase":"RUNNING","message":"界面已变化，正在重新读取并规划","step":5}}
+{"time":1794735744524,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":12,"durationMs":335,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1638,"uiQuietMs":1213,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":5}}
+{"time":1794735744527,"type":"observation","data":{"step":6,"package":"com.wukong.phone","nodeCount":12}}
+{"time":1794735744538,"type":"model_request","data":{"step":6,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735745448,"type":"model_response","data":{"step":6,"httpStatus":200,"durationMs":910,"usage":{"prompt_tokens":5132,"completion_tokens":84,"total_tokens":5216,"prompt_tokens_details":{"cached_tokens":3584},"prompt_cache_hit_tokens":3584,"prompt_cache_miss_tokens":1548}}}
+{"time":1794735745449,"type":"tool_call","data":{"step":6,"name":"phone_action","arguments":{"action":"input","nodeId":8,"text":"周六下午","summary":"填写活动时间"}}}
+{"time":1794735745451,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 8 输入文本","step":6}}
+{"time":1794735745451,"type":"device_action","data":{"action":{"kind":"input","nodeId":8,"text":"周六下午"},"package":"com.wukong.phone","step":6}}
+{"time":1794735745522,"type":"device_result","data":{"action":{"kind":"input","nodeId":8,"text":"周六下午"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":71,"step":6}}
+{"time":1794735745812,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":12,"durationMs":289,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1639,"uiQuietMs":286,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":6}}
+{"time":1794735745814,"type":"observation","data":{"step":7,"package":"com.wukong.phone","nodeCount":12}}
+{"time":1794735745823,"type":"model_request","data":{"step":7,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735746888,"type":"model_response","data":{"step":7,"httpStatus":200,"durationMs":1066,"usage":{"prompt_tokens":5269,"completion_tokens":83,"total_tokens":5352,"prompt_tokens_details":{"cached_tokens":3712},"prompt_cache_hit_tokens":3712,"prompt_cache_miss_tokens":1557}}}
+{"time":1794735746889,"type":"tool_call","data":{"step":7,"name":"phone_action","arguments":{"action":"input","nodeId":9,"text":"2","summary":"填写人数2"}}}
+{"time":1794735746892,"type":"agent_event","data":{"phase":"RUNNING","message":"向节点 9 输入文本","step":7}}
+{"time":1794735746893,"type":"device_action","data":{"action":{"kind":"input","nodeId":9,"text":"2"},"package":"com.wukong.phone","step":7}}
+{"time":1794735746940,"type":"device_result","data":{"action":{"kind":"input","nodeId":9,"text":"2"},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":47,"step":7}}
+{"time":1794735747224,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":12,"durationMs":283,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1640,"uiQuietMs":280,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":7}}
+{"time":1794735747225,"type":"observation","data":{"step":8,"package":"com.wukong.phone","nodeCount":12}}
+{"time":1794735747234,"type":"model_request","data":{"step":8,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735748373,"type":"model_response","data":{"step":8,"httpStatus":200,"durationMs":1139,"usage":{"prompt_tokens":5400,"completion_tokens":66,"total_tokens":5466,"prompt_tokens_details":{"cached_tokens":3840},"prompt_cache_hit_tokens":3840,"prompt_cache_miss_tokens":1560}}}
+{"time":1794735748374,"type":"tool_call","data":{"step":8,"name":"phone_action","arguments":{"action":"tap","nodeId":10,"summary":"选择步行"}}}
+{"time":1794735748376,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 10","step":8}}
+{"time":1794735748376,"type":"device_action","data":{"action":{"kind":"tap","nodeId":10},"package":"com.wukong.phone","step":8}}
+{"time":1794735748476,"type":"device_result","data":{"action":{"kind":"tap","nodeId":10},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":100,"step":8}}
+{"time":1794735748940,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":12,"durationMs":463,"settled":true,"samples":4,"uiEvents":true,"uiRevision":1642,"uiQuietMs":358,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":8}}
+{"time":1794735748943,"type":"observation","data":{"step":9,"package":"com.wukong.phone","nodeCount":12}}
+{"time":1794735748960,"type":"model_request","data":{"step":9,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735749745,"type":"model_response","data":{"step":9,"httpStatus":200,"durationMs":785,"usage":{"prompt_tokens":5516,"completion_tokens":67,"total_tokens":5583,"prompt_tokens_details":{"cached_tokens":3840},"prompt_cache_hit_tokens":3840,"prompt_cache_miss_tokens":1676}}}
+{"time":1794735749746,"type":"tool_call","data":{"step":9,"name":"phone_action","arguments":{"action":"tap","nodeId":12,"summary":"点击校验信息"}}}
+{"time":1794735749747,"type":"agent_event","data":{"phase":"RUNNING","message":"点击节点 12","step":9}}
+{"time":1794735749747,"type":"device_action","data":{"action":{"kind":"tap","nodeId":12},"package":"com.wukong.phone","step":9}}
+{"time":1794735749800,"type":"device_result","data":{"action":{"kind":"tap","nodeId":12},"result":"操作已被系统接受；下一步将重新读取界面","durationMs":53,"step":9}}
+{"time":1794735750248,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":12,"durationMs":448,"settled":true,"samples":4,"uiEvents":true,"uiRevision":1644,"uiQuietMs":351,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":9}}
+{"time":1794735750250,"type":"observation","data":{"step":10,"package":"com.wukong.phone","nodeCount":12}}
+{"time":1794735750258,"type":"model_request","data":{"step":10,"thinking":false,"model":"deepseek-flash"}}
+{"time":1794735751796,"type":"model_response","data":{"step":10,"httpStatus":200,"durationMs":1538,"usage":{"prompt_tokens":5513,"completion_tokens":253,"total_tokens":5766,"prompt_tokens_details":{"cached_tokens":3200},"prompt_cache_hit_tokens":3200,"prompt_cache_miss_tokens":2313}}}
+{"time":1794735751797,"type":"tool_call","data":{"step":10,"name":"phone_action","arguments":{"action":"finish","outcome":"success","summary":"已在资料核对测试页完成全部填写并校验通过。填写内容：姓名悟空测试；城市杭州；接收演示通知已关闭；活动时间周六下午；人数2；出行方式步行。点击\"校验信息\"后显示\"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行\"。全程仅在当前页面操作，未打开其他应用。","evidence":[{"selector":{"textContains":"全部信息核对通过"},"state":"present"},{"selector":{"textEquals":"周六下午 活动时间"},"state":"present"},{"selector":{"textEquals":"2 人数"},"state":"present"},{"selector":{"resourceId":"com.wukong.phone:id\/benchmark_walk","checked":true},"state":"present"}]}}}
+{"time":1794735751798,"type":"agent_event","data":{"phase":"RUNNING","message":"正在核对任务完成证据","step":10}}
+{"time":1794735752095,"type":"device_observation","data":{"package":"com.wukong.phone","nodeCount":12,"durationMs":296,"settled":true,"samples":3,"uiEvents":true,"uiRevision":1644,"uiQuietMs":2197,"thread":"Instr: androidx.test.runner.AndroidJUnitRunner","step":10}}
+{"time":1794735752100,"type":"completion_verification","data":{"state":"met","package":"com.wukong.phone","fingerprint":"702c5fb7fe553066acca3513d565124f862aba03bfe91d3d84a64d7a4bb92dcb","sourceTruncated":false,"checks":[{"condition":{"state":"present","minCount":1,"selector":{"textContains":"全部信息核对通过"}},"state":"met","totalMatches":1,"matches":[{"id":11,"text":"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行","resourceId":"com.wukong.phone:id\/benchmark_result","className":"android.widget.TextView","parentId":5,"editable":false,"clickable":false,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":307,"right":961,"bottom":358}}],"matchesTruncated":false},{"condition":{"state":"present","minCount":1,"selector":{"textEquals":"周六下午 活动时间"}},"state":"met","totalMatches":1,"matches":[{"id":8,"text":"周六下午 活动时间","resourceId":"com.wukong.phone:id\/benchmark_time","className":"android.widget.EditText","parentId":5,"editable":true,"clickable":true,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":167,"right":961,"bottom":220}}],"matchesTruncated":false},{"condition":{"state":"present","minCount":1,"selector":{"textEquals":"2 人数"}},"state":"met","totalMatches":1,"matches":[{"id":9,"text":"2 人数","resourceId":"com.wukong.phone:id\/benchmark_people","className":"android.widget.EditText","parentId":5,"editable":true,"clickable":true,"scrollable":false,"enabled":true,"checked":null,"selected":false,"bounds":{"left":38,"top":220,"right":961,"bottom":272}}],"matchesTruncated":false},{"condition":{"state":"present","minCount":1,"selector":{"resourceId":"com.wukong.phone:id\/benchmark_walk","checked":true}},"state":"met","totalMatches":1,"matches":[{"id":10,"text":"步行","resourceId":"com.wukong.phone:id\/benchmark_walk","className":"android.widget.CheckBox","parentId":5,"editable":false,"clickable":true,"scrollable":false,"enabled":true,"checked":true,"selected":false,"bounds":{"left":38,"top":272,"right":961,"bottom":307}}],"matchesTruncated":false}],"step":10}}
+{"time":1794735752103,"type":"agent_event","data":{"phase":"COMPLETED","message":"已在资料核对测试页完成全部填写并校验通过。填写内容：姓名悟空测试；城市杭州；接收演示通知已关闭；活动时间周六下午；人数2；出行方式步行。点击\"校验信息\"后显示\"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行\"。全程仅在当前页面操作，未打开其他应用。","step":10}}
+{"time":1794735752111,"type":"end","data":{"phase":"COMPLETED","message":"已在资料核对测试页完成全部填写并校验通过。填写内容：姓名悟空测试；城市杭州；接收演示通知已关闭；活动时间周六下午；人数2；出行方式步行。点击\"校验信息\"后显示\"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行\"。全程仅在当前页面操作，未打开其他应用。","step":10}}

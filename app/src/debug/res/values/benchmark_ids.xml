@@ -1,0 +1,8 @@
+<resources>
+    <item name="benchmark_query" type="id"/><item name="benchmark_result" type="id"/>
+    <item name="benchmark_count_a" type="id"/><item name="benchmark_count_b" type="id"/><item name="benchmark_count_c" type="id"/>
+    <item name="benchmark_search" type="id"/><item name="benchmark_retry" type="id"/><item name="benchmark_check" type="id"/>
+    <item name="benchmark_name" type="id"/><item name="benchmark_city" type="id"/><item name="benchmark_notify" type="id"/>
+    <item name="benchmark_next" type="id"/><item name="benchmark_time" type="id"/><item name="benchmark_people" type="id"/>
+    <item name="benchmark_walk" type="id"/><item name="benchmark_bike" type="id"/>
+</resources>

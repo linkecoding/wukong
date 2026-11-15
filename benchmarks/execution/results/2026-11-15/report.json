@@ -1,0 +1,1741 @@
+{
+  "schema": 1,
+  "model": "deepseek-flash",
+  "provider": "deepseek",
+  "thinking": false,
+  "device": "Pixel 6",
+  "android": "17",
+  "sourceRevision": "c293ff5-plus-benchmark",
+  "repetitions": 2,
+  "cases": {
+    "batch": "只操作当前测试页面，不打开其他应用。依次查询蓝牙耳机、充电器、数据线，等待每次结果，读出商品件数，分别填入对应件数输入框；成功的查询不得重复，失败时只点重试当前查询重试一次。最后点校验结果，看到校验通过后总结三个关键词各找到多少件商品。",
+    "retry": "只操作当前测试页面，不打开其他应用。依次查询蓝牙耳机、充电器、数据线，等待每次结果，读出商品件数，分别填入对应件数输入框；成功的查询不得重复，失败时只点重试当前查询重试一次。最后点校验结果，看到校验通过后总结三个关键词各找到多少件商品。",
+    "wizard": "只操作当前资料核对测试页，不打开其他应用。在第一步填写姓名悟空测试、城市杭州，并关闭接收演示通知。进入下一步，填写活动时间周六下午、人数2，选择步行。点校验信息，确认全部信息核对通过后总结所有填写内容。"
+  },
+  "runs": [
+    {
+      "case": "batch",
+      "repetition": 0,
+      "mode": "TOOLS_ONLY",
+      "elapsedMs": 22522,
+      "phase": "COMPLETED",
+      "summary": "已在当前测试页面依次查询蓝牙耳机、充电器、数据线，分别填入件数 3、5、2，并点击\"校验结果\"，显示\"校验通过：蓝牙耳机=3，充电器=5，数据线=2\"。三个关键词各找到商品件数：蓝牙耳机 3 件、充电器 5 件、数据线 2 件。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 14,
+      "httpRequests": 14,
+      "modelTimeMs": 16304,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 0,
+      "scriptCalls": 0,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 4665,
+          "completion_tokens": 87,
+          "total_tokens": 4752,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 4153
+        },
+        {
+          "prompt_tokens": 4800,
+          "completion_tokens": 71,
+          "total_tokens": 4871,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1600
+        },
+        {
+          "prompt_tokens": 4927,
+          "completion_tokens": 83,
+          "total_tokens": 5010,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1727
+        },
+        {
+          "prompt_tokens": 5666,
+          "completion_tokens": 87,
+          "total_tokens": 5753,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2338
+        },
+        {
+          "prompt_tokens": 5813,
+          "completion_tokens": 87,
+          "total_tokens": 5900,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 2101
+        },
+        {
+          "prompt_tokens": 5944,
+          "completion_tokens": 71,
+          "total_tokens": 6015,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 2104
+        },
+        {
+          "prompt_tokens": 6059,
+          "completion_tokens": 83,
+          "total_tokens": 6142,
+          "prompt_tokens_details": {
+            "cached_tokens": 3968
+          },
+          "prompt_cache_hit_tokens": 3968,
+          "prompt_cache_miss_tokens": 2091
+        },
+        {
+          "prompt_tokens": 6806,
+          "completion_tokens": 86,
+          "total_tokens": 6892,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "prompt_cache_hit_tokens": 4096,
+          "prompt_cache_miss_tokens": 2710
+        },
+        {
+          "prompt_tokens": 6943,
+          "completion_tokens": 87,
+          "total_tokens": 7030,
+          "prompt_tokens_details": {
+            "cached_tokens": 4480
+          },
+          "prompt_cache_hit_tokens": 4480,
+          "prompt_cache_miss_tokens": 2463
+        },
+        {
+          "prompt_tokens": 6948,
+          "completion_tokens": 71,
+          "total_tokens": 7019,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3748
+        },
+        {
+          "prompt_tokens": 6946,
+          "completion_tokens": 84,
+          "total_tokens": 7030,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3746
+        },
+        {
+          "prompt_tokens": 6967,
+          "completion_tokens": 87,
+          "total_tokens": 7054,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3767
+        },
+        {
+          "prompt_tokens": 6972,
+          "completion_tokens": 67,
+          "total_tokens": 7039,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3772
+        },
+        {
+          "prompt_tokens": 6957,
+          "completion_tokens": 293,
+          "total_tokens": 7250,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3757
+        }
+      ],
+      "promptTokens": 86413,
+      "completionTokens": 1344,
+      "totalTokens": 87757,
+      "cacheHitTokens": 46336,
+      "mutationsAccepted": 10,
+      "completionReviews": 0,
+      "log": "1794735598532-b701747a-16e8-4bd2-bb8e-ce01403ff198.jsonl",
+      "traceFile": "traces/01-batch-tools_only.jsonl"
+    },
+    {
+      "case": "batch",
+      "repetition": 0,
+      "mode": "SCRIPT_ONLY",
+      "elapsedMs": 15187,
+      "phase": "COMPLETED",
+      "summary": "已在当前测试页面依次查询三个关键词（每次等待结果，无失败无需重试），填入件数并点校验结果，页面显示\"校验通过：蓝牙耳机=3，充电器=5，数据线=2\"。总结：蓝牙耳机 3 件，充电器 5 件，数据线 2 件。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 6,
+      "httpRequests": 6,
+      "modelTimeMs": 8873,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 5,
+      "scriptCalls": 26,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 3924,
+          "completion_tokens": 183,
+          "total_tokens": 4107,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 3924
+        },
+        {
+          "prompt_tokens": 4244,
+          "completion_tokens": 212,
+          "total_tokens": 4456,
+          "prompt_tokens_details": {
+            "cached_tokens": 2432
+          },
+          "prompt_cache_hit_tokens": 2432,
+          "prompt_cache_miss_tokens": 1812
+        },
+        {
+          "prompt_tokens": 4587,
+          "completion_tokens": 155,
+          "total_tokens": 4742,
+          "prompt_tokens_details": {
+            "cached_tokens": 2560
+          },
+          "prompt_cache_hit_tokens": 2560,
+          "prompt_cache_miss_tokens": 2027
+        },
+        {
+          "prompt_tokens": 5299,
+          "completion_tokens": 226,
+          "total_tokens": 5525,
+          "prompt_tokens_details": {
+            "cached_tokens": 2816
+          },
+          "prompt_cache_hit_tokens": 2816,
+          "prompt_cache_miss_tokens": 2483
+        },
+        {
+          "prompt_tokens": 5589,
+          "completion_tokens": 172,
+          "total_tokens": 5761,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2261
+        },
+        {
+          "prompt_tokens": 5863,
+          "completion_tokens": 268,
+          "total_tokens": 6131,
+          "prompt_tokens_details": {
+            "cached_tokens": 3584
+          },
+          "prompt_cache_hit_tokens": 3584,
+          "prompt_cache_miss_tokens": 2279
+        }
+      ],
+      "promptTokens": 29506,
+      "completionTokens": 1216,
+      "totalTokens": 30722,
+      "cacheHitTokens": 14720,
+      "mutationsAccepted": 11,
+      "completionReviews": 0,
+      "log": "1794735621186-eccc6185-85c2-4e32-9e09-123224f7026c.jsonl",
+      "traceFile": "traces/02-batch-script_only.jsonl"
+    },
+    {
+      "case": "retry",
+      "repetition": 0,
+      "mode": "TOOLS_ONLY",
+      "elapsedMs": 32983,
+      "phase": "COMPLETED",
+      "summary": "已依次查询并填入件数：蓝牙耳机3件、充电器5件、数据线2件；点击“校验结果”后显示“校验通过：蓝牙耳机=3，充电器=5，数据线=2”。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 16,
+      "httpRequests": 16,
+      "modelTimeMs": 17600,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 0,
+      "scriptCalls": 0,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 4663,
+          "completion_tokens": 66,
+          "total_tokens": 4729,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1463
+        },
+        {
+          "prompt_tokens": 4785,
+          "completion_tokens": 49,
+          "total_tokens": 4834,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1585
+        },
+        {
+          "prompt_tokens": 4879,
+          "completion_tokens": 89,
+          "total_tokens": 4968,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1679
+        },
+        {
+          "prompt_tokens": 5653,
+          "completion_tokens": 65,
+          "total_tokens": 5718,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2325
+        },
+        {
+          "prompt_tokens": 5768,
+          "completion_tokens": 66,
+          "total_tokens": 5834,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 2056
+        },
+        {
+          "prompt_tokens": 5884,
+          "completion_tokens": 49,
+          "total_tokens": 5933,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 2044
+        },
+        {
+          "prompt_tokens": 5979,
+          "completion_tokens": 90,
+          "total_tokens": 6069,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 2139
+        },
+        {
+          "prompt_tokens": 6513,
+          "completion_tokens": 49,
+          "total_tokens": 6562,
+          "prompt_tokens_details": {
+            "cached_tokens": 3968
+          },
+          "prompt_cache_hit_tokens": 3968,
+          "prompt_cache_miss_tokens": 2545
+        },
+        {
+          "prompt_tokens": 6601,
+          "completion_tokens": 123,
+          "total_tokens": 6724,
+          "prompt_tokens_details": {
+            "cached_tokens": 4224
+          },
+          "prompt_cache_hit_tokens": 4224,
+          "prompt_cache_miss_tokens": 2377
+        },
+        {
+          "prompt_tokens": 7332,
+          "completion_tokens": 65,
+          "total_tokens": 7397,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4132
+        },
+        {
+          "prompt_tokens": 7358,
+          "completion_tokens": 66,
+          "total_tokens": 7424,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4158
+        },
+        {
+          "prompt_tokens": 6708,
+          "completion_tokens": 49,
+          "total_tokens": 6757,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3508
+        },
+        {
+          "prompt_tokens": 6681,
+          "completion_tokens": 92,
+          "total_tokens": 6773,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3481
+        },
+        {
+          "prompt_tokens": 7423,
+          "completion_tokens": 65,
+          "total_tokens": 7488,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4223
+        },
+        {
+          "prompt_tokens": 7442,
+          "completion_tokens": 49,
+          "total_tokens": 7491,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4242
+        },
+        {
+          "prompt_tokens": 7021,
+          "completion_tokens": 204,
+          "total_tokens": 7225,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3821
+        }
+      ],
+      "promptTokens": 100690,
+      "completionTokens": 1236,
+      "totalTokens": 101926,
+      "cacheHitTokens": 54912,
+      "mutationsAccepted": 11,
+      "completionReviews": 0,
+      "log": "1794735636503-167e1d83-dfef-49ab-be5d-304176f165c5.jsonl",
+      "traceFile": "traces/03-retry-tools_only.jsonl"
+    },
+    {
+      "case": "retry",
+      "repetition": 0,
+      "mode": "SCRIPT_ONLY",
+      "elapsedMs": 30024,
+      "phase": "COMPLETED",
+      "summary": "已在当前测试页面依次查询三个关键词（充电器首次失败后仅重试一次成功），并将件数填入对应输入框，点击\"校验结果\"后显示校验通过：蓝牙耳机 3 件、充电器 5 件、数据线 2 件。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 8,
+      "httpRequests": 8,
+      "modelTimeMs": 11313,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 1,
+      "scriptCells": 7,
+      "scriptCalls": 74,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 3922,
+          "completion_tokens": 250,
+          "total_tokens": 4172,
+          "prompt_tokens_details": {
+            "cached_tokens": 2560
+          },
+          "prompt_cache_hit_tokens": 2560,
+          "prompt_cache_miss_tokens": 1362
+        },
+        {
+          "prompt_tokens": 4310,
+          "completion_tokens": 229,
+          "total_tokens": 4539,
+          "prompt_tokens_details": {
+            "cached_tokens": 2432
+          },
+          "prompt_cache_hit_tokens": 2432,
+          "prompt_cache_miss_tokens": 1878
+        },
+        {
+          "prompt_tokens": 4648,
+          "completion_tokens": 181,
+          "total_tokens": 4829,
+          "prompt_tokens_details": {
+            "cached_tokens": 2688
+          },
+          "prompt_cache_hit_tokens": 2688,
+          "prompt_cache_miss_tokens": 1960
+        },
+        {
+          "prompt_tokens": 4920,
+          "completion_tokens": 262,
+          "total_tokens": 5182,
+          "prompt_tokens_details": {
+            "cached_tokens": 2944
+          },
+          "prompt_cache_hit_tokens": 2944,
+          "prompt_cache_miss_tokens": 1976
+        },
+        {
+          "prompt_tokens": 5277,
+          "completion_tokens": 167,
+          "total_tokens": 5444,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 2077
+        },
+        {
+          "prompt_tokens": 5477,
+          "completion_tokens": 271,
+          "total_tokens": 5748,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 2021
+        },
+        {
+          "prompt_tokens": 5785,
+          "completion_tokens": 223,
+          "total_tokens": 6008,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 2073
+        },
+        {
+          "prompt_tokens": 6047,
+          "completion_tokens": 235,
+          "total_tokens": 6282,
+          "prompt_tokens_details": {
+            "cached_tokens": 3968
+          },
+          "prompt_cache_hit_tokens": 3968,
+          "prompt_cache_miss_tokens": 2079
+        }
+      ],
+      "promptTokens": 40386,
+      "completionTokens": 1818,
+      "totalTokens": 42204,
+      "cacheHitTokens": 24960,
+      "mutationsAccepted": 11,
+      "completionReviews": 0,
+      "log": "1794735669616-65899197-ff2e-426b-8f03-5ccaacd38330.jsonl",
+      "traceFile": "traces/04-retry-script_only.jsonl"
+    },
+    {
+      "case": "wizard",
+      "repetition": 0,
+      "mode": "TOOLS_ONLY",
+      "elapsedMs": 15672,
+      "phase": "COMPLETED",
+      "summary": "已在当前\"资料核对测试\"页完成两步填写并校验通过，未打开其他应用。\n\n第一步：姓名=悟空测试，城市=杭州，关闭接收演示通知；页面显示\"已保留：姓名悟空测试，城市杭州，接收演示通知已关闭\"。\n第二步：活动时间=周六下午，人数=2，勾选步行。\n点击\"校验信息\"后，页面显示核对结果：\"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行\"。\n\n汇总所有填写内容：\n1. 姓名：悟空测试\n2. 城市：杭州\n3. 接收演示通知：已关闭\n4. 活动时间：周六下午\n5. 人数：2\n6. 出行方式：步行",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [],
+        "counts": {},
+        "form": {
+          "name": "悟空测试",
+          "city": "杭州",
+          "notifications": false,
+          "time": "周六下午",
+          "people": "2",
+          "walking": true
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 10,
+      "httpRequests": 10,
+      "modelTimeMs": 10888,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 0,
+      "scriptCalls": 0,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 4360,
+          "completion_tokens": 66,
+          "total_tokens": 4426,
+          "prompt_tokens_details": {
+            "cached_tokens": 3072
+          },
+          "prompt_cache_hit_tokens": 3072,
+          "prompt_cache_miss_tokens": 1288
+        },
+        {
+          "prompt_tokens": 4474,
+          "completion_tokens": 65,
+          "total_tokens": 4539,
+          "prompt_tokens_details": {
+            "cached_tokens": 3072
+          },
+          "prompt_cache_hit_tokens": 3072,
+          "prompt_cache_miss_tokens": 1402
+        },
+        {
+          "prompt_tokens": 4601,
+          "completion_tokens": 49,
+          "total_tokens": 4650,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1401
+        },
+        {
+          "prompt_tokens": 4693,
+          "completion_tokens": 49,
+          "total_tokens": 4742,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 1365
+        },
+        {
+          "prompt_tokens": 4793,
+          "completion_tokens": 99,
+          "total_tokens": 4892,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 1337
+        },
+        {
+          "prompt_tokens": 6032,
+          "completion_tokens": 66,
+          "total_tokens": 6098,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 2576
+        },
+        {
+          "prompt_tokens": 6152,
+          "completion_tokens": 65,
+          "total_tokens": 6217,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "prompt_cache_hit_tokens": 4096,
+          "prompt_cache_miss_tokens": 2056
+        },
+        {
+          "prompt_tokens": 6265,
+          "completion_tokens": 49,
+          "total_tokens": 6314,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "prompt_cache_hit_tokens": 4096,
+          "prompt_cache_miss_tokens": 2169
+        },
+        {
+          "prompt_tokens": 6364,
+          "completion_tokens": 49,
+          "total_tokens": 6413,
+          "prompt_tokens_details": {
+            "cached_tokens": 4224
+          },
+          "prompt_cache_hit_tokens": 4224,
+          "prompt_cache_miss_tokens": 2140
+        },
+        {
+          "prompt_tokens": 6360,
+          "completion_tokens": 379,
+          "total_tokens": 6739,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3160
+        }
+      ],
+      "promptTokens": 54094,
+      "completionTokens": 936,
+      "totalTokens": 55030,
+      "cacheHitTokens": 35200,
+      "mutationsAccepted": 8,
+      "completionReviews": 0,
+      "log": "1794735699765-d686ae63-549a-489a-bffd-26714b49c61c.jsonl",
+      "traceFile": "traces/05-wizard-tools_only.jsonl"
+    },
+    {
+      "case": "wizard",
+      "repetition": 0,
+      "mode": "SCRIPT_ONLY",
+      "elapsedMs": 8131,
+      "phase": "COMPLETED",
+      "summary": "已在当前资料核对测试页完成全部填写并校验通过。填写内容：姓名=悟空测试，城市=杭州，接收演示通知=已关闭；活动时间=周六下午，人数=2，出行方式=步行。页面显示\"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行\"。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [],
+        "counts": {},
+        "form": {
+          "name": "悟空测试",
+          "city": "杭州",
+          "notifications": false,
+          "time": "周六下午",
+          "people": "2",
+          "walking": true
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 3,
+      "httpRequests": 3,
+      "modelTimeMs": 5126,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 2,
+      "scriptCalls": 14,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 3619,
+          "completion_tokens": 216,
+          "total_tokens": 3835,
+          "prompt_tokens_details": {
+            "cached_tokens": 2304
+          },
+          "prompt_cache_hit_tokens": 2304,
+          "prompt_cache_miss_tokens": 1315
+        },
+        {
+          "prompt_tokens": 4090,
+          "completion_tokens": 247,
+          "total_tokens": 4337,
+          "prompt_tokens_details": {
+            "cached_tokens": 2432
+          },
+          "prompt_cache_hit_tokens": 2432,
+          "prompt_cache_miss_tokens": 1658
+        },
+        {
+          "prompt_tokens": 4578,
+          "completion_tokens": 245,
+          "total_tokens": 4823,
+          "prompt_tokens_details": {
+            "cached_tokens": 2688
+          },
+          "prompt_cache_hit_tokens": 2688,
+          "prompt_cache_miss_tokens": 1890
+        }
+      ],
+      "promptTokens": 12287,
+      "completionTokens": 708,
+      "totalTokens": 12995,
+      "cacheHitTokens": 7424,
+      "mutationsAccepted": 8,
+      "completionReviews": 0,
+      "log": "1794735715572-58cfc4f6-d7d6-4cc6-aeeb-1a947824d286.jsonl",
+      "traceFile": "traces/06-wizard-script_only.jsonl"
+    },
+    {
+      "case": "wizard",
+      "repetition": 1,
+      "mode": "SCRIPT_ONLY",
+      "elapsedMs": 12944,
+      "phase": "COMPLETED",
+      "summary": "已在当前资料核对测试页完成全部填写并校验通过。填写内容：姓名「悟空测试」、城市「杭州」、接收演示通知关闭；活动时间「周六下午」、人数「2」、出行方式「步行」。点击“校验信息”后页面显示“全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行”。未打开其他应用。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [],
+        "counts": {},
+        "form": {
+          "name": "悟空测试",
+          "city": "杭州",
+          "notifications": false,
+          "time": "周六下午",
+          "people": "2",
+          "walking": true
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 5,
+      "httpRequests": 5,
+      "modelTimeMs": 7369,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 4,
+      "scriptCalls": 22,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 3619,
+          "completion_tokens": 298,
+          "total_tokens": 3917,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 163
+        },
+        {
+          "prompt_tokens": 4069,
+          "completion_tokens": 120,
+          "total_tokens": 4189,
+          "prompt_tokens_details": {
+            "cached_tokens": 2560
+          },
+          "prompt_cache_hit_tokens": 2560,
+          "prompt_cache_miss_tokens": 1509
+        },
+        {
+          "prompt_tokens": 4841,
+          "completion_tokens": 273,
+          "total_tokens": 5114,
+          "prompt_tokens_details": {
+            "cached_tokens": 2688
+          },
+          "prompt_cache_hit_tokens": 2688,
+          "prompt_cache_miss_tokens": 2153
+        },
+        {
+          "prompt_tokens": 5218,
+          "completion_tokens": 102,
+          "total_tokens": 5320,
+          "prompt_tokens_details": {
+            "cached_tokens": 3072
+          },
+          "prompt_cache_hit_tokens": 3072,
+          "prompt_cache_miss_tokens": 2146
+        },
+        {
+          "prompt_tokens": 5384,
+          "completion_tokens": 317,
+          "total_tokens": 5701,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 1928
+        }
+      ],
+      "promptTokens": 23131,
+      "completionTokens": 1110,
+      "totalTokens": 24241,
+      "cacheHitTokens": 15232,
+      "mutationsAccepted": 8,
+      "completionReviews": 0,
+      "log": "1794735723855-dddbfb78-65b7-4c21-ae41-95df6948450f.jsonl",
+      "traceFile": "traces/07-wizard-script_only.jsonl"
+    },
+    {
+      "case": "wizard",
+      "repetition": 1,
+      "mode": "TOOLS_ONLY",
+      "elapsedMs": 15182,
+      "phase": "COMPLETED",
+      "summary": "已在资料核对测试页完成全部填写并校验通过。填写内容：姓名悟空测试；城市杭州；接收演示通知已关闭；活动时间周六下午；人数2；出行方式步行。点击\"校验信息\"后显示\"全部信息核对通过：姓名悟空测试，城市杭州，通知关闭，时间周六下午，人数2，步行\"。全程仅在当前页面操作，未打开其他应用。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [],
+        "counts": {},
+        "form": {
+          "name": "悟空测试",
+          "city": "杭州",
+          "notifications": false,
+          "time": "周六下午",
+          "people": "2",
+          "walking": true
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 10,
+      "httpRequests": 10,
+      "modelTimeMs": 10425,
+      "modelErrors": 0,
+      "deviceErrors": 1,
+      "scriptErrors": 0,
+      "scriptCells": 0,
+      "scriptCalls": 0,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 4360,
+          "completion_tokens": 83,
+          "total_tokens": 4443,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "prompt_cache_hit_tokens": 4096,
+          "prompt_cache_miss_tokens": 264
+        },
+        {
+          "prompt_tokens": 4491,
+          "completion_tokens": 83,
+          "total_tokens": 4574,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1291
+        },
+        {
+          "prompt_tokens": 4636,
+          "completion_tokens": 68,
+          "total_tokens": 4704,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1436
+        },
+        {
+          "prompt_tokens": 4747,
+          "completion_tokens": 66,
+          "total_tokens": 4813,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 1419
+        },
+        {
+          "prompt_tokens": 4864,
+          "completion_tokens": 68,
+          "total_tokens": 4932,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 1408
+        },
+        {
+          "prompt_tokens": 5132,
+          "completion_tokens": 84,
+          "total_tokens": 5216,
+          "prompt_tokens_details": {
+            "cached_tokens": 3584
+          },
+          "prompt_cache_hit_tokens": 3584,
+          "prompt_cache_miss_tokens": 1548
+        },
+        {
+          "prompt_tokens": 5269,
+          "completion_tokens": 83,
+          "total_tokens": 5352,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 1557
+        },
+        {
+          "prompt_tokens": 5400,
+          "completion_tokens": 66,
+          "total_tokens": 5466,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 1560
+        },
+        {
+          "prompt_tokens": 5516,
+          "completion_tokens": 67,
+          "total_tokens": 5583,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 1676
+        },
+        {
+          "prompt_tokens": 5513,
+          "completion_tokens": 253,
+          "total_tokens": 5766,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 2313
+        }
+      ],
+      "promptTokens": 49928,
+      "completionTokens": 921,
+      "totalTokens": 50849,
+      "cacheHitTokens": 35456,
+      "mutationsAccepted": 8,
+      "completionReviews": 0,
+      "log": "1794735736915-a7181046-2d1f-4628-a077-4e8a42a816eb.jsonl",
+      "traceFile": "traces/08-wizard-tools_only.jsonl"
+    },
+    {
+      "case": "retry",
+      "repetition": 1,
+      "mode": "SCRIPT_ONLY",
+      "elapsedMs": 27582,
+      "phase": "COMPLETED",
+      "summary": "已在当前测试页面完成三次查询：蓝牙耳机一次成功为3件；充电器首次失败（网络暂时不可用），点“重试当前查询”一次后成功为5件；数据线成功为2件。已分别填入件数输入框（3、5、2），点击“校验结果”后显示“校验通过：蓝牙耳机=3，充电器=5，数据线=2”。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 7,
+      "httpRequests": 7,
+      "modelTimeMs": 10232,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 6,
+      "scriptCalls": 28,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 3922,
+          "completion_tokens": 175,
+          "total_tokens": 4097,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 210
+        },
+        {
+          "prompt_tokens": 4871,
+          "completion_tokens": 231,
+          "total_tokens": 5102,
+          "prompt_tokens_details": {
+            "cached_tokens": 2432
+          },
+          "prompt_cache_hit_tokens": 2432,
+          "prompt_cache_miss_tokens": 2439
+        },
+        {
+          "prompt_tokens": 5240,
+          "completion_tokens": 159,
+          "total_tokens": 5399,
+          "prompt_tokens_details": {
+            "cached_tokens": 2944
+          },
+          "prompt_cache_hit_tokens": 2944,
+          "prompt_cache_miss_tokens": 2296
+        },
+        {
+          "prompt_tokens": 5511,
+          "completion_tokens": 132,
+          "total_tokens": 5643,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 2311
+        },
+        {
+          "prompt_tokens": 5676,
+          "completion_tokens": 229,
+          "total_tokens": 5905,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2348
+        },
+        {
+          "prompt_tokens": 5606,
+          "completion_tokens": 119,
+          "total_tokens": 5725,
+          "prompt_tokens_details": {
+            "cached_tokens": 3584
+          },
+          "prompt_cache_hit_tokens": 3584,
+          "prompt_cache_miss_tokens": 2022
+        },
+        {
+          "prompt_tokens": 5835,
+          "completion_tokens": 263,
+          "total_tokens": 6098,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 1995
+        }
+      ],
+      "promptTokens": 36661,
+      "completionTokens": 1308,
+      "totalTokens": 37969,
+      "cacheHitTokens": 23040,
+      "mutationsAccepted": 11,
+      "completionReviews": 0,
+      "log": "1794735752217-1ac33592-4506-4eb0-8174-1a1bffc25b57.jsonl",
+      "traceFile": "traces/09-retry-script_only.jsonl"
+    },
+    {
+      "case": "retry",
+      "repetition": 1,
+      "mode": "TOOLS_ONLY",
+      "elapsedMs": 26048,
+      "phase": "COMPLETED",
+      "summary": "已在当前测试页依次查询蓝牙耳机(3件)、充电器(首次失败后重试一次成功，5件)、数据线(2件)，分别填入对应件数输入框并点击“校验结果”，页面显示“校验通过：蓝牙耳机=3，充电器=5，数据线=2”。总结：蓝牙耳机 3 件，充电器 5 件，数据线 2 件。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 16,
+      "httpRequests": 16,
+      "modelTimeMs": 19030,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 0,
+      "scriptCalls": 0,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 4663,
+          "completion_tokens": 86,
+          "total_tokens": 4749,
+          "prompt_tokens_details": {
+            "cached_tokens": 4480
+          },
+          "prompt_cache_hit_tokens": 4480,
+          "prompt_cache_miss_tokens": 183
+        },
+        {
+          "prompt_tokens": 4805,
+          "completion_tokens": 67,
+          "total_tokens": 4872,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1605
+        },
+        {
+          "prompt_tokens": 4917,
+          "completion_tokens": 103,
+          "total_tokens": 5020,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1717
+        },
+        {
+          "prompt_tokens": 6036,
+          "completion_tokens": 87,
+          "total_tokens": 6123,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2708
+        },
+        {
+          "prompt_tokens": 6173,
+          "completion_tokens": 86,
+          "total_tokens": 6259,
+          "prompt_tokens_details": {
+            "cached_tokens": 3968
+          },
+          "prompt_cache_hit_tokens": 3968,
+          "prompt_cache_miss_tokens": 2205
+        },
+        {
+          "prompt_tokens": 6309,
+          "completion_tokens": 67,
+          "total_tokens": 6376,
+          "prompt_tokens_details": {
+            "cached_tokens": 3968
+          },
+          "prompt_cache_hit_tokens": 3968,
+          "prompt_cache_miss_tokens": 2341
+        },
+        {
+          "prompt_tokens": 6422,
+          "completion_tokens": 90,
+          "total_tokens": 6512,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "prompt_cache_hit_tokens": 4096,
+          "prompt_cache_miss_tokens": 2326
+        },
+        {
+          "prompt_tokens": 7436,
+          "completion_tokens": 69,
+          "total_tokens": 7505,
+          "prompt_tokens_details": {
+            "cached_tokens": 4224
+          },
+          "prompt_cache_hit_tokens": 4224,
+          "prompt_cache_miss_tokens": 3212
+        },
+        {
+          "prompt_tokens": 7544,
+          "completion_tokens": 91,
+          "total_tokens": 7635,
+          "prompt_tokens_details": {
+            "cached_tokens": 4736
+          },
+          "prompt_cache_hit_tokens": 4736,
+          "prompt_cache_miss_tokens": 2808
+        },
+        {
+          "prompt_tokens": 8227,
+          "completion_tokens": 86,
+          "total_tokens": 8313,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 5027
+        },
+        {
+          "prompt_tokens": 8256,
+          "completion_tokens": 86,
+          "total_tokens": 8342,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 5056
+        },
+        {
+          "prompt_tokens": 7281,
+          "completion_tokens": 67,
+          "total_tokens": 7348,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 3953
+        },
+        {
+          "prompt_tokens": 7250,
+          "completion_tokens": 91,
+          "total_tokens": 7341,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4050
+        },
+        {
+          "prompt_tokens": 7969,
+          "completion_tokens": 87,
+          "total_tokens": 8056,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4769
+        },
+        {
+          "prompt_tokens": 7992,
+          "completion_tokens": 66,
+          "total_tokens": 8058,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 4792
+        },
+        {
+          "prompt_tokens": 7108,
+          "completion_tokens": 244,
+          "total_tokens": 7352,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3908
+        }
+      ],
+      "promptTokens": 108388,
+      "completionTokens": 1473,
+      "totalTokens": 109861,
+      "cacheHitTokens": 57728,
+      "mutationsAccepted": 11,
+      "completionReviews": 0,
+      "log": "1794735779956-9adafaa0-1df1-4e8e-ba28-e3814504c508.jsonl",
+      "traceFile": "traces/10-retry-tools_only.jsonl"
+    },
+    {
+      "case": "batch",
+      "repetition": 1,
+      "mode": "SCRIPT_ONLY",
+      "elapsedMs": 26503,
+      "phase": "COMPLETED",
+      "summary": "已在同一测试页面依次查询：蓝牙耳机=3件、充电器=5件、数据线=2件，并分别填入三个件数输入框；点击“校验结果”后显示“校验通过：蓝牙耳机=3，充电器=5，数据线=2”。未打开其他应用，成功的查询未重复，失败查询只重试一次。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 7,
+      "httpRequests": 7,
+      "modelTimeMs": 10467,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 2,
+      "scriptCells": 6,
+      "scriptCalls": 53,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 3920,
+          "completion_tokens": 201,
+          "total_tokens": 4121,
+          "prompt_tokens_details": {
+            "cached_tokens": 2560
+          },
+          "prompt_cache_hit_tokens": 2560,
+          "prompt_cache_miss_tokens": 1360
+        },
+        {
+          "prompt_tokens": 4259,
+          "completion_tokens": 61,
+          "total_tokens": 4320,
+          "prompt_tokens_details": {
+            "cached_tokens": 2432
+          },
+          "prompt_cache_hit_tokens": 2432,
+          "prompt_cache_miss_tokens": 1827
+        },
+        {
+          "prompt_tokens": 4382,
+          "completion_tokens": 200,
+          "total_tokens": 4582,
+          "prompt_tokens_details": {
+            "cached_tokens": 2688
+          },
+          "prompt_cache_hit_tokens": 2688,
+          "prompt_cache_miss_tokens": 1694
+        },
+        {
+          "prompt_tokens": 4687,
+          "completion_tokens": 418,
+          "total_tokens": 5105,
+          "prompt_tokens_details": {
+            "cached_tokens": 2816
+          },
+          "prompt_cache_hit_tokens": 2816,
+          "prompt_cache_miss_tokens": 1871
+        },
+        {
+          "prompt_tokens": 5221,
+          "completion_tokens": 250,
+          "total_tokens": 5471,
+          "prompt_tokens_details": {
+            "cached_tokens": 2944
+          },
+          "prompt_cache_hit_tokens": 2944,
+          "prompt_cache_miss_tokens": 2277
+        },
+        {
+          "prompt_tokens": 5506,
+          "completion_tokens": 199,
+          "total_tokens": 5705,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 2050
+        },
+        {
+          "prompt_tokens": 5790,
+          "completion_tokens": 221,
+          "total_tokens": 6011,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 2078
+        }
+      ],
+      "promptTokens": 33765,
+      "completionTokens": 1550,
+      "totalTokens": 35315,
+      "cacheHitTokens": 20608,
+      "mutationsAccepted": 10,
+      "completionReviews": 0,
+      "log": "1794735806116-ad053f5f-f02e-4c1e-a91c-290b8daff7c2.jsonl",
+      "traceFile": "traces/11-batch-script_only.jsonl"
+    },
+    {
+      "case": "batch",
+      "repetition": 1,
+      "mode": "TOOLS_ONLY",
+      "elapsedMs": 20270,
+      "phase": "COMPLETED",
+      "summary": "已完成依次查询蓝牙耳机（3件）、充电器（5件）、数据线（2件），并分别填入件数输入框，点击“校验结果”后页面显示“校验通过：蓝牙耳机=3，充电器=5，数据线=2”。三个关键词找到的商品件数分别为：蓝牙耳机 3 件、充电器 5 件、数据线 2 件。",
+      "objective": {
+        "passed": true,
+        "verified": true,
+        "invalidActions": 0,
+        "checkClicks": 1,
+        "queries": [
+          "蓝牙耳机",
+          "充电器",
+          "数据线"
+        ],
+        "counts": {
+          "蓝牙耳机": "3",
+          "充电器": "5",
+          "数据线": "2"
+        }
+      },
+      "success": true,
+      "falseCompletion": false,
+      "deniedApprovals": 0,
+      "planningRounds": 14,
+      "httpRequests": 14,
+      "modelTimeMs": 14343,
+      "modelErrors": 0,
+      "deviceErrors": 0,
+      "scriptErrors": 0,
+      "scriptCells": 0,
+      "scriptCalls": 0,
+      "usageComplete": true,
+      "rawUsage": [
+        {
+          "prompt_tokens": 4661,
+          "completion_tokens": 66,
+          "total_tokens": 4727,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 1461
+        },
+        {
+          "prompt_tokens": 4784,
+          "completion_tokens": 49,
+          "total_tokens": 4833,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 1456
+        },
+        {
+          "prompt_tokens": 4884,
+          "completion_tokens": 83,
+          "total_tokens": 4967,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 1428
+        },
+        {
+          "prompt_tokens": 5643,
+          "completion_tokens": 65,
+          "total_tokens": 5708,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2315
+        },
+        {
+          "prompt_tokens": 5761,
+          "completion_tokens": 66,
+          "total_tokens": 5827,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 2049
+        },
+        {
+          "prompt_tokens": 5876,
+          "completion_tokens": 49,
+          "total_tokens": 5925,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 2036
+        },
+        {
+          "prompt_tokens": 5968,
+          "completion_tokens": 83,
+          "total_tokens": 6051,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 2128
+        },
+        {
+          "prompt_tokens": 6168,
+          "completion_tokens": 65,
+          "total_tokens": 6233,
+          "prompt_tokens_details": {
+            "cached_tokens": 3968
+          },
+          "prompt_cache_hit_tokens": 3968,
+          "prompt_cache_miss_tokens": 2200
+        },
+        {
+          "prompt_tokens": 6291,
+          "completion_tokens": 66,
+          "total_tokens": 6357,
+          "prompt_tokens_details": {
+            "cached_tokens": 4096
+          },
+          "prompt_cache_hit_tokens": 4096,
+          "prompt_cache_miss_tokens": 2195
+        },
+        {
+          "prompt_tokens": 6283,
+          "completion_tokens": 49,
+          "total_tokens": 6332,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2955
+        },
+        {
+          "prompt_tokens": 6276,
+          "completion_tokens": 95,
+          "total_tokens": 6371,
+          "prompt_tokens_details": {
+            "cached_tokens": 3200
+          },
+          "prompt_cache_hit_tokens": 3200,
+          "prompt_cache_miss_tokens": 3076
+        },
+        {
+          "prompt_tokens": 6055,
+          "completion_tokens": 65,
+          "total_tokens": 6120,
+          "prompt_tokens_details": {
+            "cached_tokens": 3456
+          },
+          "prompt_cache_hit_tokens": 3456,
+          "prompt_cache_miss_tokens": 2599
+        },
+        {
+          "prompt_tokens": 6053,
+          "completion_tokens": 49,
+          "total_tokens": 6102,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2725
+        },
+        {
+          "prompt_tokens": 6042,
+          "completion_tokens": 282,
+          "total_tokens": 6324,
+          "prompt_tokens_details": {
+            "cached_tokens": 3328
+          },
+          "prompt_cache_hit_tokens": 3328,
+          "prompt_cache_miss_tokens": 2714
+        }
+      ],
+      "promptTokens": 80745,
+      "completionTokens": 1132,
+      "totalTokens": 81877,
+      "cacheHitTokens": 49408,
+      "mutationsAccepted": 10,
+      "completionReviews": 0,
+      "log": "1794735832746-f93c27ab-df2d-4a5c-ab91-246d9c860ec8.jsonl",
+      "traceFile": "traces/12-batch-tools_only.jsonl"
+    }
+  ],
+  "finished": true,
+  "sourceFilesSha256": {
+    "app/src/main/java/com/wukong/phone/ChatModel.kt": "35e734b53b487d41f19a363ebdb1454221cfb7ddd8c122b367eb7d96ab287a5b",
+    "app/src/androidTest/java/com/wukong/phone/ExecutionComparisonTest.kt": "154a6ee360e10a2fb2a7e63dd8db3701025d0bd038ccdcf84c6cf0bddec21f78",
+    "app/src/debug/res/values/benchmark_ids.xml": "02eeb1111f2a616b278f5145c532ed9b385b47caaf12b3d730f12395d5386f96",
+    "app/src/main/java/com/wukong/phone/script/JsSdk.kt": "266df6308cb19017a229cab9e9da356a2a137bab087c52ee031d281387572dc8",
+    "agent-core/src/main/kotlin/com/wukong/core/Agent.kt": "e27cb6e33ebc3c0272719324bff772d577f08db472f7fa02484551dd63a72cb7"
+  }
+}

@@ -74,3 +74,7 @@ Implemented `phone_query`, `phone_wait_until`, and `phone_verify`, compact/focus
 ## Programmable phone workflows (2026-11-15)
 
 Added `phone_run_js` with the existing selectors/waits/actions and cooperative change listeners, executed in an isolated Android service. After comparing a local V8 build, the shipped implementation uses source-built QuickJS: arm64 production APK 27.45 MiB, versus 86.57 MiB with V8 and 26.82 MiB before scripts. The same trusted approvals, exact snapshot checks, cancellation and completion evidence remain outside JS. Runtime contracts, native limits, size measurements and device validation are in [JavaScript runtime](architecture/javascript-runtime.md).
+
+## 纯工具与编程调用对比（2026-11-15）
+
+在 Pixel 6 上，用相同 deepseek-flash 配置，分别强制纯工具与纯 JS 操作，测试批量查询回填、查询失败后局部重试、跨页表单三类流程。每种任务每种模式两次，配对交替顺序，共 12 次，均通过独立页面 oracle 与摘要核对。JS 平均规划轮数减少 55%、总 token 减少 62.4%，平均耗时仅减少 9.3%；存在 3 次被拦截并恢复的脚本错误与明显无效等待。样本小且使用受控原生控件，不能外推到所有 App。完整方法、原始用量与日志见 [评估结论](../benchmarks/execution/results/2026-11-15/analysis.md) 和 [复现说明](../benchmarks/execution/README.md)。App 默认仍为 AUTO，不新增用户设置项。
