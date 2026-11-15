@@ -188,4 +188,19 @@ class AgentTest {
         assertEquals(1, calls)
         assertEquals(1, injections)
     }
+    @Test fun invalidToolArgumentsBecomeBoundedFeedbackWithoutApprovalOrInjection() {
+        val driver = Driver(screen); var decisions = 0
+        val outcome = Agent(Model { _, _, history ->
+            if (++decisions == 1) Action.Invalid("Unknown selector key") else {
+                assertTrue(history.last().result.contains("Unknown selector key"))
+                Action.Finish("done", evidence = listOf(ScreenCondition(packageName = "demo.app")))
+            }
+        }, driver, Approval { _, _ -> error("Invalid arguments must not ask approval") }).run("test", Cancellation()) {}
+        assertEquals(Phase.COMPLETED, outcome.phase); assertTrue(driver.executed.isEmpty()); assertEquals(2, decisions)
+        decisions = 0
+        val failed = Agent(Model { _, _, _ -> decisions++; Action.Invalid("bad arguments") }, driver, Approval { _, _ -> error("No approval") })
+            .run("test", Cancellation()) {}
+        assertEquals(Phase.FAILED, failed.phase); assertEquals(4, decisions); assertTrue(driver.executed.isEmpty())
+    }
+
 }

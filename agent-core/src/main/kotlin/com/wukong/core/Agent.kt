@@ -22,6 +22,8 @@ data class Observation(val settled: Boolean, val samples: Int, val elapsedMillis
 data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null, val observation: Observation? = null, val uiRevision: Long = 0, val uiQuietMillis: Long = Long.MAX_VALUE, val uiEvents: Boolean = false, val truncated: Boolean = false)
 
 sealed interface Action {
+    /** Local model parse rejection: validated into feedback, never sent to a device. */
+    data class Invalid(val reason: String) : Action
     data class Tap(val nodeId: Int) : Action
     data class Input(val nodeId: Int, val text: String) : Action
     data class Scroll(val nodeId: Int, val forward: Boolean) : Action
@@ -42,6 +44,7 @@ sealed interface Action {
 }
 
 fun Action.label(): String = when (this) {
+    is Action.Invalid -> "纠正工具参数"
     is Action.Tap -> "点击节点 $nodeId"
     is Action.Input -> "向节点 $nodeId 输入文本"
     is Action.Scroll -> if (forward) "向下滚动节点 $nodeId" else "向上滚动节点 $nodeId"
@@ -126,7 +129,8 @@ class Agent(
                     // Validation is entirely local and runs before approval or device injection.
                     // Return a failed tool result, not a replay of a potentially accepted action.
                     if (validationRetries++ >= 3) throw error
-                    remember(Turn(screen, action, "操作未执行（校验拒绝）：${error.message}。请重新观察，选择可操作节点；必要时先用 OCR 或截图，再使用坐标工具。不要重复无效操作。"))
+                    val guidance = if (action is Action.Invalid) "请按工具 schema 修正参数；不要重复已经完成的操作。" else "请重新观察，选择可操作节点；必要时先用 OCR 或截图，再使用坐标工具。不要重复无效操作。"
+                    remember(Turn(screen, action, "操作未执行（校验拒绝）：${error.message}。$guidance"))
                     event(Phase.RUNNING, "操作未执行，正在重新观察并调整")
                     return@repeat
                 }
@@ -293,6 +297,7 @@ class Agent(
         val node = nodeId?.let { id -> screen.nodes.singleOrNull { it.id == id } ?: error("模型引用了不存在的节点") }
         require(node == null || node.enabled) { "目标控件尚未启用，请等待可操作状态" }
         when (action) {
+            is Action.Invalid -> throw IllegalArgumentException(action.reason)
             is Action.TapAt -> coordinates(action.x, action.y, action.captureId)
             is Action.LongPress -> { coordinates(action.x, action.y, action.captureId); require(action.duration in 400..2000) { "长按时长须为 400–2000 毫秒" } }
             is Action.Swipe -> {
@@ -302,7 +307,7 @@ class Agent(
             is Action.Tap -> require(node!!.clickable) { "目标节点不可点击" }
             is Action.Input -> {
                 require(node!!.editable && !node.sensitive) { "目标节点不可输入" }
-                require(action.text.length in 1..2000) { "输入文本长度无效" }
+                require(action.text.length in 0..2000) { "输入文本长度无效" }
             }
             is Action.Scroll -> require(node!!.scrollable) { "目标节点不可滚动" }
             is Action.Script -> require(action.code.isNotBlank() && action.code.length <= 16000) { "脚本须为 1–16000 字符" }

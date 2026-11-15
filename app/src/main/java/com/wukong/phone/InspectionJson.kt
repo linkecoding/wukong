@@ -32,10 +32,11 @@ internal fun ScreenCondition.toJson() = JSONObject().put("state", state.name.low
 }
 internal fun JSONObject.toConditions(): List<ScreenCondition> {
     val array = getJSONArray("conditions")
-    return (0 until array.length()).map { index -> array.getJSONObject(index).let {
+    return (0 until array.length()).map { index -> array.getJSONObject(index).let { entry ->
+        val it = if (entry.keys().asSequence().none { key -> key in setOf("selector", "packageName", "state", "minCount") }) JSONObject().put("selector", entry) else entry
         it.requireKeys("selector", "packageName", "state", "minCount")
         if (it.has("minCount")) require(it.get("minCount") is Number && it.get("minCount").let { n -> (n as Number).toDouble() == n.toInt().toDouble() }) { "minCount must be an integer" }
-        ScreenCondition(it.optJSONObject("selector")?.toSelector(), it.optionalString("packageName"), when (it.optString("state", "present")) {
+        ScreenCondition(if (it.has("selector")) it.getJSONObject("selector").toSelector() else null, it.optionalString("packageName"), when (it.optString("state", "present")) {
             "present" -> Presence.PRESENT
             "absent" -> Presence.ABSENT
             else -> error("未知条件状态")

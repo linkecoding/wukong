@@ -1,0 +1,73 @@
+{
+  "baseline": {
+    "completedCalls": {
+      "query": 90,
+      "tap": 27,
+      "input": 32,
+      "waitUntil": 13,
+      "sleep": 51,
+      "observe": 1
+    },
+    "durationMs": {
+      "query": 5482,
+      "tap": 2439,
+      "input": 2575,
+      "waitUntil": 11815,
+      "sleep": 24151,
+      "observe": 23
+    },
+    "waitTimeouts": 1,
+    "structuredErrors": {
+      "UNSTRUCTURED": 3
+    },
+    "cellsUsingApis": {
+      "cells": 30,
+      "waitAny": 0,
+      "setText": 0,
+      "setChecked": 0,
+      "id": 0,
+      "text": 0,
+      "textContains": 0
+    }
+  },
+  "current": {
+    "completedCalls": {
+      "setText": 25,
+      "tap": 22,
+      "waitUntil": 9,
+      "sleep": 14,
+      "query": 39,
+      "observe": 3,
+      "waitAny": 7,
+      "setChecked": 4,
+      "verify": 1,
+      "input": 7
+    },
+    "durationMs": {
+      "setText": 2601,
+      "tap": 2036,
+      "waitUntil": 1477,
+      "sleep": 13117,
+      "query": 1911,
+      "observe": 153,
+      "waitAny": 1473,
+      "setChecked": 381,
+      "verify": 19,
+      "input": 601
+    },
+    "waitTimeouts": 0,
+    "structuredErrors": {
+      "UNSTRUCTURED": 1,
+      "INVALID_ARGUMENT": 1
+    },
+    "cellsUsingApis": {
+      "cells": 26,
+      "waitAny": 7,
+      "setText": 15,
+      "setChecked": 4,
+      "id": 22,
+      "text": 0,
+      "textContains": 0
+    }
+  }
+}

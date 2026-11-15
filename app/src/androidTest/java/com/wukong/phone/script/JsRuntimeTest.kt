@@ -150,6 +150,8 @@ class JsRuntimeTest {
             assertEquals("true", js.run("return wukong.setChecked(wukong.id('demo.app:id/check'),false).verified;", changing))
             assertEquals("true", js.run("return wukong.setChecked(wukong.id('demo.app:id/check'),false).noOp;", changing))
             assertEquals(3, injections); assertEquals("new", value); assertFalse(checked)
+            assertEquals("true", js.run("return wukong.setText(wukong.id('demo.app:id/input'),'').verified;", changing))
+            assertEquals(4, injections); assertEquals("", value)
         }
     }
     @Test fun duplicateTargetsFailWithoutInputAndPartialEffectsAreReported() {
@@ -195,6 +197,30 @@ class JsRuntimeTest {
             try { assertNotNull(runCatching { js.run("wukong.tap('Wait',{timeoutMs:5000});", disabled) }.exceptionOrNull()) }
             finally { thread.join(); control.pause(false) }
             assertEquals(0, injections)
+        }
+    }
+
+    @Test fun legacyEngineValueAbsenceRefusesBeforeSendingAnyInput() {
+        var injections = 0
+        val legacy = object : ScriptHost {
+            override fun observe() = Screen("demo.app", "f", listOf(UiNode(1,"Old hint",editable=true,resourceId="demo.app:id/input")))
+            override fun execute(action: Action, expected: Screen): String { injections++; return "ok" }
+        }
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            val failure = runCatching { js.run("wukong.setText(wukong.id('demo.app:id/input'),'New');", legacy) }.exceptionOrNull() as ScriptCallFailure
+            assertEquals("ENGINE_UPDATE_REQUIRED", JSONObject(failure.diagnostic).getString("code")); assertEquals(0, injections)
+        }
+    }
+    @Test fun javascriptFailuresRetainEarlierAcceptedEffectsInDiagnostics() {
+        var injections = 0
+        val target = object : ScriptHost {
+            override fun observe() = Screen("demo.app", "f", listOf(UiNode(1,"Ready",clickable=true)))
+            override fun execute(action: Action, expected: Screen): String { injections++; return "ok" }
+        }
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            val failure = runCatching { js.run("wukong.tap('Ready'); const s=wukong.id('demo.app:id/x'); Object.assign(s,{enabled:true});", target) }.exceptionOrNull() as ScriptCallFailure
+            val detail = JSONObject(failure.diagnostic)
+            assertEquals("SCRIPT_ERROR", detail.getString("code")); assertEquals(1, detail.getInt("acceptedCount")); assertEquals(1, injections)
         }
     }
 

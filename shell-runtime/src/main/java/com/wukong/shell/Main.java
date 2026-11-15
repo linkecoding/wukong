@@ -276,7 +276,7 @@ public final class Main {
                 node = requireNode(action, tree);
                 if (!node.isEditable() || !node.isEnabled() || node.isPassword()) throw new IllegalArgumentException("目标不可输入");
                 String text = action.getString("text");
-                if (text.isEmpty() || text.length() > 2000) throw new IllegalArgumentException("输入文本长度无效");
+                if (text.length() > 2000) throw new IllegalArgumentException("输入文本长度无效");
                 Bundle args = new Bundle(); args.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text);
                 success = node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args);
                 break;
@@ -457,14 +457,15 @@ public final class Main {
             if (raw.length() >= 300) tree.truncated = true;
             boolean sensitive = node.isPassword() || (node.isEditable() && SENSITIVE.matcher(raw).find());
             String text = sensitive ? "[受保护内容]" : raw;
+            String value = sensitive ? "[受保护内容]" : node.isShowingHintText() || node.getText() == null ? "" : node.getText().toString().substring(0, Math.min(300, node.getText().length()));
             tree.sensitive |= sensitive;
             boolean clickable = node.isClickable();
             boolean editable = node.isEditable();
             boolean scrollable = node.isScrollable();
             Rect bounds = new Rect(); node.getBoundsInScreen(bounds);
-            signature.append('|').append(parentId).append(':').append(node.isCheckable()).append(':').append(node.getViewIdResourceName()).append(':').append(node.getClassName()).append(':').append(bounds.toShortString()).append(':').append(text).append(':').append(clickable).append(editable).append(scrollable).append(':').append(node.isEnabled()).append(':').append(node.isChecked()).append(':').append(node.isSelected());
+            signature.append('|').append(parentId).append(':').append(node.isCheckable()).append(':').append(node.getViewIdResourceName()).append(':').append(node.getClassName()).append(':').append(bounds.toShortString()).append(':').append(text).append(':').append(value).append(':').append(clickable).append(editable).append(scrollable).append(':').append(node.isEnabled()).append(':').append(node.isChecked()).append(':').append(node.isSelected());
             int id = output.length() + 1; tree.nodes.put(id, node); currentParent = id;
-            output.put(new JSONObject().put("id", id).put("text", text).put("rawText", sensitive ? "[受保护内容]" : node.getText() == null ? "" : node.getText().toString().substring(0, Math.min(300, node.getText().length()))).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable).put("sensitive", sensitive)
+            output.put(new JSONObject().put("id", id).put("text", text).put("rawText", value).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable).put("sensitive", sensitive)
                 .put("resourceId", node.getViewIdResourceName() == null ? "" : node.getViewIdResourceName()).put("className", String.valueOf(node.getClassName()))
                 .put("parentId", parentId == null ? JSONObject.NULL : parentId).put("enabled", node.isEnabled())
                 .put("checked", node.isCheckable() ? node.isChecked() : JSONObject.NULL).put("selected", node.isSelected())

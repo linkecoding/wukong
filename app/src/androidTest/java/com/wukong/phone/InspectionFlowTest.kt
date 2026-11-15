@@ -73,6 +73,8 @@ class InspectionFlowTest {
                     com.wukong.phone.script.JsSession(c, Cancellation(), control, trace).use { scripts ->
                         val code = """
                             state.keyword = '蓝牙耳机';
+                            wukong.setText(wukong.id('android:id/edit'), 'temporary');
+                            if (!wukong.setText(wukong.id('android:id/edit'), '').verified) throw new Error('Could not clear');
                             wukong.setText(wukong.id('android:id/edit'), state.keyword);
                             if (!wukong.setText(wukong.id('android:id/edit'), state.keyword).noOp) throw new Error('Repeated input');
                             wukong.tap(wukong.id('android:id/button1'), {timeoutMs:2000});

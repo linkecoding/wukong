@@ -13,6 +13,7 @@ import com.wukong.core.ExecutionControl
 import com.wukong.core.ScriptHost
 import com.wukong.core.ScriptRunner
 import com.wukong.core.ScriptCallFailure
+import com.wukong.core.ScriptApprovalRejected
 import com.wukong.phone.RunLog
 import org.json.JSONObject
 import java.util.concurrent.CompletableFuture
@@ -96,8 +97,9 @@ class JsSession(context: Context, private val cancellation: Cancellation, privat
             return value
         } catch (error: Exception) {
             state = "{}"
-            trace?.record("script_error", JSONObject().put("message", error.message.orEmpty().take(2000)).put("durationMs", SystemClock.elapsedRealtime() - started).put("calls", phone.calls).apply { if (error is ScriptCallFailure) put("diagnostic", JSONObject(error.diagnostic)) })
-            throw error
+            val failure = if (error is ScriptCallFailure || error is InterruptedException || error is ScriptApprovalRejected || control.epoch != epoch) error else phone.cellFailure(error)
+            trace?.record("script_error", JSONObject().put("message", failure.message.orEmpty().take(2000)).put("durationMs", SystemClock.elapsedRealtime() - started).put("calls", phone.calls).apply { if (failure is ScriptCallFailure) put("diagnostic", JSONObject(failure.diagnostic)) })
+            throw failure
         } finally {
             synchronized(gate) {
                 active.set(false)

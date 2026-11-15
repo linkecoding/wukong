@@ -56,6 +56,10 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
             request(buildRequest(messages(false)))
         }
         val assistant = response.getJSONArray("choices").getJSONObject(0).getJSONObject("message")
+        return parseToolCall(assistant)
+    }
+
+    internal fun parseToolCall(assistant: JSONObject): Action {
         val calls = assistant.optJSONArray("tool_calls")
             ?: error("模型未返回 phone_action 工具调用，请使用支持工具调用的模型")
         require(calls.length() == 1) { "模型必须每次只返回一个操作" }
@@ -63,36 +67,47 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         val name = function.getString("name")
         require(mode != PlanningMode.TOOLS_ONLY || name != "phone_run_js") { "当前模式未提供 JS 工具" }
         require(mode != PlanningMode.SCRIPT_ONLY || name in setOf("phone_run_js", "phone_action")) { "当前模式仅提供 JS 与结束工具" }
-        val args = JSONObject(function.getString("arguments"))
-        trace?.record("tool_call", JSONObject().put("step", step).put("name", name).put("arguments", args))
-        val action = when (name) {
-            "phone_run_js" -> Action.Script(args.getString("code"))
-            "phone_query" -> Action.Query(args.optJSONObject("selector")?.toSelector() ?: NodeSelector(), args.optInt("limit", 20), args.optInt("offset", 0))
-            "phone_wait_until" -> Action.WaitUntil(args.toConditions(), args.optBoolean("matchAll", false), args.optLong("timeoutMs", 5000))
-            "phone_verify" -> Action.Verify(args.toConditions(), args.optBoolean("matchAll", true))
-            "phone_screenshot" -> Action.Screenshot
-            "phone_ocr" -> Action.Ocr
-            "phone_tap_at" -> Action.TapAt(args.getInt("x"), args.getInt("y"), args.getString("captureId"))
-            "phone_long_press" -> Action.LongPress(args.getInt("x"), args.getInt("y"), args.optLong("duration", 600), args.getString("captureId"))
-            "phone_swipe" -> Action.Swipe(args.getInt("x"), args.getInt("y"), args.getInt("endX"), args.getInt("endY"), args.optLong("duration", 350), args.getString("captureId"))
-            "phone_action" -> when (args.getString("action")) {
-            "tap" -> Action.Tap(args.getInt("nodeId"))
-            "input" -> Action.Input(args.getInt("nodeId"), args.getString("text"))
-            "scroll" -> Action.Scroll(args.getInt("nodeId"), args.getBoolean("forward"))
-            "back" -> Action.Back
-            "home" -> Action.Home
-            "launch" -> Action.Launch(args.getString("packageName"))
-            "wait" -> Action.Wait(args.getLong("milliseconds"))
-            "finish" -> Action.Finish(args.getString("summary"), when (args.optString("outcome", "success")) {
-                "success" -> TaskOutcome.SUCCESS
-                "incomplete" -> TaskOutcome.INCOMPLETE
-                else -> error("未知任务结果")
-            }, if (args.has("evidence")) JSONObject().put("conditions", args.getJSONArray("evidence")).toConditions() else emptyList())
-            else -> error("模型返回未知操作")
+        trace?.record("tool_call", JSONObject().put("step", step).put("name", name).put("arguments", runCatching { JSONObject(function.getString("arguments")) }.getOrElse { function.optString("arguments").take(16000) }))
+        val action = try {
+            val args = JSONObject(function.getString("arguments"))
+            when (name) {
+                "phone_query" -> args.requireKeys("selector", "limit", "offset")
+                "phone_wait_until", "phone_verify" -> args.requireKeys("conditions", "matchAll", "timeoutMs")
             }
-            else -> error("模型返回未知工具")
+            val parsed = when (name) {
+                "phone_run_js" -> Action.Script(args.getString("code"))
+                "phone_query" -> Action.Query(if (args.has("selector")) args.getJSONObject("selector").toSelector() else NodeSelector(), args.optInt("limit", 20), args.optInt("offset", 0))
+                "phone_wait_until" -> Action.WaitUntil(args.toConditions(), args.optBoolean("matchAll", false), args.optLong("timeoutMs", 5000))
+                "phone_verify" -> Action.Verify(args.toConditions(), args.optBoolean("matchAll", true))
+                "phone_screenshot" -> Action.Screenshot
+                "phone_ocr" -> Action.Ocr
+                "phone_tap_at" -> Action.TapAt(args.getInt("x"), args.getInt("y"), args.getString("captureId"))
+                "phone_long_press" -> Action.LongPress(args.getInt("x"), args.getInt("y"), args.optLong("duration", 600), args.getString("captureId"))
+                "phone_swipe" -> Action.Swipe(args.getInt("x"), args.getInt("y"), args.getInt("endX"), args.getInt("endY"), args.optLong("duration", 350), args.getString("captureId"))
+                "phone_action" -> when (args.getString("action")) {
+                    "tap" -> Action.Tap(args.getInt("nodeId"))
+                    "input" -> Action.Input(args.getInt("nodeId"), args.getString("text"))
+                    "scroll" -> Action.Scroll(args.getInt("nodeId"), args.getBoolean("forward"))
+                    "back" -> Action.Back
+                    "home" -> Action.Home
+                    "launch" -> Action.Launch(args.getString("packageName"))
+                    "wait" -> Action.Wait(args.getLong("milliseconds"))
+                    "finish" -> Action.Finish(args.getString("summary"), when (args.optString("outcome", "success")) {
+                        "success" -> TaskOutcome.SUCCESS
+                        "incomplete" -> TaskOutcome.INCOMPLETE
+                        else -> error("未知任务结果")
+                    }, if (args.has("evidence")) JSONObject().put("conditions", args.getJSONArray("evidence")).toConditions() else emptyList())
+                    else -> error("模型返回未知操作")
+                }
+                else -> error("模型返回未知工具")
+            }
+            require(mode != PlanningMode.SCRIPT_ONLY || parsed is Action.Script || parsed is Action.Finish) { "编程模式的手机操作须通过 JS 执行" }
+            parsed
+        } catch (error: Exception) {
+            if (error !is IllegalArgumentException && error !is IllegalStateException && error !is org.json.JSONException) throw error
+            trace?.record("tool_argument_error", JSONObject().put("name", name).put("message", error.message.orEmpty()))
+            Action.Invalid("INVALID_ARGUMENT: ${error.message.orEmpty().take(700)}. Follow the supplied schema; conditions/evidence entries wrap filters in selector. No device operation was sent.")
         }
-        require(mode != PlanningMode.SCRIPT_ONLY || action is Action.Script || action is Action.Finish) { "编程模式的手机操作须通过 JS 执行" }
         lastAction = action; lastMessage = assistant
         return action
     }
@@ -117,7 +132,7 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
             tools.put(JSONObject().put("type", "function").put("function", JSONObject().put("name", name).put("description", description)
                 .put("parameters", JSONObject().put("type", "object").put("properties", properties).put("required", JSONArray(required)).put("additionalProperties", false))))
         }
-        add("phone_run_js", "Run a bounded synchronous JavaScript short workflow in embedded QuickJS. Use loops/branches and explicitly return JSON results. wukong.query returns a page object with nodes,totalMatches,hasMore,sourceTruncated,fingerprint; prefer result.nodes.map(...). It also supports .map/.length for list-style use. API: wukong.id(fullResourceId), wukong.text(exactText), wukong.textContains(text), wukong.select(selectorObject) build serializable selectors, chain .enabled(true)/.editable(true)/.ancestorResourceId(fullId). Resource IDs are full IDs, never CSS strings. wukong.observe(); wukong.query(selector,{limit,offset}); wukong.waitUntil(selector OR array of conditions,{matchAll,timeoutMs}); wukong.verify(selector OR conditions); wukong.waitAny({success:selectorOrCondition,error:selectorOrCondition},{timeoutMs}) returns key (null on timeout), matchedKeys, matches, timedOut and verification; checks all branches on one snapshot. wukong.waitGone(selector,{timeoutMs}); wukong.waitEnabled(selector,{timeoutMs}); wukong.exists(selector) returns true/false/null (unknown if truncated). wukong.tap(selector,{timeoutMs}); wukong.input(selector,text,{timeoutMs}) replaces text; wukong.setText(selector,text,{timeoutMs}); wukong.setChecked(selector,boolean,{timeoutMs}); wukong.scroll(selector,forward,{timeoutMs}); wukong.launch(packageName); wukong.home(); wukong.back(); wukong.ocr(); wukong.screenshot(); wukong.tapAt(x,y,captureId); wukong.longPress(x,y,captureId,duration); wukong.swipe(x,y,endX,endY,captureId,duration); wukong.sleep(ms); wukong.log(text). Selectors/conditions match phone_query/phone_wait_until. Strings mean exact text selectors. No function predicates, CSS, unknown keys or stringified booleans/numbers. Actions wait read-only up to 3000ms by default (0–10000ms allowed) for one enabled target, then inject once; never auto-retry an accepted input. setText/setChecked skip already correct states and verify after changing; setText compares rawText, not combined text/hint. Use stable resourceId selectors for state-setting. Prefer waitAny for success OR error and inspect key; do not wait only for success when an error is possible. Wait on actual result evidence, not disappearance of a word that can remain in a success summary. Avoid sleep polling when structured conditions express the outcome. wukong.events.onChange(callback) registers a cell-local listener; wukong.events.next({after: wukong.observe(),timeoutMs}) waits for a window/tree change and dispatches those callbacks synchronously. No background event loop. state is a task-local JSON object preserved ONLY after successful cells (errors/takeover clear it); use state.foo, not top-level let persistence. No async/await, Node, require, Java interop, file/network/shell APIs. Each mutation freshly resolves a unique target and passes local approvals. Host failures provide code, method, selector, elapsedMs, attempts, accepted (true/false/unknown), acceptedCount and recent completed actions. Any host error stops the cell even if caught; earlier accepted actions are not rolled back. Timeout 60s, max 80 API calls/cell. Return findings to the planner; task completion still requires finish with evidence. After partial failure inspect state and do not replay the whole script.",
+        add("phone_run_js", "Run a bounded synchronous JavaScript short workflow in embedded QuickJS. Use loops/branches and explicitly return JSON results. wukong.query returns a page object with nodes,totalMatches,hasMore,sourceTruncated,fingerprint; prefer result.nodes.map(...). It also supports .map/.length for list-style use. API: wukong.id(fullResourceId), wukong.text(exactText), wukong.textContains(text), wukong.select(selectorObject) build immutable serializable selectors (use builders or {...selector,enabled:true}; never mutate with Object.assign(selector,...)), chain .enabled(true)/.editable(true)/.ancestorResourceId(fullId). Resource IDs are full IDs, never CSS strings. wukong.observe(); wukong.query(selector,{limit,offset}); wukong.waitUntil(selector OR array of conditions,{matchAll,timeoutMs}); wukong.verify(selector OR conditions); wukong.waitAny({success:selectorOrCondition,error:selectorOrCondition},{timeoutMs:5000}) uses timeoutMs 200–10000 and returns key (null on timeout), matchedKeys, matches, timedOut and verification; checks all branches on one snapshot. wukong.waitGone(selector,{timeoutMs}); wukong.waitEnabled(selector,{timeoutMs}); wukong.exists(selector) returns true/false/null (unknown if truncated). wukong.tap(selector,{timeoutMs}); wukong.input(selector,text,{timeoutMs}) replaces text; wukong.setText(selector,text,{timeoutMs}); wukong.setChecked(selector,boolean,{timeoutMs}); wukong.scroll(selector,forward,{timeoutMs}); wukong.launch(packageName); wukong.home(); wukong.back(); wukong.ocr(); wukong.screenshot(); wukong.tapAt(x,y,captureId); wukong.longPress(x,y,captureId,duration); wukong.swipe(x,y,endX,endY,captureId,duration); wukong.sleep(ms); wukong.log(text). Selectors/conditions match phone_query/phone_wait_until. Strings mean exact text selectors. Example: wukong.waitAny({ready:wukong.textContains('Ready'),failed:wukong.textContains('Failed')},{timeoutMs:5000}); use actual outcome text/state, not mere presence of a permanent result container. No function predicates, CSS, unknown keys or stringified booleans/numbers. Actions wait read-only up to 3000ms by default (0–10000ms allowed) for one enabled target, then inject once; never auto-retry an accepted input. setText/setChecked skip already correct states and verify after changing; setText compares rawText, not combined text/hint. Use stable resourceId selectors for state-setting. Prefer waitAny for success OR error and inspect key; do not wait only for success when an error is possible. Wait on actual result evidence, not disappearance of a word that can remain in a success summary. Avoid sleep polling when structured conditions express the outcome. wukong.events.onChange(callback) registers a cell-local listener; wukong.events.next({after: wukong.observe(),timeoutMs}) waits for a window/tree change and dispatches those callbacks synchronously. No background event loop. state is a task-local JSON object preserved ONLY after successful cells (errors/takeover clear it); use state.foo, not top-level let persistence. No async/await, Node, require, Java interop, file/network/shell APIs. Each mutation freshly resolves a unique target and passes local approvals. Host failures provide code, method, selector, elapsedMs, attempts, accepted (true/false/unknown), acceptedCount and recent completed actions. Any host error stops the cell even if caught; earlier accepted actions are not rolled back. Timeout 60s, max 80 API calls/cell. Return findings to the planner; task completion still requires finish with evidence. After partial failure inspect state and do not replay the whole script.",
             JSONObject().put("code", JSONObject().put("type", "string").put("minLength", 1).put("maxLength", 16000)), listOf("code"))
         add("phone_query", "Read-only query of the current display's visible node tree. Filter by text, resourceId, className, state or ancestorResourceId; use offset/limit to page. IDs are valid only for the returned fingerprint. Empty selector lists nodes. Cannot read off-screen/lazy content; scroll when necessary.",
             JSONObject().put("selector", InspectionSchemas.selector()).put("limit", JSONObject().put("type", "integer").put("minimum", 1).put("maximum", 60))

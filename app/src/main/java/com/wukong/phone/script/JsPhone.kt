@@ -31,6 +31,13 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
             throw ScriptCallFailure(detail.toString(), error)
         }
     }
+    fun cellFailure(error: Exception): ScriptCallFailure {
+        val localCode = runCatching { JSONObject(error.message.orEmpty().substringAfter("Error: ")).optString("code") }.getOrNull()
+        val detail = JSONObject().put("code", localCode?.takeIf { it == "INVALID_ARGUMENT" } ?: "SCRIPT_ERROR")
+            .put("method", "javascript").put("message", error.message.orEmpty().take(400)).put("step", calls)
+            .put("acceptedCount", acceptedCount).put("completed", JSONArray(completed.takeLast(4)))
+        return ScriptCallFailure(detail.toString(), error)
+    }
     private fun dispatch(method: String, args: JSONObject): Any {
         guard(); check(++calls <= 80) { "单段脚本最多调用 80 次手机 API" }
         trace?.record("script_call", JSONObject().put("method", method).put("arguments", args).put("index", calls))
@@ -118,7 +125,7 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
     private fun mutate(method: String, args: JSONObject): JSONObject {
         val selector = args.getJSONObject("selector").toSelector()
         require(selector != NodeSelector()) { "Actions require a specific selector" }
-        if (method == "input" || method == "setText") require(args.get("text") is String && args.getString("text").length <= 10000) { "text must be a string up to 10000 characters" }
+        if (method == "input" || method == "setText") require(args.get("text") is String && args.getString("text").length <= 2000) { "text must be a string up to 2000 characters" }
         if (method == "setChecked") require(args.get("checked") is Boolean) { "checked must be boolean" }
         val timeout = args.optLong("timeoutMs", 3000); require(timeout in 0..10000) { "timeoutMs must be 0–10000" }
         val start = SystemClock.elapsedRealtime()
@@ -128,6 +135,8 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
             if (matches.size > 1) throw ApiFailure("AMBIGUOUS_TARGET", "Matched ${matches.size} targets; refine the selector")
             val node = matches.singleOrNull()
             if (node != null && !screen.truncated) {
+                if (method == "setText" && !node.editable) throw ApiFailure("INVALID_ARGUMENT", "Target is not editable")
+                if (method == "setText" && node.rawText == null) throw ApiFailure("ENGINE_UPDATE_REQUIRED", "Engine does not expose rawText; reactivate the built-in shell before setting text")
                 if (method == "setText" && node.rawText == args.getString("text")) return JSONObject().put("accepted", false).put("noOp", true).put("verified", true)
                 if (method == "setChecked") {
                     if (node.checked == null) throw ApiFailure("INVALID_ARGUMENT", "Target is not checkable")
