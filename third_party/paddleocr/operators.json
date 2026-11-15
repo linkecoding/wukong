@@ -1,0 +1,105 @@
+[
+  {
+    "file": "det.onnx",
+    "opsets": {
+      "ai.onnx": 14
+    },
+    "operators": [
+      "ai.onnx:Add",
+      "ai.onnx:Concat",
+      "ai.onnx:Conv",
+      "ai.onnx:ConvTranspose",
+      "ai.onnx:Div",
+      "ai.onnx:Erf",
+      "ai.onnx:GlobalAveragePool",
+      "ai.onnx:HardSigmoid",
+      "ai.onnx:MaxPool",
+      "ai.onnx:Mul",
+      "ai.onnx:ReduceMean",
+      "ai.onnx:Relu",
+      "ai.onnx:Resize",
+      "ai.onnx:Sigmoid"
+    ]
+  },
+  {
+    "file": "det.optimized.onnx",
+    "opsets": {
+      "ai.onnx": 14,
+      "com.microsoft.experimental": 1,
+      "ai.onnx.ml": 5,
+      "ai.onnx.training": 1,
+      "com.microsoft": 1,
+      "ai.onnx.preview.training": 1,
+      "com.microsoft.nchwc": 1,
+      "org.pytorch.aten": 1
+    },
+    "operators": [
+      "ai.onnx:Add",
+      "ai.onnx:Concat",
+      "ai.onnx:Conv",
+      "ai.onnx:ConvTranspose",
+      "ai.onnx:GlobalAveragePool",
+      "ai.onnx:MaxPool",
+      "ai.onnx:Mul",
+      "ai.onnx:ReduceMean",
+      "ai.onnx:Relu",
+      "ai.onnx:Resize",
+      "ai.onnx:Sigmoid",
+      "com.microsoft:FusedConv",
+      "com.microsoft:Gelu"
+    ]
+  },
+  {
+    "file": "rec.onnx",
+    "opsets": {
+      "ai.onnx": 11
+    },
+    "operators": [
+      "ai.onnx:Add",
+      "ai.onnx:AveragePool",
+      "ai.onnx:BatchNormalization",
+      "ai.onnx:Conv",
+      "ai.onnx:Div",
+      "ai.onnx:Erf",
+      "ai.onnx:HardSigmoid",
+      "ai.onnx:Identity",
+      "ai.onnx:MatMul",
+      "ai.onnx:Mul",
+      "ai.onnx:ReduceMean",
+      "ai.onnx:Relu",
+      "ai.onnx:Softmax",
+      "ai.onnx:Squeeze",
+      "ai.onnx:Transpose",
+      "ai.onnx:Unsqueeze"
+    ]
+  },
+  {
+    "file": "rec.optimized.onnx",
+    "opsets": {
+      "ai.onnx": 11,
+      "com.microsoft.experimental": 1,
+      "ai.onnx.ml": 5,
+      "ai.onnx.training": 1,
+      "com.microsoft": 1,
+      "ai.onnx.preview.training": 1,
+      "com.microsoft.nchwc": 1,
+      "org.pytorch.aten": 1
+    },
+    "operators": [
+      "ai.onnx:Add",
+      "ai.onnx:AveragePool",
+      "ai.onnx:BatchNormalization",
+      "ai.onnx:Conv",
+      "ai.onnx:HardSigmoid",
+      "ai.onnx:MatMul",
+      "ai.onnx:Mul",
+      "ai.onnx:ReduceMean",
+      "ai.onnx:Softmax",
+      "ai.onnx:Squeeze",
+      "ai.onnx:Unsqueeze",
+      "com.microsoft:FusedConv",
+      "com.microsoft:FusedMatMul",
+      "com.microsoft:Gelu"
+    ]
+  }
+]

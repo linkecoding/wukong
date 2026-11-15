@@ -1,0 +1,266 @@
+[
+  {
+    "engine": "mlkit",
+    "createMs": 27.746257,
+    "samples": [
+      {
+        "name": "ui-normal",
+        "warmMedianMs": 548.594361,
+        "firstMs": 740.635865,
+        "matched": 7,
+        "expected": 8,
+        "matchesEachRun": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      {
+        "name": "ui-small",
+        "warmMedianMs": 485.788615,
+        "firstMs": 489.893352,
+        "matched": 6,
+        "expected": 8,
+        "matchesEachRun": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "name": "ui-dark",
+        "warmMedianMs": 490.935465,
+        "firstMs": 518.182861,
+        "matched": 7,
+        "expected": 8,
+        "matchesEachRun": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      {
+        "name": "wukong-task",
+        "warmMedianMs": 521.317423,
+        "firstMs": 547.274414,
+        "matched": 13,
+        "expected": 20,
+        "matchesEachRun": [
+          13,
+          13,
+          13,
+          13,
+          13,
+          13
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "v5-mobile",
+    "createMs": 633.543661,
+    "samples": [
+      {
+        "name": "ui-normal",
+        "warmMedianMs": 1260.119182,
+        "firstMs": 1359.687012,
+        "matched": 7,
+        "expected": 8,
+        "matchesEachRun": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      {
+        "name": "ui-small",
+        "warmMedianMs": 1167.456585,
+        "firstMs": 1178.754232,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "ui-dark",
+        "warmMedianMs": 1243.721965,
+        "firstMs": 1263.543946,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "wukong-task",
+        "warmMedianMs": 2147.750896,
+        "firstMs": 2164.135215,
+        "matched": 20,
+        "expected": 20,
+        "matchesEachRun": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "v6-tiny",
+    "createMs": 259.366008,
+    "samples": [
+      {
+        "name": "ui-normal",
+        "warmMedianMs": 617.009726,
+        "firstMs": 685.59664,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "ui-small",
+        "warmMedianMs": 598.024089,
+        "firstMs": 595.312907,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "ui-dark",
+        "warmMedianMs": 605.595093,
+        "firstMs": 600.767781,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "wukong-task",
+        "warmMedianMs": 750.26941,
+        "firstMs": 757.073609,
+        "matched": 20,
+        "expected": 20,
+        "matchesEachRun": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ]
+      }
+    ]
+  },
+  {
+    "engine": "v6-small",
+    "createMs": 630.324708,
+    "samples": [
+      {
+        "name": "ui-normal",
+        "warmMedianMs": 1861.396892,
+        "firstMs": 1943.53414,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "ui-small",
+        "warmMedianMs": 1776.850953,
+        "firstMs": 1780.158204,
+        "matched": 8,
+        "expected": 8,
+        "matchesEachRun": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "name": "ui-dark",
+        "warmMedianMs": 1788.436443,
+        "firstMs": 1783.086915,
+        "matched": 7,
+        "expected": 8,
+        "matchesEachRun": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      {
+        "name": "wukong-task",
+        "warmMedianMs": 2850.253216,
+        "firstMs": 2861.278322,
+        "matched": 20,
+        "expected": 20,
+        "matchesEachRun": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ]
+      }
+    ]
+  }
+]

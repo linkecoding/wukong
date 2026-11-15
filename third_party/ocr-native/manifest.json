@@ -1,0 +1,119 @@
+{
+  "sources": {
+    "opencv": {
+      "url": "https://github.com/opencv/opencv.git",
+      "commit": "0654a42e19215ef25b1d367d822f3c630447e7c7"
+    },
+    "onnxruntime": {
+      "url": "https://github.com/microsoft/onnxruntime.git",
+      "commit": "8f7cce3a49fdbdac96e0868b75b7d0159db7ac7f"
+    },
+    "eigen": {
+      "url": "https://gitlab.com/libeigen/eigen.git",
+      "commit": "1d8b82b0740839c0de7f1242a3585e3390ff5f33"
+    }
+  },
+  "ndk": "28.2.13676358",
+  "api": 29,
+  "files": [
+    {
+      "path": "src/main/jniLibs/arm64-v8a/libc++_shared.so",
+      "bytes": 1253544,
+      "sha256": "cd61762848882a16c8244c964a6f396c0caa0b440588a210ce9cc4ab0e6d9f0c"
+    },
+    {
+      "path": "src/main/jniLibs/arm64-v8a/libonnxruntime.so",
+      "bytes": 7913936,
+      "sha256": "aa0c7673beff9b15d81f14ac23a1cdbc99909a81b027d56f58b8bcdbea100296"
+    },
+    {
+      "path": "src/main/jniLibs/arm64-v8a/libonnxruntime4j_jni.so",
+      "bytes": 75896,
+      "sha256": "60ff973cf2ca9efa8f499f7416b12de514bfc5be527e0e90e2f1d18f3eeffa80"
+    },
+    {
+      "path": "src/main/jniLibs/arm64-v8a/libopencv_java4.so",
+      "bytes": 7548080,
+      "sha256": "b587696aab0639bbdbfa059f4f40101118d9ab962a59dc2fefb4b3d0f3be273d"
+    },
+    {
+      "path": "src/main/jniLibs/armeabi-v7a/libc++_shared.so",
+      "bytes": 850380,
+      "sha256": "e7e20f6e0f3f181e853cea50373ecee2ccfe95c668dce72d0999b2469c92d0e1"
+    },
+    {
+      "path": "src/main/jniLibs/armeabi-v7a/libonnxruntime.so",
+      "bytes": 5232000,
+      "sha256": "6214b9d0aafea8c68b108f8053695f2b6ba4deee7a34f9a664cdf6863e67f82f"
+    },
+    {
+      "path": "src/main/jniLibs/armeabi-v7a/libonnxruntime4j_jni.so",
+      "bytes": 50120,
+      "sha256": "a75d3f92d485b9a3fd27b9700593fe8dd749761126a4a654f8c38112ad8049cd"
+    },
+    {
+      "path": "src/main/jniLibs/armeabi-v7a/libopencv_java4.so",
+      "bytes": 4892688,
+      "sha256": "f279942d632e39c407032f790b5d102ddb2bb59024f09f0ad572d09b714bbd64"
+    },
+    {
+      "path": "src/main/jniLibs/x86/libc++_shared.so",
+      "bytes": 1143240,
+      "sha256": "23ff3b208a61693deda577e381a7da775b104b6c5e997465802037ab8952d9f1"
+    },
+    {
+      "path": "src/main/jniLibs/x86/libonnxruntime.so",
+      "bytes": 9308432,
+      "sha256": "c48198152430b206d8eeeb6d27e8b55e95d6dbaff324f829fb893e4e86c70792"
+    },
+    {
+      "path": "src/main/jniLibs/x86/libonnxruntime4j_jni.so",
+      "bytes": 69504,
+      "sha256": "8f46860f3fe175d3c2c39a573ae0be0e57319b6f079bf2c18f56482ebfb6d032"
+    },
+    {
+      "path": "src/main/jniLibs/x86/libopencv_java4.so",
+      "bytes": 9254716,
+      "sha256": "65055a565c56138cf78f26a0ef4a9a408ebfff1eec68d084efe09812f309b284"
+    },
+    {
+      "path": "src/main/jniLibs/x86_64/libc++_shared.so",
+      "bytes": 1229808,
+      "sha256": "2e855857f80819737d25a663109fedf816a5e996a85423166806014a06593256"
+    },
+    {
+      "path": "src/main/jniLibs/x86_64/libonnxruntime.so",
+      "bytes": 9769536,
+      "sha256": "e37b9a5a0592b753d9dace55bac272f8bee4031eb5db1038260656f537c75f91"
+    },
+    {
+      "path": "src/main/jniLibs/x86_64/libonnxruntime4j_jni.so",
+      "bytes": 73544,
+      "sha256": "0adcb5ccb17b0e1b8b1be05e16a915510603a49be3c97fa855980e3e1727c0af"
+    },
+    {
+      "path": "src/main/jniLibs/x86_64/libopencv_java4.so",
+      "bytes": 12233048,
+      "sha256": "fc828fa8ca9b9942a7b08fda4fdb348f528a599526857eb213e66d40d316a868"
+    },
+    {
+      "path": "libs/onnxruntime-java-1.21.1.jar",
+      "bytes": 110888,
+      "sha256": "17e9e4867d2f71260fc1fba17f6e6e448dc56a8a8f737977c102058f6043f5c6"
+    },
+    {
+      "path": "libs/opencv-java-4.14.0.jar",
+      "bytes": 441544,
+      "sha256": "fc9a88c67418d0596c45b5a9bedf61c007251b00aaae77e2116f5bf396f7c42e"
+    }
+  ],
+  "opencvModules": [
+    "core",
+    "imgproc",
+    "java"
+  ],
+  "kleidicv": false,
+  "opencl": false,
+  "onnxLto": true,
+  "operatorConfigSha256": "d2d74ffe44422472b591d71d81adeab0662800e185b1de590c23f8cae60f47c5"
+}

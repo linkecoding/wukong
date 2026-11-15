@@ -1,0 +1,60 @@
+[
+  {
+    "variant": "baseline",
+    "samples": [
+      {
+        "name": "ui-normal",
+        "medianMs": 615.710613,
+        "matched": 8,
+        "total": 8
+      },
+      {
+        "name": "ui-small",
+        "medianMs": 591.092488,
+        "matched": 8,
+        "total": 8
+      },
+      {
+        "name": "ui-dark",
+        "medianMs": 597.298706,
+        "matched": 8,
+        "total": 8
+      },
+      {
+        "name": "wukong-task",
+        "medianMs": 748.843018,
+        "matched": 20,
+        "total": 20
+      }
+    ]
+  },
+  {
+    "variant": "trimmed",
+    "samples": [
+      {
+        "name": "ui-normal",
+        "medianMs": 622.775147,
+        "matched": 8,
+        "total": 8
+      },
+      {
+        "name": "ui-small",
+        "medianMs": 598.902222,
+        "matched": 8,
+        "total": 8
+      },
+      {
+        "name": "ui-dark",
+        "medianMs": 611.027791,
+        "matched": 8,
+        "total": 8
+      },
+      {
+        "name": "wukong-task",
+        "medianMs": 751.245159,
+        "matched": 20,
+        "total": 20
+      }
+    ]
+  }
+]

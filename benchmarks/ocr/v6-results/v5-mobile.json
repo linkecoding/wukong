@@ -1,0 +1,1721 @@
+{
+  "engine": "v5-mobile",
+  "device": "Pixel 6",
+  "build": "google\/oriole_beta\/oriole:17\/CP31.260623.012\/16064790:user\/release-keys",
+  "threads": 4,
+  "detLimit": 960,
+  "batteryDeciCStart": 297,
+  "thermalStart": 0,
+  "createMs": 633.543661,
+  "modelLoadMs": 405,
+  "samples": [
+    {
+      "name": "ui-normal",
+      "width": 1080,
+      "height": 1600,
+      "expected": [
+        "悟空手机助手",
+        "在虚拟屏执行",
+        "接管并继续操作",
+        "网络连接已恢复",
+        "模型设置 DeepSeek",
+        "Base URL 自定义地址",
+        "Token 用量 123456",
+        "返回桌面 交还 Agent"
+      ],
+      "runs": [
+        {
+          "ms": 1359.687012,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9997753,
+              "points": "[PointF(67.0, 90.0), PointF(323.0, 90.0), PointF(323.0, 137.0), PointF(67.0, 137.0)]"
+            },
+            {
+              "text": "在虛拟屏执行",
+              "confidence": 0.9307492,
+              "points": "[PointF(67.0, 260.0), PointF(323.0, 260.0), PointF(323.0, 307.0), PointF(67.0, 307.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9798592,
+              "points": "[PointF(67.0, 429.0), PointF(365.0, 429.0), PointF(365.0, 477.0), PointF(67.0, 477.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9944297,
+              "points": "[PointF(70.0, 602.0), PointF(362.0, 602.0), PointF(362.0, 646.0), PointF(70.0, 646.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.98331666,
+              "points": "[PointF(69.0, 772.0), PointF(437.0, 772.0), PointF(437.0, 816.0), PointF(69.0, 816.0)]"
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "confidence": 0.9432381,
+              "points": "[PointF(67.0, 942.0), PointF(469.0, 940.0), PointF(470.0, 986.0), PointF(67.0, 988.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.9916934,
+              "points": "[PointF(68.0, 1112.0), PointF(432.0, 1112.0), PointF(432.0, 1156.0), PointF(68.0, 1156.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.95669556,
+              "points": "[PointF(67.0, 1281.0), PointF(453.0, 1281.0), PointF(453.0, 1329.0), PointF(67.0, 1329.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 521,
+            "recognitionMs": 805
+          }
+        },
+        {
+          "ms": 1278.947754,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9997753,
+              "points": "[PointF(67.0, 90.0), PointF(323.0, 90.0), PointF(323.0, 137.0), PointF(67.0, 137.0)]"
+            },
+            {
+              "text": "在虛拟屏执行",
+              "confidence": 0.9307492,
+              "points": "[PointF(67.0, 260.0), PointF(323.0, 260.0), PointF(323.0, 307.0), PointF(67.0, 307.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9798592,
+              "points": "[PointF(67.0, 429.0), PointF(365.0, 429.0), PointF(365.0, 477.0), PointF(67.0, 477.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9944297,
+              "points": "[PointF(70.0, 602.0), PointF(362.0, 602.0), PointF(362.0, 646.0), PointF(70.0, 646.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.98331666,
+              "points": "[PointF(69.0, 772.0), PointF(437.0, 772.0), PointF(437.0, 816.0), PointF(69.0, 816.0)]"
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "confidence": 0.9432381,
+              "points": "[PointF(67.0, 942.0), PointF(469.0, 940.0), PointF(470.0, 986.0), PointF(67.0, 988.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.9916934,
+              "points": "[PointF(68.0, 1112.0), PointF(432.0, 1112.0), PointF(432.0, 1156.0), PointF(68.0, 1156.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.95669556,
+              "points": "[PointF(67.0, 1281.0), PointF(453.0, 1281.0), PointF(453.0, 1329.0), PointF(67.0, 1329.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 496,
+            "recognitionMs": 761
+          }
+        },
+        {
+          "ms": 1251.681845,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9997753,
+              "points": "[PointF(67.0, 90.0), PointF(323.0, 90.0), PointF(323.0, 137.0), PointF(67.0, 137.0)]"
+            },
+            {
+              "text": "在虛拟屏执行",
+              "confidence": 0.9307492,
+              "points": "[PointF(67.0, 260.0), PointF(323.0, 260.0), PointF(323.0, 307.0), PointF(67.0, 307.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9798592,
+              "points": "[PointF(67.0, 429.0), PointF(365.0, 429.0), PointF(365.0, 477.0), PointF(67.0, 477.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9944297,
+              "points": "[PointF(70.0, 602.0), PointF(362.0, 602.0), PointF(362.0, 646.0), PointF(70.0, 646.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.98331666,
+              "points": "[PointF(69.0, 772.0), PointF(437.0, 772.0), PointF(437.0, 816.0), PointF(69.0, 816.0)]"
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "confidence": 0.9432381,
+              "points": "[PointF(67.0, 942.0), PointF(469.0, 940.0), PointF(470.0, 986.0), PointF(67.0, 988.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.9916934,
+              "points": "[PointF(68.0, 1112.0), PointF(432.0, 1112.0), PointF(432.0, 1156.0), PointF(68.0, 1156.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.95669556,
+              "points": "[PointF(67.0, 1281.0), PointF(453.0, 1281.0), PointF(453.0, 1329.0), PointF(67.0, 1329.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 467,
+            "recognitionMs": 766
+          }
+        },
+        {
+          "ms": 1246.458416,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9997753,
+              "points": "[PointF(67.0, 90.0), PointF(323.0, 90.0), PointF(323.0, 137.0), PointF(67.0, 137.0)]"
+            },
+            {
+              "text": "在虛拟屏执行",
+              "confidence": 0.9307492,
+              "points": "[PointF(67.0, 260.0), PointF(323.0, 260.0), PointF(323.0, 307.0), PointF(67.0, 307.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9798592,
+              "points": "[PointF(67.0, 429.0), PointF(365.0, 429.0), PointF(365.0, 477.0), PointF(67.0, 477.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9944297,
+              "points": "[PointF(70.0, 602.0), PointF(362.0, 602.0), PointF(362.0, 646.0), PointF(70.0, 646.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.98331666,
+              "points": "[PointF(69.0, 772.0), PointF(437.0, 772.0), PointF(437.0, 816.0), PointF(69.0, 816.0)]"
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "confidence": 0.9432381,
+              "points": "[PointF(67.0, 942.0), PointF(469.0, 940.0), PointF(470.0, 986.0), PointF(67.0, 988.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.9916934,
+              "points": "[PointF(68.0, 1112.0), PointF(432.0, 1112.0), PointF(432.0, 1156.0), PointF(68.0, 1156.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.95669556,
+              "points": "[PointF(67.0, 1281.0), PointF(453.0, 1281.0), PointF(453.0, 1329.0), PointF(67.0, 1329.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 460,
+            "recognitionMs": 765
+          }
+        },
+        {
+          "ms": 1260.119182,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9997753,
+              "points": "[PointF(67.0, 90.0), PointF(323.0, 90.0), PointF(323.0, 137.0), PointF(67.0, 137.0)]"
+            },
+            {
+              "text": "在虛拟屏执行",
+              "confidence": 0.9307492,
+              "points": "[PointF(67.0, 260.0), PointF(323.0, 260.0), PointF(323.0, 307.0), PointF(67.0, 307.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9798592,
+              "points": "[PointF(67.0, 429.0), PointF(365.0, 429.0), PointF(365.0, 477.0), PointF(67.0, 477.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9944297,
+              "points": "[PointF(70.0, 602.0), PointF(362.0, 602.0), PointF(362.0, 646.0), PointF(70.0, 646.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.98331666,
+              "points": "[PointF(69.0, 772.0), PointF(437.0, 772.0), PointF(437.0, 816.0), PointF(69.0, 816.0)]"
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "confidence": 0.9432381,
+              "points": "[PointF(67.0, 942.0), PointF(469.0, 940.0), PointF(470.0, 986.0), PointF(67.0, 988.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.9916934,
+              "points": "[PointF(68.0, 1112.0), PointF(432.0, 1112.0), PointF(432.0, 1156.0), PointF(68.0, 1156.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.95669556,
+              "points": "[PointF(67.0, 1281.0), PointF(453.0, 1281.0), PointF(453.0, 1329.0), PointF(67.0, 1329.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 470,
+            "recognitionMs": 766
+          }
+        },
+        {
+          "ms": 1266.250815,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9997753,
+              "points": "[PointF(67.0, 90.0), PointF(323.0, 90.0), PointF(323.0, 137.0), PointF(67.0, 137.0)]"
+            },
+            {
+              "text": "在虛拟屏执行",
+              "confidence": 0.9307492,
+              "points": "[PointF(67.0, 260.0), PointF(323.0, 260.0), PointF(323.0, 307.0), PointF(67.0, 307.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9798592,
+              "points": "[PointF(67.0, 429.0), PointF(365.0, 429.0), PointF(365.0, 477.0), PointF(67.0, 477.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9944297,
+              "points": "[PointF(70.0, 602.0), PointF(362.0, 602.0), PointF(362.0, 646.0), PointF(70.0, 646.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.98331666,
+              "points": "[PointF(69.0, 772.0), PointF(437.0, 772.0), PointF(437.0, 816.0), PointF(69.0, 816.0)]"
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "confidence": 0.9432381,
+              "points": "[PointF(67.0, 942.0), PointF(469.0, 940.0), PointF(470.0, 986.0), PointF(67.0, 988.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.9916934,
+              "points": "[PointF(68.0, 1112.0), PointF(432.0, 1112.0), PointF(432.0, 1156.0), PointF(68.0, 1156.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.95669556,
+              "points": "[PointF(67.0, 1281.0), PointF(453.0, 1281.0), PointF(453.0, 1329.0), PointF(67.0, 1329.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 477,
+            "recognitionMs": 765
+          }
+        }
+      ]
+    },
+    {
+      "name": "ui-small",
+      "width": 1080,
+      "height": 1600,
+      "expected": [
+        "悟空手机助手",
+        "在虚拟屏执行",
+        "接管并继续操作",
+        "网络连接已恢复",
+        "模型设置 DeepSeek",
+        "Base URL 自定义地址",
+        "Token 用量 123456",
+        "返回桌面 交还 Agent"
+      ],
+      "runs": [
+        {
+          "ms": 1178.754232,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.99959964,
+              "points": "[PointF(67.0, 104.0), PointF(217.0, 104.0), PointF(217.0, 136.0), PointF(67.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.9789114,
+              "points": "[PointF(65.0, 274.0), PointF(217.0, 274.0), PointF(217.0, 306.0), PointF(65.0, 306.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.99249244,
+              "points": "[PointF(65.0, 444.0), PointF(241.0, 444.0), PointF(241.0, 476.0), PointF(65.0, 476.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9987937,
+              "points": "[PointF(68.0, 615.0), PointF(239.0, 615.0), PointF(239.0, 643.0), PointF(68.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.9889468,
+              "points": "[PointF(68.0, 784.0), PointF(283.0, 784.0), PointF(283.0, 816.0), PointF(68.0, 816.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.97391325,
+              "points": "[PointF(68.0, 955.0), PointF(300.0, 955.0), PointF(300.0, 983.0), PointF(68.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99213874,
+              "points": "[PointF(68.0, 1127.0), PointF(275.0, 1127.0), PointF(275.0, 1155.0), PointF(68.0, 1155.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.97968125,
+              "points": "[PointF(68.0, 1297.0), PointF(292.0, 1297.0), PointF(292.0, 1325.0), PointF(68.0, 1325.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 463,
+            "recognitionMs": 695
+          }
+        },
+        {
+          "ms": 1173.819947,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.99959964,
+              "points": "[PointF(67.0, 104.0), PointF(217.0, 104.0), PointF(217.0, 136.0), PointF(67.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.9789114,
+              "points": "[PointF(65.0, 274.0), PointF(217.0, 274.0), PointF(217.0, 306.0), PointF(65.0, 306.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.99249244,
+              "points": "[PointF(65.0, 444.0), PointF(241.0, 444.0), PointF(241.0, 476.0), PointF(65.0, 476.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9987937,
+              "points": "[PointF(68.0, 615.0), PointF(239.0, 615.0), PointF(239.0, 643.0), PointF(68.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.9889468,
+              "points": "[PointF(68.0, 784.0), PointF(283.0, 784.0), PointF(283.0, 816.0), PointF(68.0, 816.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.97391325,
+              "points": "[PointF(68.0, 955.0), PointF(300.0, 955.0), PointF(300.0, 983.0), PointF(68.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99213874,
+              "points": "[PointF(68.0, 1127.0), PointF(275.0, 1127.0), PointF(275.0, 1155.0), PointF(68.0, 1155.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.97968125,
+              "points": "[PointF(68.0, 1297.0), PointF(292.0, 1297.0), PointF(292.0, 1325.0), PointF(68.0, 1325.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 461,
+            "recognitionMs": 693
+          }
+        },
+        {
+          "ms": 1167.456585,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.99959964,
+              "points": "[PointF(67.0, 104.0), PointF(217.0, 104.0), PointF(217.0, 136.0), PointF(67.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.9789114,
+              "points": "[PointF(65.0, 274.0), PointF(217.0, 274.0), PointF(217.0, 306.0), PointF(65.0, 306.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.99249244,
+              "points": "[PointF(65.0, 444.0), PointF(241.0, 444.0), PointF(241.0, 476.0), PointF(65.0, 476.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9987937,
+              "points": "[PointF(68.0, 615.0), PointF(239.0, 615.0), PointF(239.0, 643.0), PointF(68.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.9889468,
+              "points": "[PointF(68.0, 784.0), PointF(283.0, 784.0), PointF(283.0, 816.0), PointF(68.0, 816.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.97391325,
+              "points": "[PointF(68.0, 955.0), PointF(300.0, 955.0), PointF(300.0, 983.0), PointF(68.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99213874,
+              "points": "[PointF(68.0, 1127.0), PointF(275.0, 1127.0), PointF(275.0, 1155.0), PointF(68.0, 1155.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.97968125,
+              "points": "[PointF(68.0, 1297.0), PointF(292.0, 1297.0), PointF(292.0, 1325.0), PointF(68.0, 1325.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 459,
+            "recognitionMs": 691
+          }
+        },
+        {
+          "ms": 1165.092204,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.99959964,
+              "points": "[PointF(67.0, 104.0), PointF(217.0, 104.0), PointF(217.0, 136.0), PointF(67.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.9789114,
+              "points": "[PointF(65.0, 274.0), PointF(217.0, 274.0), PointF(217.0, 306.0), PointF(65.0, 306.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.99249244,
+              "points": "[PointF(65.0, 444.0), PointF(241.0, 444.0), PointF(241.0, 476.0), PointF(65.0, 476.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9987937,
+              "points": "[PointF(68.0, 615.0), PointF(239.0, 615.0), PointF(239.0, 643.0), PointF(68.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.9889468,
+              "points": "[PointF(68.0, 784.0), PointF(283.0, 784.0), PointF(283.0, 816.0), PointF(68.0, 816.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.97391325,
+              "points": "[PointF(68.0, 955.0), PointF(300.0, 955.0), PointF(300.0, 983.0), PointF(68.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99213874,
+              "points": "[PointF(68.0, 1127.0), PointF(275.0, 1127.0), PointF(275.0, 1155.0), PointF(68.0, 1155.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.97968125,
+              "points": "[PointF(68.0, 1297.0), PointF(292.0, 1297.0), PointF(292.0, 1325.0), PointF(68.0, 1325.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 454,
+            "recognitionMs": 689
+          }
+        },
+        {
+          "ms": 1173.809123,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.99959964,
+              "points": "[PointF(67.0, 104.0), PointF(217.0, 104.0), PointF(217.0, 136.0), PointF(67.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.9789114,
+              "points": "[PointF(65.0, 274.0), PointF(217.0, 274.0), PointF(217.0, 306.0), PointF(65.0, 306.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.99249244,
+              "points": "[PointF(65.0, 444.0), PointF(241.0, 444.0), PointF(241.0, 476.0), PointF(65.0, 476.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9987937,
+              "points": "[PointF(68.0, 615.0), PointF(239.0, 615.0), PointF(239.0, 643.0), PointF(68.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.9889468,
+              "points": "[PointF(68.0, 784.0), PointF(283.0, 784.0), PointF(283.0, 816.0), PointF(68.0, 816.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.97391325,
+              "points": "[PointF(68.0, 955.0), PointF(300.0, 955.0), PointF(300.0, 983.0), PointF(68.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99213874,
+              "points": "[PointF(68.0, 1127.0), PointF(275.0, 1127.0), PointF(275.0, 1155.0), PointF(68.0, 1155.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.97968125,
+              "points": "[PointF(68.0, 1297.0), PointF(292.0, 1297.0), PointF(292.0, 1325.0), PointF(68.0, 1325.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 461,
+            "recognitionMs": 689
+          }
+        },
+        {
+          "ms": 1167.071371,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.99959964,
+              "points": "[PointF(67.0, 104.0), PointF(217.0, 104.0), PointF(217.0, 136.0), PointF(67.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.9789114,
+              "points": "[PointF(65.0, 274.0), PointF(217.0, 274.0), PointF(217.0, 306.0), PointF(65.0, 306.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.99249244,
+              "points": "[PointF(65.0, 444.0), PointF(241.0, 444.0), PointF(241.0, 476.0), PointF(65.0, 476.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.9987937,
+              "points": "[PointF(68.0, 615.0), PointF(239.0, 615.0), PointF(239.0, 643.0), PointF(68.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.9889468,
+              "points": "[PointF(68.0, 784.0), PointF(283.0, 784.0), PointF(283.0, 816.0), PointF(68.0, 816.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.97391325,
+              "points": "[PointF(68.0, 955.0), PointF(300.0, 955.0), PointF(300.0, 983.0), PointF(68.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99213874,
+              "points": "[PointF(68.0, 1127.0), PointF(275.0, 1127.0), PointF(275.0, 1155.0), PointF(68.0, 1155.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.97968125,
+              "points": "[PointF(68.0, 1297.0), PointF(292.0, 1297.0), PointF(292.0, 1325.0), PointF(68.0, 1325.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 456,
+            "recognitionMs": 689
+          }
+        }
+      ]
+    },
+    {
+      "name": "ui-dark",
+      "width": 1080,
+      "height": 1600,
+      "expected": [
+        "悟空手机助手",
+        "在虚拟屏执行",
+        "接管并继续操作",
+        "网络连接已恢复",
+        "模型设置 DeepSeek",
+        "Base URL 自定义地址",
+        "Token 用量 123456",
+        "返回桌面 交还 Agent"
+      ],
+      "runs": [
+        {
+          "ms": 1263.543946,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9998246,
+              "points": "[PointF(68.0, 98.0), PointF(262.0, 96.0), PointF(263.0, 134.0), PointF(68.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.92574126,
+              "points": "[PointF(69.0, 270.0), PointF(262.0, 270.0), PointF(262.0, 305.0), PointF(69.0, 305.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9935158,
+              "points": "[PointF(69.0, 440.0), PointF(294.0, 440.0), PointF(294.0, 475.0), PointF(69.0, 475.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.99540395,
+              "points": "[PointF(70.0, 611.0), PointF(293.0, 611.0), PointF(293.0, 643.0), PointF(70.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.99414027,
+              "points": "[PointF(69.0, 778.0), PointF(352.0, 781.0), PointF(351.0, 817.0), PointF(69.0, 814.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.96279895,
+              "points": "[PointF(70.0, 950.0), PointF(374.0, 950.0), PointF(374.0, 983.0), PointF(70.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99370974,
+              "points": "[PointF(70.0, 1120.0), PointF(345.0, 1120.0), PointF(345.0, 1153.0), PointF(70.0, 1153.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.9618347,
+              "points": "[PointF(69.0, 1288.0), PointF(365.0, 1293.0), PointF(365.0, 1329.0), PointF(68.0, 1324.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 456,
+            "recognitionMs": 787
+          }
+        },
+        {
+          "ms": 1245.90682,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9998246,
+              "points": "[PointF(68.0, 98.0), PointF(262.0, 96.0), PointF(263.0, 134.0), PointF(68.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.92574126,
+              "points": "[PointF(69.0, 270.0), PointF(262.0, 270.0), PointF(262.0, 305.0), PointF(69.0, 305.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9935158,
+              "points": "[PointF(69.0, 440.0), PointF(294.0, 440.0), PointF(294.0, 475.0), PointF(69.0, 475.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.99540395,
+              "points": "[PointF(70.0, 611.0), PointF(293.0, 611.0), PointF(293.0, 643.0), PointF(70.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.99414027,
+              "points": "[PointF(69.0, 778.0), PointF(352.0, 781.0), PointF(351.0, 817.0), PointF(69.0, 814.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.96279895,
+              "points": "[PointF(70.0, 950.0), PointF(374.0, 950.0), PointF(374.0, 983.0), PointF(70.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99370974,
+              "points": "[PointF(70.0, 1120.0), PointF(345.0, 1120.0), PointF(345.0, 1153.0), PointF(70.0, 1153.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.9618347,
+              "points": "[PointF(69.0, 1288.0), PointF(365.0, 1293.0), PointF(365.0, 1329.0), PointF(68.0, 1324.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 460,
+            "recognitionMs": 766
+          }
+        },
+        {
+          "ms": 1246.425986,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9998246,
+              "points": "[PointF(68.0, 98.0), PointF(262.0, 96.0), PointF(263.0, 134.0), PointF(68.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.92574126,
+              "points": "[PointF(69.0, 270.0), PointF(262.0, 270.0), PointF(262.0, 305.0), PointF(69.0, 305.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9935158,
+              "points": "[PointF(69.0, 440.0), PointF(294.0, 440.0), PointF(294.0, 475.0), PointF(69.0, 475.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.99540395,
+              "points": "[PointF(70.0, 611.0), PointF(293.0, 611.0), PointF(293.0, 643.0), PointF(70.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.99414027,
+              "points": "[PointF(69.0, 778.0), PointF(352.0, 781.0), PointF(351.0, 817.0), PointF(69.0, 814.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.96279895,
+              "points": "[PointF(70.0, 950.0), PointF(374.0, 950.0), PointF(374.0, 983.0), PointF(70.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99370974,
+              "points": "[PointF(70.0, 1120.0), PointF(345.0, 1120.0), PointF(345.0, 1153.0), PointF(70.0, 1153.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.9618347,
+              "points": "[PointF(69.0, 1288.0), PointF(365.0, 1293.0), PointF(365.0, 1329.0), PointF(68.0, 1324.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 454,
+            "recognitionMs": 765
+          }
+        },
+        {
+          "ms": 1242.704305,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9998246,
+              "points": "[PointF(68.0, 98.0), PointF(262.0, 96.0), PointF(263.0, 134.0), PointF(68.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.92574126,
+              "points": "[PointF(69.0, 270.0), PointF(262.0, 270.0), PointF(262.0, 305.0), PointF(69.0, 305.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9935158,
+              "points": "[PointF(69.0, 440.0), PointF(294.0, 440.0), PointF(294.0, 475.0), PointF(69.0, 475.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.99540395,
+              "points": "[PointF(70.0, 611.0), PointF(293.0, 611.0), PointF(293.0, 643.0), PointF(70.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.99414027,
+              "points": "[PointF(69.0, 778.0), PointF(352.0, 781.0), PointF(351.0, 817.0), PointF(69.0, 814.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.96279895,
+              "points": "[PointF(70.0, 950.0), PointF(374.0, 950.0), PointF(374.0, 983.0), PointF(70.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99370974,
+              "points": "[PointF(70.0, 1120.0), PointF(345.0, 1120.0), PointF(345.0, 1153.0), PointF(70.0, 1153.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.9618347,
+              "points": "[PointF(69.0, 1288.0), PointF(365.0, 1293.0), PointF(365.0, 1329.0), PointF(68.0, 1324.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 453,
+            "recognitionMs": 765
+          }
+        },
+        {
+          "ms": 1243.721965,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9998246,
+              "points": "[PointF(68.0, 98.0), PointF(262.0, 96.0), PointF(263.0, 134.0), PointF(68.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.92574126,
+              "points": "[PointF(69.0, 270.0), PointF(262.0, 270.0), PointF(262.0, 305.0), PointF(69.0, 305.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9935158,
+              "points": "[PointF(69.0, 440.0), PointF(294.0, 440.0), PointF(294.0, 475.0), PointF(69.0, 475.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.99540395,
+              "points": "[PointF(70.0, 611.0), PointF(293.0, 611.0), PointF(293.0, 643.0), PointF(70.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.99414027,
+              "points": "[PointF(69.0, 778.0), PointF(352.0, 781.0), PointF(351.0, 817.0), PointF(69.0, 814.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.96279895,
+              "points": "[PointF(70.0, 950.0), PointF(374.0, 950.0), PointF(374.0, 983.0), PointF(70.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99370974,
+              "points": "[PointF(70.0, 1120.0), PointF(345.0, 1120.0), PointF(345.0, 1153.0), PointF(70.0, 1153.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.9618347,
+              "points": "[PointF(69.0, 1288.0), PointF(365.0, 1293.0), PointF(365.0, 1329.0), PointF(68.0, 1324.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 456,
+            "recognitionMs": 766
+          }
+        },
+        {
+          "ms": 1242.106528,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "confidence": 0.9998246,
+              "points": "[PointF(68.0, 98.0), PointF(262.0, 96.0), PointF(263.0, 134.0), PointF(68.0, 136.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.92574126,
+              "points": "[PointF(69.0, 270.0), PointF(262.0, 270.0), PointF(262.0, 305.0), PointF(69.0, 305.0)]"
+            },
+            {
+              "text": "接管并继续操作",
+              "confidence": 0.9935158,
+              "points": "[PointF(69.0, 440.0), PointF(294.0, 440.0), PointF(294.0, 475.0), PointF(69.0, 475.0)]"
+            },
+            {
+              "text": "网络连接已恢复",
+              "confidence": 0.99540395,
+              "points": "[PointF(70.0, 611.0), PointF(293.0, 611.0), PointF(293.0, 643.0), PointF(70.0, 643.0)]"
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "confidence": 0.99414027,
+              "points": "[PointF(69.0, 778.0), PointF(352.0, 781.0), PointF(351.0, 817.0), PointF(69.0, 814.0)]"
+            },
+            {
+              "text": "Base URL自定义地址",
+              "confidence": 0.96279895,
+              "points": "[PointF(70.0, 950.0), PointF(374.0, 950.0), PointF(374.0, 983.0), PointF(70.0, 983.0)]"
+            },
+            {
+              "text": "Token 用量123456",
+              "confidence": 0.99370974,
+              "points": "[PointF(70.0, 1120.0), PointF(345.0, 1120.0), PointF(345.0, 1153.0), PointF(70.0, 1153.0)]"
+            },
+            {
+              "text": "返回桌面 交还 Agent",
+              "confidence": 0.9618347,
+              "points": "[PointF(69.0, 1288.0), PointF(365.0, 1293.0), PointF(365.0, 1329.0), PointF(68.0, 1324.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 455,
+            "recognitionMs": 764
+          }
+        }
+      ]
+    },
+    {
+      "name": "wukong-task",
+      "width": 720,
+      "height": 1600,
+      "expected": [
+        "悟空",
+        "Android · 0.4",
+        "任务",
+        "历史",
+        "设置",
+        "日志",
+        "把这件事，",
+        "交给悟空。",
+        "说清楚目标，悟空可以跨应用帮你完成。",
+        "执行引擎已连接",
+        "在虚拟屏执行",
+        "手机内激活",
+        "从哪里开始（可选）",
+        "桌面 · 整机操作",
+        "你想做什么",
+        "例如：搜索无线耳机，告诉我前几条结果",
+        "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+        "开始任务",
+        "停止当前任务",
+        "执行记录"
+      ],
+      "runs": [
+        {
+          "ms": 2164.135215,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "confidence": 0.9556698,
+              "points": "[PointF(29.0, 24.0), PointF(144.0, 24.0), PointF(144.0, 58.0), PointF(29.0, 58.0)]"
+            },
+            {
+              "text": "老小↓",
+              "confidence": 0.22893268,
+              "points": "[PointF(532.0, 25.0), PointF(673.0, 25.0), PointF(673.0, 60.0), PointF(532.0, 60.0)]"
+            },
+            {
+              "text": "悟空",
+              "confidence": 0.9996588,
+              "points": "[PointF(35.0, 118.0), PointF(139.0, 118.0), PointF(139.0, 177.0), PointF(35.0, 177.0)]"
+            },
+            {
+              "text": "Android · 0.4",
+              "confidence": 0.97406095,
+              "points": "[PointF(558.0, 132.0), PointF(683.0, 132.0), PointF(683.0, 160.0), PointF(558.0, 160.0)]"
+            },
+            {
+              "text": "任务",
+              "confidence": 0.9998696,
+              "points": "[PointF(80.0, 222.0), PointF(140.0, 222.0), PointF(140.0, 262.0), PointF(80.0, 262.0)]"
+            },
+            {
+              "text": "历史",
+              "confidence": 0.9999736,
+              "points": "[PointF(246.0, 222.0), PointF(307.0, 222.0), PointF(307.0, 260.0), PointF(246.0, 260.0)]"
+            },
+            {
+              "text": "设置",
+              "confidence": 0.99985397,
+              "points": "[PointF(412.0, 222.0), PointF(470.0, 222.0), PointF(470.0, 260.0), PointF(412.0, 260.0)]"
+            },
+            {
+              "text": "日志",
+              "confidence": 0.9827244,
+              "points": "[PointF(578.0, 221.0), PointF(640.0, 221.0), PointF(640.0, 262.0), PointF(578.0, 262.0)]"
+            },
+            {
+              "text": "把这件事，",
+              "confidence": 0.9948947,
+              "points": "[PointF(38.0, 334.0), PointF(300.0, 334.0), PointF(300.0, 401.0), PointF(38.0, 401.0)]"
+            },
+            {
+              "text": "交给悟空。",
+              "confidence": 0.9998511,
+              "points": "[PointF(40.0, 421.0), PointF(293.0, 421.0), PointF(293.0, 487.0), PointF(40.0, 487.0)]"
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "confidence": 0.99824136,
+              "points": "[PointF(42.0, 512.0), PointF(528.0, 512.0), PointF(528.0, 545.0), PointF(42.0, 545.0)]"
+            },
+            {
+              "text": "执行引擎已连接",
+              "confidence": 0.9994288,
+              "points": "[PointF(40.0, 595.0), PointF(212.0, 595.0), PointF(212.0, 623.0), PointF(40.0, 623.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.98714966,
+              "points": "[PointF(38.0, 688.0), PointF(192.0, 688.0), PointF(192.0, 719.0), PointF(38.0, 719.0)]"
+            },
+            {
+              "text": "",
+              "confidence": 0,
+              "points": "[PointF(602.0, 684.0), PointF(657.0, 684.0), PointF(657.0, 721.0), PointF(602.0, 721.0)]"
+            },
+            {
+              "text": "手机内激活",
+              "confidence": 0.98822904,
+              "points": "[PointF(297.0, 771.0), PointF(422.0, 771.0), PointF(422.0, 802.0), PointF(297.0, 802.0)]"
+            },
+            {
+              "text": "从哪里开始 (可选)",
+              "confidence": 0.9509659,
+              "points": "[PointF(42.0, 867.0), PointF(243.0, 867.0), PointF(243.0, 895.0), PointF(42.0, 895.0)]"
+            },
+            {
+              "text": "桌面·整机操作",
+              "confidence": 0.97454816,
+              "points": "[PointF(53.0, 941.0), PointF(246.0, 941.0), PointF(246.0, 977.0), PointF(53.0, 977.0)]"
+            },
+            {
+              "text": "你想做什么",
+              "confidence": 0.9996775,
+              "points": "[PointF(39.0, 1038.0), PointF(164.0, 1038.0), PointF(164.0, 1073.0), PointF(39.0, 1073.0)]"
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "confidence": 0.9971614,
+              "points": "[PointF(61.0, 1113.0), PointF(529.0, 1113.0), PointF(529.0, 1142.0), PointF(61.0, 1142.0)]"
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "confidence": 0.99852914,
+              "points": "[PointF(41.0, 1253.0), PointF(650.0, 1253.0), PointF(650.0, 1277.0), PointF(41.0, 1277.0)]"
+            },
+            {
+              "text": "开始任务",
+              "confidence": 0.99983406,
+              "points": "[PointF(306.0, 1324.0), PointF(412.0, 1324.0), PointF(412.0, 1362.0), PointF(306.0, 1362.0)]"
+            },
+            {
+              "text": "停止当前任务",
+              "confidence": 0.9992712,
+              "points": "[PointF(284.0, 1423.0), PointF(434.0, 1423.0), PointF(434.0, 1458.0), PointF(284.0, 1458.0)]"
+            },
+            {
+              "text": "执行记录",
+              "confidence": 0.97934574,
+              "points": "[PointF(35.0, 1528.0), PointF(169.0, 1528.0), PointF(169.0, 1563.0), PointF(35.0, 1563.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 330,
+            "recognitionMs": 1811
+          }
+        },
+        {
+          "ms": 2147.608928,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "confidence": 0.9556698,
+              "points": "[PointF(29.0, 24.0), PointF(144.0, 24.0), PointF(144.0, 58.0), PointF(29.0, 58.0)]"
+            },
+            {
+              "text": "老小↓",
+              "confidence": 0.22893268,
+              "points": "[PointF(532.0, 25.0), PointF(673.0, 25.0), PointF(673.0, 60.0), PointF(532.0, 60.0)]"
+            },
+            {
+              "text": "悟空",
+              "confidence": 0.9996588,
+              "points": "[PointF(35.0, 118.0), PointF(139.0, 118.0), PointF(139.0, 177.0), PointF(35.0, 177.0)]"
+            },
+            {
+              "text": "Android · 0.4",
+              "confidence": 0.97406095,
+              "points": "[PointF(558.0, 132.0), PointF(683.0, 132.0), PointF(683.0, 160.0), PointF(558.0, 160.0)]"
+            },
+            {
+              "text": "任务",
+              "confidence": 0.9998696,
+              "points": "[PointF(80.0, 222.0), PointF(140.0, 222.0), PointF(140.0, 262.0), PointF(80.0, 262.0)]"
+            },
+            {
+              "text": "历史",
+              "confidence": 0.9999736,
+              "points": "[PointF(246.0, 222.0), PointF(307.0, 222.0), PointF(307.0, 260.0), PointF(246.0, 260.0)]"
+            },
+            {
+              "text": "设置",
+              "confidence": 0.99985397,
+              "points": "[PointF(412.0, 222.0), PointF(470.0, 222.0), PointF(470.0, 260.0), PointF(412.0, 260.0)]"
+            },
+            {
+              "text": "日志",
+              "confidence": 0.9827244,
+              "points": "[PointF(578.0, 221.0), PointF(640.0, 221.0), PointF(640.0, 262.0), PointF(578.0, 262.0)]"
+            },
+            {
+              "text": "把这件事，",
+              "confidence": 0.9948947,
+              "points": "[PointF(38.0, 334.0), PointF(300.0, 334.0), PointF(300.0, 401.0), PointF(38.0, 401.0)]"
+            },
+            {
+              "text": "交给悟空。",
+              "confidence": 0.9998511,
+              "points": "[PointF(40.0, 421.0), PointF(293.0, 421.0), PointF(293.0, 487.0), PointF(40.0, 487.0)]"
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "confidence": 0.99824136,
+              "points": "[PointF(42.0, 512.0), PointF(528.0, 512.0), PointF(528.0, 545.0), PointF(42.0, 545.0)]"
+            },
+            {
+              "text": "执行引擎已连接",
+              "confidence": 0.9994288,
+              "points": "[PointF(40.0, 595.0), PointF(212.0, 595.0), PointF(212.0, 623.0), PointF(40.0, 623.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.98714966,
+              "points": "[PointF(38.0, 688.0), PointF(192.0, 688.0), PointF(192.0, 719.0), PointF(38.0, 719.0)]"
+            },
+            {
+              "text": "",
+              "confidence": 0,
+              "points": "[PointF(602.0, 684.0), PointF(657.0, 684.0), PointF(657.0, 721.0), PointF(602.0, 721.0)]"
+            },
+            {
+              "text": "手机内激活",
+              "confidence": 0.98822904,
+              "points": "[PointF(297.0, 771.0), PointF(422.0, 771.0), PointF(422.0, 802.0), PointF(297.0, 802.0)]"
+            },
+            {
+              "text": "从哪里开始 (可选)",
+              "confidence": 0.9509659,
+              "points": "[PointF(42.0, 867.0), PointF(243.0, 867.0), PointF(243.0, 895.0), PointF(42.0, 895.0)]"
+            },
+            {
+              "text": "桌面·整机操作",
+              "confidence": 0.97454816,
+              "points": "[PointF(53.0, 941.0), PointF(246.0, 941.0), PointF(246.0, 977.0), PointF(53.0, 977.0)]"
+            },
+            {
+              "text": "你想做什么",
+              "confidence": 0.9996775,
+              "points": "[PointF(39.0, 1038.0), PointF(164.0, 1038.0), PointF(164.0, 1073.0), PointF(39.0, 1073.0)]"
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "confidence": 0.9971614,
+              "points": "[PointF(61.0, 1113.0), PointF(529.0, 1113.0), PointF(529.0, 1142.0), PointF(61.0, 1142.0)]"
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "confidence": 0.99852914,
+              "points": "[PointF(41.0, 1253.0), PointF(650.0, 1253.0), PointF(650.0, 1277.0), PointF(41.0, 1277.0)]"
+            },
+            {
+              "text": "开始任务",
+              "confidence": 0.99983406,
+              "points": "[PointF(306.0, 1324.0), PointF(412.0, 1324.0), PointF(412.0, 1362.0), PointF(306.0, 1362.0)]"
+            },
+            {
+              "text": "停止当前任务",
+              "confidence": 0.9992712,
+              "points": "[PointF(284.0, 1423.0), PointF(434.0, 1423.0), PointF(434.0, 1458.0), PointF(284.0, 1458.0)]"
+            },
+            {
+              "text": "执行记录",
+              "confidence": 0.97934574,
+              "points": "[PointF(35.0, 1528.0), PointF(169.0, 1528.0), PointF(169.0, 1563.0), PointF(35.0, 1563.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 332,
+            "recognitionMs": 1792
+          }
+        },
+        {
+          "ms": 2147.216431,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "confidence": 0.9556698,
+              "points": "[PointF(29.0, 24.0), PointF(144.0, 24.0), PointF(144.0, 58.0), PointF(29.0, 58.0)]"
+            },
+            {
+              "text": "老小↓",
+              "confidence": 0.22893268,
+              "points": "[PointF(532.0, 25.0), PointF(673.0, 25.0), PointF(673.0, 60.0), PointF(532.0, 60.0)]"
+            },
+            {
+              "text": "悟空",
+              "confidence": 0.9996588,
+              "points": "[PointF(35.0, 118.0), PointF(139.0, 118.0), PointF(139.0, 177.0), PointF(35.0, 177.0)]"
+            },
+            {
+              "text": "Android · 0.4",
+              "confidence": 0.97406095,
+              "points": "[PointF(558.0, 132.0), PointF(683.0, 132.0), PointF(683.0, 160.0), PointF(558.0, 160.0)]"
+            },
+            {
+              "text": "任务",
+              "confidence": 0.9998696,
+              "points": "[PointF(80.0, 222.0), PointF(140.0, 222.0), PointF(140.0, 262.0), PointF(80.0, 262.0)]"
+            },
+            {
+              "text": "历史",
+              "confidence": 0.9999736,
+              "points": "[PointF(246.0, 222.0), PointF(307.0, 222.0), PointF(307.0, 260.0), PointF(246.0, 260.0)]"
+            },
+            {
+              "text": "设置",
+              "confidence": 0.99985397,
+              "points": "[PointF(412.0, 222.0), PointF(470.0, 222.0), PointF(470.0, 260.0), PointF(412.0, 260.0)]"
+            },
+            {
+              "text": "日志",
+              "confidence": 0.9827244,
+              "points": "[PointF(578.0, 221.0), PointF(640.0, 221.0), PointF(640.0, 262.0), PointF(578.0, 262.0)]"
+            },
+            {
+              "text": "把这件事，",
+              "confidence": 0.9948947,
+              "points": "[PointF(38.0, 334.0), PointF(300.0, 334.0), PointF(300.0, 401.0), PointF(38.0, 401.0)]"
+            },
+            {
+              "text": "交给悟空。",
+              "confidence": 0.9998511,
+              "points": "[PointF(40.0, 421.0), PointF(293.0, 421.0), PointF(293.0, 487.0), PointF(40.0, 487.0)]"
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "confidence": 0.99824136,
+              "points": "[PointF(42.0, 512.0), PointF(528.0, 512.0), PointF(528.0, 545.0), PointF(42.0, 545.0)]"
+            },
+            {
+              "text": "执行引擎已连接",
+              "confidence": 0.9994288,
+              "points": "[PointF(40.0, 595.0), PointF(212.0, 595.0), PointF(212.0, 623.0), PointF(40.0, 623.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.98714966,
+              "points": "[PointF(38.0, 688.0), PointF(192.0, 688.0), PointF(192.0, 719.0), PointF(38.0, 719.0)]"
+            },
+            {
+              "text": "",
+              "confidence": 0,
+              "points": "[PointF(602.0, 684.0), PointF(657.0, 684.0), PointF(657.0, 721.0), PointF(602.0, 721.0)]"
+            },
+            {
+              "text": "手机内激活",
+              "confidence": 0.98822904,
+              "points": "[PointF(297.0, 771.0), PointF(422.0, 771.0), PointF(422.0, 802.0), PointF(297.0, 802.0)]"
+            },
+            {
+              "text": "从哪里开始 (可选)",
+              "confidence": 0.9509659,
+              "points": "[PointF(42.0, 867.0), PointF(243.0, 867.0), PointF(243.0, 895.0), PointF(42.0, 895.0)]"
+            },
+            {
+              "text": "桌面·整机操作",
+              "confidence": 0.97454816,
+              "points": "[PointF(53.0, 941.0), PointF(246.0, 941.0), PointF(246.0, 977.0), PointF(53.0, 977.0)]"
+            },
+            {
+              "text": "你想做什么",
+              "confidence": 0.9996775,
+              "points": "[PointF(39.0, 1038.0), PointF(164.0, 1038.0), PointF(164.0, 1073.0), PointF(39.0, 1073.0)]"
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "confidence": 0.9971614,
+              "points": "[PointF(61.0, 1113.0), PointF(529.0, 1113.0), PointF(529.0, 1142.0), PointF(61.0, 1142.0)]"
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "confidence": 0.99852914,
+              "points": "[PointF(41.0, 1253.0), PointF(650.0, 1253.0), PointF(650.0, 1277.0), PointF(41.0, 1277.0)]"
+            },
+            {
+              "text": "开始任务",
+              "confidence": 0.99983406,
+              "points": "[PointF(306.0, 1324.0), PointF(412.0, 1324.0), PointF(412.0, 1362.0), PointF(306.0, 1362.0)]"
+            },
+            {
+              "text": "停止当前任务",
+              "confidence": 0.9992712,
+              "points": "[PointF(284.0, 1423.0), PointF(434.0, 1423.0), PointF(434.0, 1458.0), PointF(284.0, 1458.0)]"
+            },
+            {
+              "text": "执行记录",
+              "confidence": 0.97934574,
+              "points": "[PointF(35.0, 1528.0), PointF(169.0, 1528.0), PointF(169.0, 1563.0), PointF(35.0, 1563.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 328,
+            "recognitionMs": 1794
+          }
+        },
+        {
+          "ms": 2168.837973,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "confidence": 0.9556698,
+              "points": "[PointF(29.0, 24.0), PointF(144.0, 24.0), PointF(144.0, 58.0), PointF(29.0, 58.0)]"
+            },
+            {
+              "text": "老小↓",
+              "confidence": 0.22893268,
+              "points": "[PointF(532.0, 25.0), PointF(673.0, 25.0), PointF(673.0, 60.0), PointF(532.0, 60.0)]"
+            },
+            {
+              "text": "悟空",
+              "confidence": 0.9996588,
+              "points": "[PointF(35.0, 118.0), PointF(139.0, 118.0), PointF(139.0, 177.0), PointF(35.0, 177.0)]"
+            },
+            {
+              "text": "Android · 0.4",
+              "confidence": 0.97406095,
+              "points": "[PointF(558.0, 132.0), PointF(683.0, 132.0), PointF(683.0, 160.0), PointF(558.0, 160.0)]"
+            },
+            {
+              "text": "任务",
+              "confidence": 0.9998696,
+              "points": "[PointF(80.0, 222.0), PointF(140.0, 222.0), PointF(140.0, 262.0), PointF(80.0, 262.0)]"
+            },
+            {
+              "text": "历史",
+              "confidence": 0.9999736,
+              "points": "[PointF(246.0, 222.0), PointF(307.0, 222.0), PointF(307.0, 260.0), PointF(246.0, 260.0)]"
+            },
+            {
+              "text": "设置",
+              "confidence": 0.99985397,
+              "points": "[PointF(412.0, 222.0), PointF(470.0, 222.0), PointF(470.0, 260.0), PointF(412.0, 260.0)]"
+            },
+            {
+              "text": "日志",
+              "confidence": 0.9827244,
+              "points": "[PointF(578.0, 221.0), PointF(640.0, 221.0), PointF(640.0, 262.0), PointF(578.0, 262.0)]"
+            },
+            {
+              "text": "把这件事，",
+              "confidence": 0.9948947,
+              "points": "[PointF(38.0, 334.0), PointF(300.0, 334.0), PointF(300.0, 401.0), PointF(38.0, 401.0)]"
+            },
+            {
+              "text": "交给悟空。",
+              "confidence": 0.9998511,
+              "points": "[PointF(40.0, 421.0), PointF(293.0, 421.0), PointF(293.0, 487.0), PointF(40.0, 487.0)]"
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "confidence": 0.99824136,
+              "points": "[PointF(42.0, 512.0), PointF(528.0, 512.0), PointF(528.0, 545.0), PointF(42.0, 545.0)]"
+            },
+            {
+              "text": "执行引擎已连接",
+              "confidence": 0.9994288,
+              "points": "[PointF(40.0, 595.0), PointF(212.0, 595.0), PointF(212.0, 623.0), PointF(40.0, 623.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.98714966,
+              "points": "[PointF(38.0, 688.0), PointF(192.0, 688.0), PointF(192.0, 719.0), PointF(38.0, 719.0)]"
+            },
+            {
+              "text": "",
+              "confidence": 0,
+              "points": "[PointF(602.0, 684.0), PointF(657.0, 684.0), PointF(657.0, 721.0), PointF(602.0, 721.0)]"
+            },
+            {
+              "text": "手机内激活",
+              "confidence": 0.98822904,
+              "points": "[PointF(297.0, 771.0), PointF(422.0, 771.0), PointF(422.0, 802.0), PointF(297.0, 802.0)]"
+            },
+            {
+              "text": "从哪里开始 (可选)",
+              "confidence": 0.9509659,
+              "points": "[PointF(42.0, 867.0), PointF(243.0, 867.0), PointF(243.0, 895.0), PointF(42.0, 895.0)]"
+            },
+            {
+              "text": "桌面·整机操作",
+              "confidence": 0.97454816,
+              "points": "[PointF(53.0, 941.0), PointF(246.0, 941.0), PointF(246.0, 977.0), PointF(53.0, 977.0)]"
+            },
+            {
+              "text": "你想做什么",
+              "confidence": 0.9996775,
+              "points": "[PointF(39.0, 1038.0), PointF(164.0, 1038.0), PointF(164.0, 1073.0), PointF(39.0, 1073.0)]"
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "confidence": 0.9971614,
+              "points": "[PointF(61.0, 1113.0), PointF(529.0, 1113.0), PointF(529.0, 1142.0), PointF(61.0, 1142.0)]"
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "confidence": 0.99852914,
+              "points": "[PointF(41.0, 1253.0), PointF(650.0, 1253.0), PointF(650.0, 1277.0), PointF(41.0, 1277.0)]"
+            },
+            {
+              "text": "开始任务",
+              "confidence": 0.99983406,
+              "points": "[PointF(306.0, 1324.0), PointF(412.0, 1324.0), PointF(412.0, 1362.0), PointF(306.0, 1362.0)]"
+            },
+            {
+              "text": "停止当前任务",
+              "confidence": 0.9992712,
+              "points": "[PointF(284.0, 1423.0), PointF(434.0, 1423.0), PointF(434.0, 1458.0), PointF(284.0, 1458.0)]"
+            },
+            {
+              "text": "执行记录",
+              "confidence": 0.97934574,
+              "points": "[PointF(35.0, 1528.0), PointF(169.0, 1528.0), PointF(169.0, 1563.0), PointF(35.0, 1563.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 349,
+            "recognitionMs": 1795
+          }
+        },
+        {
+          "ms": 2147.750896,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "confidence": 0.9556698,
+              "points": "[PointF(29.0, 24.0), PointF(144.0, 24.0), PointF(144.0, 58.0), PointF(29.0, 58.0)]"
+            },
+            {
+              "text": "老小↓",
+              "confidence": 0.22893268,
+              "points": "[PointF(532.0, 25.0), PointF(673.0, 25.0), PointF(673.0, 60.0), PointF(532.0, 60.0)]"
+            },
+            {
+              "text": "悟空",
+              "confidence": 0.9996588,
+              "points": "[PointF(35.0, 118.0), PointF(139.0, 118.0), PointF(139.0, 177.0), PointF(35.0, 177.0)]"
+            },
+            {
+              "text": "Android · 0.4",
+              "confidence": 0.97406095,
+              "points": "[PointF(558.0, 132.0), PointF(683.0, 132.0), PointF(683.0, 160.0), PointF(558.0, 160.0)]"
+            },
+            {
+              "text": "任务",
+              "confidence": 0.9998696,
+              "points": "[PointF(80.0, 222.0), PointF(140.0, 222.0), PointF(140.0, 262.0), PointF(80.0, 262.0)]"
+            },
+            {
+              "text": "历史",
+              "confidence": 0.9999736,
+              "points": "[PointF(246.0, 222.0), PointF(307.0, 222.0), PointF(307.0, 260.0), PointF(246.0, 260.0)]"
+            },
+            {
+              "text": "设置",
+              "confidence": 0.99985397,
+              "points": "[PointF(412.0, 222.0), PointF(470.0, 222.0), PointF(470.0, 260.0), PointF(412.0, 260.0)]"
+            },
+            {
+              "text": "日志",
+              "confidence": 0.9827244,
+              "points": "[PointF(578.0, 221.0), PointF(640.0, 221.0), PointF(640.0, 262.0), PointF(578.0, 262.0)]"
+            },
+            {
+              "text": "把这件事，",
+              "confidence": 0.9948947,
+              "points": "[PointF(38.0, 334.0), PointF(300.0, 334.0), PointF(300.0, 401.0), PointF(38.0, 401.0)]"
+            },
+            {
+              "text": "交给悟空。",
+              "confidence": 0.9998511,
+              "points": "[PointF(40.0, 421.0), PointF(293.0, 421.0), PointF(293.0, 487.0), PointF(40.0, 487.0)]"
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "confidence": 0.99824136,
+              "points": "[PointF(42.0, 512.0), PointF(528.0, 512.0), PointF(528.0, 545.0), PointF(42.0, 545.0)]"
+            },
+            {
+              "text": "执行引擎已连接",
+              "confidence": 0.9994288,
+              "points": "[PointF(40.0, 595.0), PointF(212.0, 595.0), PointF(212.0, 623.0), PointF(40.0, 623.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.98714966,
+              "points": "[PointF(38.0, 688.0), PointF(192.0, 688.0), PointF(192.0, 719.0), PointF(38.0, 719.0)]"
+            },
+            {
+              "text": "",
+              "confidence": 0,
+              "points": "[PointF(602.0, 684.0), PointF(657.0, 684.0), PointF(657.0, 721.0), PointF(602.0, 721.0)]"
+            },
+            {
+              "text": "手机内激活",
+              "confidence": 0.98822904,
+              "points": "[PointF(297.0, 771.0), PointF(422.0, 771.0), PointF(422.0, 802.0), PointF(297.0, 802.0)]"
+            },
+            {
+              "text": "从哪里开始 (可选)",
+              "confidence": 0.9509659,
+              "points": "[PointF(42.0, 867.0), PointF(243.0, 867.0), PointF(243.0, 895.0), PointF(42.0, 895.0)]"
+            },
+            {
+              "text": "桌面·整机操作",
+              "confidence": 0.97454816,
+              "points": "[PointF(53.0, 941.0), PointF(246.0, 941.0), PointF(246.0, 977.0), PointF(53.0, 977.0)]"
+            },
+            {
+              "text": "你想做什么",
+              "confidence": 0.9996775,
+              "points": "[PointF(39.0, 1038.0), PointF(164.0, 1038.0), PointF(164.0, 1073.0), PointF(39.0, 1073.0)]"
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "confidence": 0.9971614,
+              "points": "[PointF(61.0, 1113.0), PointF(529.0, 1113.0), PointF(529.0, 1142.0), PointF(61.0, 1142.0)]"
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "confidence": 0.99852914,
+              "points": "[PointF(41.0, 1253.0), PointF(650.0, 1253.0), PointF(650.0, 1277.0), PointF(41.0, 1277.0)]"
+            },
+            {
+              "text": "开始任务",
+              "confidence": 0.99983406,
+              "points": "[PointF(306.0, 1324.0), PointF(412.0, 1324.0), PointF(412.0, 1362.0), PointF(306.0, 1362.0)]"
+            },
+            {
+              "text": "停止当前任务",
+              "confidence": 0.9992712,
+              "points": "[PointF(284.0, 1423.0), PointF(434.0, 1423.0), PointF(434.0, 1458.0), PointF(284.0, 1458.0)]"
+            },
+            {
+              "text": "执行记录",
+              "confidence": 0.97934574,
+              "points": "[PointF(35.0, 1528.0), PointF(169.0, 1528.0), PointF(169.0, 1563.0), PointF(35.0, 1563.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 328,
+            "recognitionMs": 1793
+          }
+        },
+        {
+          "ms": 2150.730754,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "confidence": 0.9556698,
+              "points": "[PointF(29.0, 24.0), PointF(144.0, 24.0), PointF(144.0, 58.0), PointF(29.0, 58.0)]"
+            },
+            {
+              "text": "老小↓",
+              "confidence": 0.22893268,
+              "points": "[PointF(532.0, 25.0), PointF(673.0, 25.0), PointF(673.0, 60.0), PointF(532.0, 60.0)]"
+            },
+            {
+              "text": "悟空",
+              "confidence": 0.9996588,
+              "points": "[PointF(35.0, 118.0), PointF(139.0, 118.0), PointF(139.0, 177.0), PointF(35.0, 177.0)]"
+            },
+            {
+              "text": "Android · 0.4",
+              "confidence": 0.97406095,
+              "points": "[PointF(558.0, 132.0), PointF(683.0, 132.0), PointF(683.0, 160.0), PointF(558.0, 160.0)]"
+            },
+            {
+              "text": "任务",
+              "confidence": 0.9998696,
+              "points": "[PointF(80.0, 222.0), PointF(140.0, 222.0), PointF(140.0, 262.0), PointF(80.0, 262.0)]"
+            },
+            {
+              "text": "历史",
+              "confidence": 0.9999736,
+              "points": "[PointF(246.0, 222.0), PointF(307.0, 222.0), PointF(307.0, 260.0), PointF(246.0, 260.0)]"
+            },
+            {
+              "text": "设置",
+              "confidence": 0.99985397,
+              "points": "[PointF(412.0, 222.0), PointF(470.0, 222.0), PointF(470.0, 260.0), PointF(412.0, 260.0)]"
+            },
+            {
+              "text": "日志",
+              "confidence": 0.9827244,
+              "points": "[PointF(578.0, 221.0), PointF(640.0, 221.0), PointF(640.0, 262.0), PointF(578.0, 262.0)]"
+            },
+            {
+              "text": "把这件事，",
+              "confidence": 0.9948947,
+              "points": "[PointF(38.0, 334.0), PointF(300.0, 334.0), PointF(300.0, 401.0), PointF(38.0, 401.0)]"
+            },
+            {
+              "text": "交给悟空。",
+              "confidence": 0.9998511,
+              "points": "[PointF(40.0, 421.0), PointF(293.0, 421.0), PointF(293.0, 487.0), PointF(40.0, 487.0)]"
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "confidence": 0.99824136,
+              "points": "[PointF(42.0, 512.0), PointF(528.0, 512.0), PointF(528.0, 545.0), PointF(42.0, 545.0)]"
+            },
+            {
+              "text": "执行引擎已连接",
+              "confidence": 0.9994288,
+              "points": "[PointF(40.0, 595.0), PointF(212.0, 595.0), PointF(212.0, 623.0), PointF(40.0, 623.0)]"
+            },
+            {
+              "text": "在虚拟屏执行",
+              "confidence": 0.98714966,
+              "points": "[PointF(38.0, 688.0), PointF(192.0, 688.0), PointF(192.0, 719.0), PointF(38.0, 719.0)]"
+            },
+            {
+              "text": "",
+              "confidence": 0,
+              "points": "[PointF(602.0, 684.0), PointF(657.0, 684.0), PointF(657.0, 721.0), PointF(602.0, 721.0)]"
+            },
+            {
+              "text": "手机内激活",
+              "confidence": 0.98822904,
+              "points": "[PointF(297.0, 771.0), PointF(422.0, 771.0), PointF(422.0, 802.0), PointF(297.0, 802.0)]"
+            },
+            {
+              "text": "从哪里开始 (可选)",
+              "confidence": 0.9509659,
+              "points": "[PointF(42.0, 867.0), PointF(243.0, 867.0), PointF(243.0, 895.0), PointF(42.0, 895.0)]"
+            },
+            {
+              "text": "桌面·整机操作",
+              "confidence": 0.97454816,
+              "points": "[PointF(53.0, 941.0), PointF(246.0, 941.0), PointF(246.0, 977.0), PointF(53.0, 977.0)]"
+            },
+            {
+              "text": "你想做什么",
+              "confidence": 0.9996775,
+              "points": "[PointF(39.0, 1038.0), PointF(164.0, 1038.0), PointF(164.0, 1073.0), PointF(39.0, 1073.0)]"
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "confidence": 0.9971614,
+              "points": "[PointF(61.0, 1113.0), PointF(529.0, 1113.0), PointF(529.0, 1142.0), PointF(61.0, 1142.0)]"
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "confidence": 0.99852914,
+              "points": "[PointF(41.0, 1253.0), PointF(650.0, 1253.0), PointF(650.0, 1277.0), PointF(41.0, 1277.0)]"
+            },
+            {
+              "text": "开始任务",
+              "confidence": 0.99983406,
+              "points": "[PointF(306.0, 1324.0), PointF(412.0, 1324.0), PointF(412.0, 1362.0), PointF(306.0, 1362.0)]"
+            },
+            {
+              "text": "停止当前任务",
+              "confidence": 0.9992712,
+              "points": "[PointF(284.0, 1423.0), PointF(434.0, 1423.0), PointF(434.0, 1458.0), PointF(284.0, 1458.0)]"
+            },
+            {
+              "text": "执行记录",
+              "confidence": 0.97934574,
+              "points": "[PointF(35.0, 1528.0), PointF(169.0, 1528.0), PointF(169.0, 1563.0), PointF(35.0, 1563.0)]"
+            }
+          ],
+          "stages": {
+            "detectionMs": 328,
+            "recognitionMs": 1798
+          }
+        }
+      ]
+    }
+  ],
+  "batteryDeciCEnd": 297,
+  "thermalEnd": 0
+}

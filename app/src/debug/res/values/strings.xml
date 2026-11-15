@@ -1,0 +1,7 @@
+<resources>
+    <string name="test_query" translatable="false">Search query</string>
+    <string name="test_waiting" translatable="false">Awaiting search</string>
+    <string name="test_search" translatable="false">Search</string>
+    <string name="test_result" translatable="false">Results for: %1$s</string>
+    <string name="test_row" translatable="false">Row %1$d</string>
+</resources>

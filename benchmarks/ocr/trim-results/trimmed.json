@@ -1,0 +1,2706 @@
+{
+  "engine": "PP-OCRv6_tiny",
+  "device": "Pixel 6",
+  "samples": [
+    {
+      "name": "ui-normal",
+      "expected": [
+        "悟空手机助手",
+        "在虚拟屏执行",
+        "接管并继续操作",
+        "网络连接已恢复",
+        "模型设置 DeepSeek",
+        "Base URL 自定义地址",
+        "Token 用量 123456",
+        "返回桌面 交还 Agent"
+      ],
+      "runs": [
+        {
+          "ms": 633.533936,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 61,
+                "top": 53,
+                "right": 299,
+                "bottom": 88
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 162,
+                "right": 298,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 268,
+                "right": 338,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 374,
+                "right": 337,
+                "bottom": 405
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 480,
+                "right": 404,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 62,
+                "top": 587,
+                "right": 435,
+                "bottom": 616
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 695,
+                "right": 399,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还 Agent",
+              "bounds": {
+                "left": 61,
+                "top": 798,
+                "right": 422,
+                "bottom": 832
+              }
+            }
+          ]
+        },
+        {
+          "ms": 634.586426,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 61,
+                "top": 53,
+                "right": 299,
+                "bottom": 88
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 162,
+                "right": 298,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 268,
+                "right": 338,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 374,
+                "right": 337,
+                "bottom": 405
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 480,
+                "right": 404,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 62,
+                "top": 587,
+                "right": 435,
+                "bottom": 616
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 695,
+                "right": 399,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还 Agent",
+              "bounds": {
+                "left": 61,
+                "top": 798,
+                "right": 422,
+                "bottom": 832
+              }
+            }
+          ]
+        },
+        {
+          "ms": 624.057902,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 61,
+                "top": 53,
+                "right": 299,
+                "bottom": 88
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 162,
+                "right": 298,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 268,
+                "right": 338,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 374,
+                "right": 337,
+                "bottom": 405
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 480,
+                "right": 404,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 62,
+                "top": 587,
+                "right": 435,
+                "bottom": 616
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 695,
+                "right": 399,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还 Agent",
+              "bounds": {
+                "left": 61,
+                "top": 798,
+                "right": 422,
+                "bottom": 832
+              }
+            }
+          ]
+        },
+        {
+          "ms": 622.775147,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 61,
+                "top": 53,
+                "right": 299,
+                "bottom": 88
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 162,
+                "right": 298,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 268,
+                "right": 338,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 374,
+                "right": 337,
+                "bottom": 405
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 480,
+                "right": 404,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 62,
+                "top": 587,
+                "right": 435,
+                "bottom": 616
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 695,
+                "right": 399,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还 Agent",
+              "bounds": {
+                "left": 61,
+                "top": 798,
+                "right": 422,
+                "bottom": 832
+              }
+            }
+          ]
+        },
+        {
+          "ms": 621.505982,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 61,
+                "top": 53,
+                "right": 299,
+                "bottom": 88
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 162,
+                "right": 298,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 268,
+                "right": 338,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 374,
+                "right": 337,
+                "bottom": 405
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 480,
+                "right": 404,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 62,
+                "top": 587,
+                "right": 435,
+                "bottom": 616
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 695,
+                "right": 399,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还 Agent",
+              "bounds": {
+                "left": 61,
+                "top": 798,
+                "right": 422,
+                "bottom": 832
+              }
+            }
+          ]
+        },
+        {
+          "ms": 621.101807,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 61,
+                "top": 53,
+                "right": 299,
+                "bottom": 88
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 162,
+                "right": 298,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 268,
+                "right": 338,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 374,
+                "right": 337,
+                "bottom": 405
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 480,
+                "right": 404,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 62,
+                "top": 587,
+                "right": 435,
+                "bottom": 616
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 695,
+                "right": 399,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还 Agent",
+              "bounds": {
+                "left": 61,
+                "top": 798,
+                "right": 422,
+                "bottom": 832
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ui-small",
+      "expected": [
+        "悟空手机助手",
+        "在虚拟屏执行",
+        "接管并继续操作",
+        "网络连接已恢复",
+        "模型设置 DeepSeek",
+        "Base URL 自定义地址",
+        "Token 用量 123456",
+        "返回桌面 交还 Agent"
+      ],
+      "runs": [
+        {
+          "ms": 597.818523,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 65,
+                "right": 198,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 171,
+                "right": 200,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 278,
+                "right": 221,
+                "bottom": 296
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 62,
+                "top": 383,
+                "right": 222,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 491,
+                "right": 262,
+                "bottom": 510
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 60,
+                "top": 596,
+                "right": 277,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量123456",
+              "bounds": {
+                "left": 63,
+                "top": 704,
+                "right": 255,
+                "bottom": 722
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 60,
+                "top": 808,
+                "right": 270,
+                "bottom": 830
+              }
+            }
+          ]
+        },
+        {
+          "ms": 598.108155,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 65,
+                "right": 198,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 171,
+                "right": 200,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 278,
+                "right": 221,
+                "bottom": 296
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 62,
+                "top": 383,
+                "right": 222,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 491,
+                "right": 262,
+                "bottom": 510
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 60,
+                "top": 596,
+                "right": 277,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量123456",
+              "bounds": {
+                "left": 63,
+                "top": 704,
+                "right": 255,
+                "bottom": 722
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 60,
+                "top": 808,
+                "right": 270,
+                "bottom": 830
+              }
+            }
+          ]
+        },
+        {
+          "ms": 598.931844,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 65,
+                "right": 198,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 171,
+                "right": 200,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 278,
+                "right": 221,
+                "bottom": 296
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 62,
+                "top": 383,
+                "right": 222,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 491,
+                "right": 262,
+                "bottom": 510
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 60,
+                "top": 596,
+                "right": 277,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量123456",
+              "bounds": {
+                "left": 63,
+                "top": 704,
+                "right": 255,
+                "bottom": 722
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 60,
+                "top": 808,
+                "right": 270,
+                "bottom": 830
+              }
+            }
+          ]
+        },
+        {
+          "ms": 601.194539,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 65,
+                "right": 198,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 171,
+                "right": 200,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 278,
+                "right": 221,
+                "bottom": 296
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 62,
+                "top": 383,
+                "right": 222,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 491,
+                "right": 262,
+                "bottom": 510
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 60,
+                "top": 596,
+                "right": 277,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量123456",
+              "bounds": {
+                "left": 63,
+                "top": 704,
+                "right": 255,
+                "bottom": 722
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 60,
+                "top": 808,
+                "right": 270,
+                "bottom": 830
+              }
+            }
+          ]
+        },
+        {
+          "ms": 596.847819,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 65,
+                "right": 198,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 171,
+                "right": 200,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 278,
+                "right": 221,
+                "bottom": 296
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 62,
+                "top": 383,
+                "right": 222,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 491,
+                "right": 262,
+                "bottom": 510
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 60,
+                "top": 596,
+                "right": 277,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量123456",
+              "bounds": {
+                "left": 63,
+                "top": 704,
+                "right": 255,
+                "bottom": 722
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 60,
+                "top": 808,
+                "right": 270,
+                "bottom": 830
+              }
+            }
+          ]
+        },
+        {
+          "ms": 598.902222,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 65,
+                "right": 198,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 171,
+                "right": 200,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 62,
+                "top": 278,
+                "right": 221,
+                "bottom": 296
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 62,
+                "top": 383,
+                "right": 222,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 62,
+                "top": 491,
+                "right": 262,
+                "bottom": 510
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 60,
+                "top": 596,
+                "right": 277,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量123456",
+              "bounds": {
+                "left": 63,
+                "top": 704,
+                "right": 255,
+                "bottom": 722
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 60,
+                "top": 808,
+                "right": 270,
+                "bottom": 830
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ui-dark",
+      "expected": [
+        "悟空手机助手",
+        "在虚拟屏执行",
+        "接管并继续操作",
+        "网络连接已恢复",
+        "模型设置 DeepSeek",
+        "Base URL 自定义地址",
+        "Token 用量 123456",
+        "返回桌面 交还 Agent"
+      ],
+      "runs": [
+        {
+          "ms": 608.297933,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 60,
+                "right": 242,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 166,
+                "right": 244,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 63,
+                "top": 275,
+                "right": 273,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 381,
+                "right": 271,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 64,
+                "top": 486,
+                "right": 325,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 63,
+                "top": 593,
+                "right": 347,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 699,
+                "right": 318,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 62,
+                "top": 804,
+                "right": 338,
+                "bottom": 831
+              }
+            }
+          ]
+        },
+        {
+          "ms": 613.449626,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 60,
+                "right": 242,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 166,
+                "right": 244,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 63,
+                "top": 275,
+                "right": 273,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 381,
+                "right": 271,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 64,
+                "top": 486,
+                "right": 325,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 63,
+                "top": 593,
+                "right": 347,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 699,
+                "right": 318,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 62,
+                "top": 804,
+                "right": 338,
+                "bottom": 831
+              }
+            }
+          ]
+        },
+        {
+          "ms": 607.153321,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 60,
+                "right": 242,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 166,
+                "right": 244,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 63,
+                "top": 275,
+                "right": 273,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 381,
+                "right": 271,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 64,
+                "top": 486,
+                "right": 325,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 63,
+                "top": 593,
+                "right": 347,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 699,
+                "right": 318,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 62,
+                "top": 804,
+                "right": 338,
+                "bottom": 831
+              }
+            }
+          ]
+        },
+        {
+          "ms": 611.027791,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 60,
+                "right": 242,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 166,
+                "right": 244,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 63,
+                "top": 275,
+                "right": 273,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 381,
+                "right": 271,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 64,
+                "top": 486,
+                "right": 325,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 63,
+                "top": 593,
+                "right": 347,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 699,
+                "right": 318,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 62,
+                "top": 804,
+                "right": 338,
+                "bottom": 831
+              }
+            }
+          ]
+        },
+        {
+          "ms": 642.754029,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 60,
+                "right": 242,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 166,
+                "right": 244,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 63,
+                "top": 275,
+                "right": 273,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 381,
+                "right": 271,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 64,
+                "top": 486,
+                "right": 325,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 63,
+                "top": 593,
+                "right": 347,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 699,
+                "right": 318,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 62,
+                "top": 804,
+                "right": 338,
+                "bottom": 831
+              }
+            }
+          ]
+        },
+        {
+          "ms": 604.18929,
+          "matched": 8,
+          "lines": [
+            {
+              "text": "悟空手机助手",
+              "bounds": {
+                "left": 62,
+                "top": 60,
+                "right": 242,
+                "bottom": 85
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 62,
+                "top": 166,
+                "right": 244,
+                "bottom": 192
+              }
+            },
+            {
+              "text": "接管并继续操作",
+              "bounds": {
+                "left": 63,
+                "top": 275,
+                "right": 273,
+                "bottom": 297
+              }
+            },
+            {
+              "text": "网络连接已恢复",
+              "bounds": {
+                "left": 64,
+                "top": 381,
+                "right": 271,
+                "bottom": 404
+              }
+            },
+            {
+              "text": "模型设置 DeepSeek",
+              "bounds": {
+                "left": 64,
+                "top": 486,
+                "right": 325,
+                "bottom": 512
+              }
+            },
+            {
+              "text": "Base URL 自定义地址",
+              "bounds": {
+                "left": 63,
+                "top": 593,
+                "right": 347,
+                "bottom": 617
+              }
+            },
+            {
+              "text": "Token 用量 123456",
+              "bounds": {
+                "left": 62,
+                "top": 699,
+                "right": 318,
+                "bottom": 723
+              }
+            },
+            {
+              "text": "返回桌面交还Agent",
+              "bounds": {
+                "left": 62,
+                "top": 804,
+                "right": 338,
+                "bottom": 831
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wukong-task",
+      "expected": [
+        "悟空",
+        "Android · 0.4",
+        "任务",
+        "历史",
+        "设置",
+        "日志",
+        "把这件事，",
+        "交给悟空。",
+        "说清楚目标，悟空可以跨应用帮你完成。",
+        "执行引擎已连接",
+        "在虚拟屏执行",
+        "手机内激活",
+        "从哪里开始（可选）",
+        "桌面 · 整机操作",
+        "你想做什么",
+        "例如：搜索无线耳机，告诉我前几条结果",
+        "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+        "开始任务",
+        "停止当前任务",
+        "执行记录"
+      ],
+      "runs": [
+        {
+          "ms": 748.297607,
+          "matched": 20,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "bounds": {
+                "left": 40,
+                "top": 15,
+                "right": 199,
+                "bottom": 37
+              }
+            },
+            {
+              "text": "志》",
+              "bounds": {
+                "left": 738,
+                "top": 16,
+                "right": 849,
+                "bottom": 36
+              }
+            },
+            {
+              "text": "悟空",
+              "bounds": {
+                "left": 43,
+                "top": 73,
+                "right": 194,
+                "bottom": 111
+              }
+            },
+            {
+              "text": "Android · 0.4",
+              "bounds": {
+                "left": 775,
+                "top": 82,
+                "right": 949,
+                "bottom": 100
+              }
+            },
+            {
+              "text": "任务",
+              "bounds": {
+                "left": 112,
+                "top": 140,
+                "right": 194,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "历史",
+              "bounds": {
+                "left": 343,
+                "top": 140,
+                "right": 425,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "设置",
+              "bounds": {
+                "left": 572,
+                "top": 140,
+                "right": 656,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "日志",
+              "bounds": {
+                "left": 806,
+                "top": 140,
+                "right": 885,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "把这件事，",
+              "bounds": {
+                "left": 47,
+                "top": 208,
+                "right": 412,
+                "bottom": 252
+              }
+            },
+            {
+              "text": "交给悟空。",
+              "bounds": {
+                "left": 50,
+                "top": 263,
+                "right": 403,
+                "bottom": 307
+              }
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "bounds": {
+                "left": 54,
+                "top": 320,
+                "right": 737,
+                "bottom": 341
+              }
+            },
+            {
+              "text": "执行引擎已连接",
+              "bounds": {
+                "left": 51,
+                "top": 371,
+                "right": 295,
+                "bottom": 390
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 52,
+                "top": 430,
+                "right": 267,
+                "bottom": 450
+              }
+            },
+            {
+              "text": "手机内激活",
+              "bounds": {
+                "left": 411,
+                "top": 481,
+                "right": 588,
+                "bottom": 504
+              }
+            },
+            {
+              "text": "从哪里开始(可选)",
+              "bounds": {
+                "left": 54,
+                "top": 541,
+                "right": 341,
+                "bottom": 562
+              }
+            },
+            {
+              "text": "桌面·整机操作",
+              "bounds": {
+                "left": 70,
+                "top": 588,
+                "right": 345,
+                "bottom": 611
+              }
+            },
+            {
+              "text": "你想做什么",
+              "bounds": {
+                "left": 55,
+                "top": 650,
+                "right": 227,
+                "bottom": 670
+              }
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "bounds": {
+                "left": 84,
+                "top": 695,
+                "right": 738,
+                "bottom": 714
+              }
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "bounds": {
+                "left": 56,
+                "top": 783,
+                "right": 903,
+                "bottom": 800
+              }
+            },
+            {
+              "text": "开始任务",
+              "bounds": {
+                "left": 425,
+                "top": 829,
+                "right": 571,
+                "bottom": 851
+              }
+            },
+            {
+              "text": "停止当前任务",
+              "bounds": {
+                "left": 395,
+                "top": 891,
+                "right": 602,
+                "bottom": 911
+              }
+            },
+            {
+              "text": "执行记录",
+              "bounds": {
+                "left": 51,
+                "top": 955,
+                "right": 235,
+                "bottom": 977
+              }
+            }
+          ]
+        },
+        {
+          "ms": 769.163452,
+          "matched": 20,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "bounds": {
+                "left": 40,
+                "top": 15,
+                "right": 199,
+                "bottom": 37
+              }
+            },
+            {
+              "text": "志》",
+              "bounds": {
+                "left": 738,
+                "top": 16,
+                "right": 849,
+                "bottom": 36
+              }
+            },
+            {
+              "text": "悟空",
+              "bounds": {
+                "left": 43,
+                "top": 73,
+                "right": 194,
+                "bottom": 111
+              }
+            },
+            {
+              "text": "Android · 0.4",
+              "bounds": {
+                "left": 775,
+                "top": 82,
+                "right": 949,
+                "bottom": 100
+              }
+            },
+            {
+              "text": "任务",
+              "bounds": {
+                "left": 112,
+                "top": 140,
+                "right": 194,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "历史",
+              "bounds": {
+                "left": 343,
+                "top": 140,
+                "right": 425,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "设置",
+              "bounds": {
+                "left": 572,
+                "top": 140,
+                "right": 656,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "日志",
+              "bounds": {
+                "left": 806,
+                "top": 140,
+                "right": 885,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "把这件事，",
+              "bounds": {
+                "left": 47,
+                "top": 208,
+                "right": 412,
+                "bottom": 252
+              }
+            },
+            {
+              "text": "交给悟空。",
+              "bounds": {
+                "left": 50,
+                "top": 263,
+                "right": 403,
+                "bottom": 307
+              }
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "bounds": {
+                "left": 54,
+                "top": 320,
+                "right": 737,
+                "bottom": 341
+              }
+            },
+            {
+              "text": "执行引擎已连接",
+              "bounds": {
+                "left": 51,
+                "top": 371,
+                "right": 295,
+                "bottom": 390
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 52,
+                "top": 430,
+                "right": 267,
+                "bottom": 450
+              }
+            },
+            {
+              "text": "手机内激活",
+              "bounds": {
+                "left": 411,
+                "top": 481,
+                "right": 588,
+                "bottom": 504
+              }
+            },
+            {
+              "text": "从哪里开始(可选)",
+              "bounds": {
+                "left": 54,
+                "top": 541,
+                "right": 341,
+                "bottom": 562
+              }
+            },
+            {
+              "text": "桌面·整机操作",
+              "bounds": {
+                "left": 70,
+                "top": 588,
+                "right": 345,
+                "bottom": 611
+              }
+            },
+            {
+              "text": "你想做什么",
+              "bounds": {
+                "left": 55,
+                "top": 650,
+                "right": 227,
+                "bottom": 670
+              }
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "bounds": {
+                "left": 84,
+                "top": 695,
+                "right": 738,
+                "bottom": 714
+              }
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "bounds": {
+                "left": 56,
+                "top": 783,
+                "right": 903,
+                "bottom": 800
+              }
+            },
+            {
+              "text": "开始任务",
+              "bounds": {
+                "left": 425,
+                "top": 829,
+                "right": 571,
+                "bottom": 851
+              }
+            },
+            {
+              "text": "停止当前任务",
+              "bounds": {
+                "left": 395,
+                "top": 891,
+                "right": 602,
+                "bottom": 911
+              }
+            },
+            {
+              "text": "执行记录",
+              "bounds": {
+                "left": 51,
+                "top": 955,
+                "right": 235,
+                "bottom": 977
+              }
+            }
+          ]
+        },
+        {
+          "ms": 755.613567,
+          "matched": 20,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "bounds": {
+                "left": 40,
+                "top": 15,
+                "right": 199,
+                "bottom": 37
+              }
+            },
+            {
+              "text": "志》",
+              "bounds": {
+                "left": 738,
+                "top": 16,
+                "right": 849,
+                "bottom": 36
+              }
+            },
+            {
+              "text": "悟空",
+              "bounds": {
+                "left": 43,
+                "top": 73,
+                "right": 194,
+                "bottom": 111
+              }
+            },
+            {
+              "text": "Android · 0.4",
+              "bounds": {
+                "left": 775,
+                "top": 82,
+                "right": 949,
+                "bottom": 100
+              }
+            },
+            {
+              "text": "任务",
+              "bounds": {
+                "left": 112,
+                "top": 140,
+                "right": 194,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "历史",
+              "bounds": {
+                "left": 343,
+                "top": 140,
+                "right": 425,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "设置",
+              "bounds": {
+                "left": 572,
+                "top": 140,
+                "right": 656,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "日志",
+              "bounds": {
+                "left": 806,
+                "top": 140,
+                "right": 885,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "把这件事，",
+              "bounds": {
+                "left": 47,
+                "top": 208,
+                "right": 412,
+                "bottom": 252
+              }
+            },
+            {
+              "text": "交给悟空。",
+              "bounds": {
+                "left": 50,
+                "top": 263,
+                "right": 403,
+                "bottom": 307
+              }
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "bounds": {
+                "left": 54,
+                "top": 320,
+                "right": 737,
+                "bottom": 341
+              }
+            },
+            {
+              "text": "执行引擎已连接",
+              "bounds": {
+                "left": 51,
+                "top": 371,
+                "right": 295,
+                "bottom": 390
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 52,
+                "top": 430,
+                "right": 267,
+                "bottom": 450
+              }
+            },
+            {
+              "text": "手机内激活",
+              "bounds": {
+                "left": 411,
+                "top": 481,
+                "right": 588,
+                "bottom": 504
+              }
+            },
+            {
+              "text": "从哪里开始(可选)",
+              "bounds": {
+                "left": 54,
+                "top": 541,
+                "right": 341,
+                "bottom": 562
+              }
+            },
+            {
+              "text": "桌面·整机操作",
+              "bounds": {
+                "left": 70,
+                "top": 588,
+                "right": 345,
+                "bottom": 611
+              }
+            },
+            {
+              "text": "你想做什么",
+              "bounds": {
+                "left": 55,
+                "top": 650,
+                "right": 227,
+                "bottom": 670
+              }
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "bounds": {
+                "left": 84,
+                "top": 695,
+                "right": 738,
+                "bottom": 714
+              }
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "bounds": {
+                "left": 56,
+                "top": 783,
+                "right": 903,
+                "bottom": 800
+              }
+            },
+            {
+              "text": "开始任务",
+              "bounds": {
+                "left": 425,
+                "top": 829,
+                "right": 571,
+                "bottom": 851
+              }
+            },
+            {
+              "text": "停止当前任务",
+              "bounds": {
+                "left": 395,
+                "top": 891,
+                "right": 602,
+                "bottom": 911
+              }
+            },
+            {
+              "text": "执行记录",
+              "bounds": {
+                "left": 51,
+                "top": 955,
+                "right": 235,
+                "bottom": 977
+              }
+            }
+          ]
+        },
+        {
+          "ms": 751.245159,
+          "matched": 20,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "bounds": {
+                "left": 40,
+                "top": 15,
+                "right": 199,
+                "bottom": 37
+              }
+            },
+            {
+              "text": "志》",
+              "bounds": {
+                "left": 738,
+                "top": 16,
+                "right": 849,
+                "bottom": 36
+              }
+            },
+            {
+              "text": "悟空",
+              "bounds": {
+                "left": 43,
+                "top": 73,
+                "right": 194,
+                "bottom": 111
+              }
+            },
+            {
+              "text": "Android · 0.4",
+              "bounds": {
+                "left": 775,
+                "top": 82,
+                "right": 949,
+                "bottom": 100
+              }
+            },
+            {
+              "text": "任务",
+              "bounds": {
+                "left": 112,
+                "top": 140,
+                "right": 194,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "历史",
+              "bounds": {
+                "left": 343,
+                "top": 140,
+                "right": 425,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "设置",
+              "bounds": {
+                "left": 572,
+                "top": 140,
+                "right": 656,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "日志",
+              "bounds": {
+                "left": 806,
+                "top": 140,
+                "right": 885,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "把这件事，",
+              "bounds": {
+                "left": 47,
+                "top": 208,
+                "right": 412,
+                "bottom": 252
+              }
+            },
+            {
+              "text": "交给悟空。",
+              "bounds": {
+                "left": 50,
+                "top": 263,
+                "right": 403,
+                "bottom": 307
+              }
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "bounds": {
+                "left": 54,
+                "top": 320,
+                "right": 737,
+                "bottom": 341
+              }
+            },
+            {
+              "text": "执行引擎已连接",
+              "bounds": {
+                "left": 51,
+                "top": 371,
+                "right": 295,
+                "bottom": 390
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 52,
+                "top": 430,
+                "right": 267,
+                "bottom": 450
+              }
+            },
+            {
+              "text": "手机内激活",
+              "bounds": {
+                "left": 411,
+                "top": 481,
+                "right": 588,
+                "bottom": 504
+              }
+            },
+            {
+              "text": "从哪里开始(可选)",
+              "bounds": {
+                "left": 54,
+                "top": 541,
+                "right": 341,
+                "bottom": 562
+              }
+            },
+            {
+              "text": "桌面·整机操作",
+              "bounds": {
+                "left": 70,
+                "top": 588,
+                "right": 345,
+                "bottom": 611
+              }
+            },
+            {
+              "text": "你想做什么",
+              "bounds": {
+                "left": 55,
+                "top": 650,
+                "right": 227,
+                "bottom": 670
+              }
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "bounds": {
+                "left": 84,
+                "top": 695,
+                "right": 738,
+                "bottom": 714
+              }
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "bounds": {
+                "left": 56,
+                "top": 783,
+                "right": 903,
+                "bottom": 800
+              }
+            },
+            {
+              "text": "开始任务",
+              "bounds": {
+                "left": 425,
+                "top": 829,
+                "right": 571,
+                "bottom": 851
+              }
+            },
+            {
+              "text": "停止当前任务",
+              "bounds": {
+                "left": 395,
+                "top": 891,
+                "right": 602,
+                "bottom": 911
+              }
+            },
+            {
+              "text": "执行记录",
+              "bounds": {
+                "left": 51,
+                "top": 955,
+                "right": 235,
+                "bottom": 977
+              }
+            }
+          ]
+        },
+        {
+          "ms": 748.877931,
+          "matched": 20,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "bounds": {
+                "left": 40,
+                "top": 15,
+                "right": 199,
+                "bottom": 37
+              }
+            },
+            {
+              "text": "志》",
+              "bounds": {
+                "left": 738,
+                "top": 16,
+                "right": 849,
+                "bottom": 36
+              }
+            },
+            {
+              "text": "悟空",
+              "bounds": {
+                "left": 43,
+                "top": 73,
+                "right": 194,
+                "bottom": 111
+              }
+            },
+            {
+              "text": "Android · 0.4",
+              "bounds": {
+                "left": 775,
+                "top": 82,
+                "right": 949,
+                "bottom": 100
+              }
+            },
+            {
+              "text": "任务",
+              "bounds": {
+                "left": 112,
+                "top": 140,
+                "right": 194,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "历史",
+              "bounds": {
+                "left": 343,
+                "top": 140,
+                "right": 425,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "设置",
+              "bounds": {
+                "left": 572,
+                "top": 140,
+                "right": 656,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "日志",
+              "bounds": {
+                "left": 806,
+                "top": 140,
+                "right": 885,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "把这件事，",
+              "bounds": {
+                "left": 47,
+                "top": 208,
+                "right": 412,
+                "bottom": 252
+              }
+            },
+            {
+              "text": "交给悟空。",
+              "bounds": {
+                "left": 50,
+                "top": 263,
+                "right": 403,
+                "bottom": 307
+              }
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "bounds": {
+                "left": 54,
+                "top": 320,
+                "right": 737,
+                "bottom": 341
+              }
+            },
+            {
+              "text": "执行引擎已连接",
+              "bounds": {
+                "left": 51,
+                "top": 371,
+                "right": 295,
+                "bottom": 390
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 52,
+                "top": 430,
+                "right": 267,
+                "bottom": 450
+              }
+            },
+            {
+              "text": "手机内激活",
+              "bounds": {
+                "left": 411,
+                "top": 481,
+                "right": 588,
+                "bottom": 504
+              }
+            },
+            {
+              "text": "从哪里开始(可选)",
+              "bounds": {
+                "left": 54,
+                "top": 541,
+                "right": 341,
+                "bottom": 562
+              }
+            },
+            {
+              "text": "桌面·整机操作",
+              "bounds": {
+                "left": 70,
+                "top": 588,
+                "right": 345,
+                "bottom": 611
+              }
+            },
+            {
+              "text": "你想做什么",
+              "bounds": {
+                "left": 55,
+                "top": 650,
+                "right": 227,
+                "bottom": 670
+              }
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "bounds": {
+                "left": 84,
+                "top": 695,
+                "right": 738,
+                "bottom": 714
+              }
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "bounds": {
+                "left": 56,
+                "top": 783,
+                "right": 903,
+                "bottom": 800
+              }
+            },
+            {
+              "text": "开始任务",
+              "bounds": {
+                "left": 425,
+                "top": 829,
+                "right": 571,
+                "bottom": 851
+              }
+            },
+            {
+              "text": "停止当前任务",
+              "bounds": {
+                "left": 395,
+                "top": 891,
+                "right": 602,
+                "bottom": 911
+              }
+            },
+            {
+              "text": "执行记录",
+              "bounds": {
+                "left": 51,
+                "top": 955,
+                "right": 235,
+                "bottom": 977
+              }
+            }
+          ]
+        },
+        {
+          "ms": 750.0778,
+          "matched": 20,
+          "lines": [
+            {
+              "text": "00:05 ",
+              "bounds": {
+                "left": 40,
+                "top": 15,
+                "right": 199,
+                "bottom": 37
+              }
+            },
+            {
+              "text": "志》",
+              "bounds": {
+                "left": 738,
+                "top": 16,
+                "right": 849,
+                "bottom": 36
+              }
+            },
+            {
+              "text": "悟空",
+              "bounds": {
+                "left": 43,
+                "top": 73,
+                "right": 194,
+                "bottom": 111
+              }
+            },
+            {
+              "text": "Android · 0.4",
+              "bounds": {
+                "left": 775,
+                "top": 82,
+                "right": 949,
+                "bottom": 100
+              }
+            },
+            {
+              "text": "任务",
+              "bounds": {
+                "left": 112,
+                "top": 140,
+                "right": 194,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "历史",
+              "bounds": {
+                "left": 343,
+                "top": 140,
+                "right": 425,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "设置",
+              "bounds": {
+                "left": 572,
+                "top": 140,
+                "right": 656,
+                "bottom": 162
+              }
+            },
+            {
+              "text": "日志",
+              "bounds": {
+                "left": 806,
+                "top": 140,
+                "right": 885,
+                "bottom": 164
+              }
+            },
+            {
+              "text": "把这件事，",
+              "bounds": {
+                "left": 47,
+                "top": 208,
+                "right": 412,
+                "bottom": 252
+              }
+            },
+            {
+              "text": "交给悟空。",
+              "bounds": {
+                "left": 50,
+                "top": 263,
+                "right": 403,
+                "bottom": 307
+              }
+            },
+            {
+              "text": "说清楚目标，悟空可以跨应用帮你完成。",
+              "bounds": {
+                "left": 54,
+                "top": 320,
+                "right": 737,
+                "bottom": 341
+              }
+            },
+            {
+              "text": "执行引擎已连接",
+              "bounds": {
+                "left": 51,
+                "top": 371,
+                "right": 295,
+                "bottom": 390
+              }
+            },
+            {
+              "text": "在虚拟屏执行",
+              "bounds": {
+                "left": 52,
+                "top": 430,
+                "right": 267,
+                "bottom": 450
+              }
+            },
+            {
+              "text": "手机内激活",
+              "bounds": {
+                "left": 411,
+                "top": 481,
+                "right": 588,
+                "bottom": 504
+              }
+            },
+            {
+              "text": "从哪里开始(可选)",
+              "bounds": {
+                "left": 54,
+                "top": 541,
+                "right": 341,
+                "bottom": 562
+              }
+            },
+            {
+              "text": "桌面·整机操作",
+              "bounds": {
+                "left": 70,
+                "top": 588,
+                "right": 345,
+                "bottom": 611
+              }
+            },
+            {
+              "text": "你想做什么",
+              "bounds": {
+                "left": 55,
+                "top": 650,
+                "right": 227,
+                "bottom": 670
+              }
+            },
+            {
+              "text": "例如：搜索无线耳机，告诉我前几条结果",
+              "bounds": {
+                "left": 84,
+                "top": 695,
+                "right": 738,
+                "bottom": 714
+              }
+            },
+            {
+              "text": "普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。",
+              "bounds": {
+                "left": 56,
+                "top": 783,
+                "right": 903,
+                "bottom": 800
+              }
+            },
+            {
+              "text": "开始任务",
+              "bounds": {
+                "left": 425,
+                "top": 829,
+                "right": 571,
+                "bottom": 851
+              }
+            },
+            {
+              "text": "停止当前任务",
+              "bounds": {
+                "left": 395,
+                "top": 891,
+                "right": 602,
+                "bottom": 911
+              }
+            },
+            {
+              "text": "执行记录",
+              "bounds": {
+                "left": 51,
+                "top": 955,
+                "right": 235,
+                "bottom": 977
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

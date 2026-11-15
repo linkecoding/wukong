@@ -1,0 +1,56 @@
+# 悟空 shell 执行架构
+
+悟空 0.4 通过 ADB 启动独立 app_process，不再使用或回退到用户授权的无障碍服务。Android App 与 shell 进程之间有清晰的权限和数据边界。
+
+## 两个进程
+
+普通 App 运行 `MainActivity`、`TaskRuntime`、`ChatModel` 和 `WukongService`。其中 `WukongService` 是普通前台 Service，只展示应用悬浮窗和带停止动作的通知，不能读屏或注入输入。模型 API Key 保留在 App 中。
+
+shell-runtime APK 包含 dex 入口 `com.wukong.shell.Main`，由 `adb shell` 设置 CLASSPATH 并调用 app_process。启动入口要求实际 UID 为 2000，App 自己运行该类不会获得权限。运行时通过反射创建 UiAutomationConnection 和 UiAutomation，使用独立事件线程；不向系统注册 AccessibilityService。隐藏 API 的兼容性需要真机验证。
+
+`agent-core` 仍是纯 Kotlin：模型提出动作、引擎校验、等待本机确认、驱动执行、读取新界面。`AndroidDriver` 现在只调用 `ShellSession`，所有设备观察与变更都在 shell 中执行。
+
+## 激活与通道
+
+主路径由悟空 APK 内置的无线 ADB 客户端完成。`AdbIdentity` 生成 RSA 身份和自签名证书，使用 Android Keystore 的 AES-GCM 密钥加密保存；`WirelessDiscovery` 通过系统 NSD 发现本机配对和连接端口，实际连接只走 `127.0.0.1`。`WirelessPairingService` 提供通知内的配对码输入，让系统配对窗口保持打开。配对码不保存、不记录。
+
+`LocalAdb` 完成 SPAKE2 / TLS 配对并连接系统 adbd，通过 ADB sync 上传内置的 shell APK，核对 SHA-256，生成新的会话令牌，以 `nohup setsid app_process` 启动引擎。启动后关闭 ADB 连接，引擎独立运行。重新激活先核对旧 PID 的命令行再结束旧引擎；任务运行中禁止激活。
+
+内置传输库源码在 `third_party/libadb/`，修复快速本机 OKAY 先于等待导致的流打开竞态，并为打开流和配对增加超时。库和 native TLS / SPAKE2 组件全部编译或打包进同一 APK。
+
+开发脚本 `activate-shell.py` 保留为 USB 调试路径。它安装 App、上传 shell APK，并调用 `BootstrapProvider.prepare`；该外部入口同时检查 DUMP 权限和 Binder 调用 UID 2000。内置激活在悟空自己的进程中直接生成令牌。
+
+内置激活通过 ADB sync、开发脚本通过标准输入，将令牌写入 shell 专用临时文件，权限为 0600；app_process 读取后立即删除。令牌不出现在启动参数、脚本输出、模型消息或任务记录中。
+
+运行时绑定 IPv4 回环端口 43219，以一行 JSON 请求对应一行 JSON 响应。先鉴权再分发，限定请求与响应大小、连接超时、线程数和等待队列。没有外部网络监听，没有任意命令工具。激活脚本短暂建立 ADB 端口转发以检查状态，检查后移除。
+
+## 当前内部协议
+
+| 方法 | 行为 |
+| --- | --- |
+| `status` | 返回引擎、实际 UID 与协议版本 |
+| `beginTask` | 创建唯一任务会话 |
+| `observe` | 返回当前界面包名、指纹和可操作节点 |
+| `execute` | 校验会话、包名、指纹和动作后执行 |
+| `cancelTask` | 标记会话取消，后续设备动作被拒绝 |
+| `finishTask` | 释放会话状态 |
+
+执行接口是受信 App 的内部设备接口，不是可直接向外部 Agent 开放的审批网关。当前审批在 App 的任务引擎完成；外部接入必须继续走该审批层。
+
+## 设备动作
+
+读屏优先选择获得焦点的应用窗口，避免悬浮控制条成为读屏目标。节点 ID 只在当前快照有效，快照指纹包含包名、节点属性、文字、坐标和能力。遍历与有效节点都有上限。
+
+点击使用 shell UiAutomation 注入触摸；中文输入使用目标节点的 SET_TEXT；滚动使用节点滚动动作；返回和桌面通过按键事件注入。启动应用先解析 launcher 组件，再用参数数组启动该组件，不把包名拼进可执行 shell 文本。
+
+触摸前暂时收起 App 悬浮条，避免控制条拦截目标坐标，动作后恢复；前台通知始终保留停止入口。审批后 shell 再次核对快照，界面变化则拒绝，不做隐式重试。
+
+## 任务与取消
+
+默认整机操作，起始应用不限制后续范围。单任务最多 30 步，普通动作自动执行，敏感动作需一次性确认，审批最多等待两分钟。模型不能调用本机确认入口。
+
+停止同时设置本地取消标记、中断工作线程、断开模型请求，并通过独立连接通知 shell。shell 在锁内检查任务状态后操作；已提交给 Android 的单次输入无法撤销。App 进程死亡不自动重放任务。
+
+shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 UID 下执行命令。重启后重新激活。会话在创建时绑定主屏或指定虚拟屏 ID；读屏、截图和输入都按该 ID 路由。0.4 使用内部协议版本 2，旧引擎需重新激活。
+
+无线 ADB 的 TLS 使用系统 adbd 自签名证书，按 ADB 配对协议处理，不能复用到模型 HTTPS 请求。该传输只允许手机回环地址；模型网络请求仍使用系统标准证书校验。

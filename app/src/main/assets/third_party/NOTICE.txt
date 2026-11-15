@@ -1,0 +1,42 @@
+Wukong bundled wireless ADB components
+
+LibADB Android 3.1.1 with Wukong local patches
+Copyright 2021 Muntashir Al-Islam.
+https://github.com/MuntashirAkon/libadb-android/tree/3.1.1
+Local stream-open race, timeout and pairing-log fixes are documented in
+third_party/libadb/README.wukong.md; patched sources are included in that directory.
+Used under its Apache-2.0 option; additional upstream file notices apply.
+
+SPAKE2 Android 2.2.1
+https://github.com/MuntashirAkon/spake2-java/tree/2.2.1
+LGPL-3.0. Full corresponding source, including the native submodule and Wukong 16 KB build configuration, is included in spake2-2.2.1-source.zip.
+See spake2-LGPL-3.0.txt, GPL-3.0.txt and the source archive's file notices.
+This library may be modified and relinked. Reverse engineering to debug modifications
+to this library is not restricted by Wukong. Rebuild instructions are in
+docs/third-party.md in the Wukong source project.
+
+Conscrypt Android 2.9.0
+https://github.com/google/conscrypt/tree/2.9.0
+Apache-2.0 and bundled upstream notices; see conscrypt-LICENSE.txt.
+
+Bouncy Castle 1.81
+https://github.com/bcgit/bc-java/tree/r1rv81
+MIT-style license; see bouncycastle-LICENSE.html.
+
+These are libraries compiled or packaged inside Wukong, not separately installed apps.
+
+PaddleOCR Android SDK and PP-OCRv6_tiny_det / PP-OCRv6_tiny_rec ONNX models
+Copyright PaddlePaddle Authors. Apache-2.0.
+https://github.com/PaddlePaddle/PaddleOCR/tree/dab3fe35379033fdcb2d0e9572fac0b36c9a9ebf
+https://huggingface.co/PaddlePaddle/PP-OCRv6_tiny_det
+https://huggingface.co/PaddlePaddle/PP-OCRv6_tiny_rec
+See paddleocr-Apache-2.0.txt. Model files and dictionaries are bundled locally.
+
+ONNX Runtime Android 1.21.1
+Copyright Microsoft Corporation. MIT; see onnxruntime-LICENSE.txt and
+onnxruntime-ThirdPartyNotices.txt for bundled dependency notices.
+https://github.com/microsoft/onnxruntime/tree/v1.21.1
+
+OpenCV Android 4.14.0
+Apache-2.0; see opencv-LICENSE.txt and opencv-ThirdPartyNotices.txt.
+https://github.com/opencv/opencv/tree/4.14.0

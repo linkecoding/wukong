@@ -1,0 +1,37 @@
+[
+  {
+    "engine": "baseline",
+    "apkBytes": 2344425,
+    "apkIncrementBytes": 0,
+    "modelBytes": 0,
+    "arm64NativeBytes": 0
+  },
+  {
+    "engine": "mlkit",
+    "apkBytes": 22719644,
+    "apkIncrementBytes": 20375219,
+    "modelBytes": 2490310,
+    "arm64NativeBytes": 11064544
+  },
+  {
+    "engine": "v5-mobile",
+    "apkBytes": 70833818,
+    "apkIncrementBytes": 68489393,
+    "modelBytes": 21510548,
+    "arm64NativeBytes": 43959192
+  },
+  {
+    "engine": "v6-tiny",
+    "apkBytes": 57753546,
+    "apkIncrementBytes": 55409121,
+    "modelBytes": 6299683,
+    "arm64NativeBytes": 43959192
+  },
+  {
+    "engine": "v6-small",
+    "apkBytes": 78494546,
+    "apkIncrementBytes": 76150121,
+    "modelBytes": 31191354,
+    "arm64NativeBytes": 43959192
+  }
+]

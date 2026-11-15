@@ -1,0 +1,35 @@
+# Local tooling, IDE state and build caches
+/.tooling
+.gradle/
+.kotlin/
+.idea/
+*.iml
+**/build/
+**/.cxx/
+**/.externalNativeBuild/
+local.properties
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Generated packages and local diagnostics
+*.apk
+*.aab
+*.ap_
+*.hprof
+*.trace
+*.log
+
+# Credentials and plaintext signing material (encrypted *.gpg files may be tracked)
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.key
+adbkey
+adbkey.pub
+keystore.properties
+signing.properties
+.env
+.env.*
+!.env.example

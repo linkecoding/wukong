@@ -1,0 +1,30 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <queries>
+        <intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent>
+    </queries>
+    <application android:label="@string/app_name" android:theme="@style/Theme.Wukong" android:icon="@drawable/ic_wukong"
+        android:allowBackup="false" android:fullBackupContent="false" android:dataExtractionRules="@xml/data_extraction_rules"
+        android:usesCleartextTraffic="false" android:supportsRtl="true">
+        <activity android:name=".MainActivity" android:exported="true" android:windowSoftInputMode="adjustResize" android:configChanges="density|screenSize|smallestScreenSize|orientation|screenLayout|keyboardHidden|keyboard">
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+        </activity>
+        <activity android:name=".WirelessSetupActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".VirtualHomeActivity" android:exported="true" android:resizeableActivity="true" android:taskAffinity="com.wukong.virtual" android:configChanges="density|screenSize|smallestScreenSize|orientation|screenLayout|keyboardHidden|keyboard" />
+        <service android:name=".VirtualScreenService" android:exported="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User initiated virtual display preview and manual takeover controls" />
+        </service>
+        <service android:name=".WirelessPairingService" android:exported="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User initiated local wireless debugging pairing with inline notification input" />
+        </service>
+        <provider android:name=".BootstrapProvider" android:authorities="com.wukong.phone.bootstrap" android:exported="true" android:permission="android.permission.DUMP" />
+        <service android:name=".WukongService" android:exported="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User initiated phone automation with visible approval and stop controls" />
+        </service>
+    </application>
+</manifest>

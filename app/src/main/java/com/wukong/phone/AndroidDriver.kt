@@ -1,0 +1,73 @@
+package com.wukong.phone
+
+import com.wukong.core.*
+import org.json.JSONObject
+import org.json.JSONArray
+import android.graphics.BitmapFactory
+import android.util.Base64
+
+/** Observations and mutations are performed by the separate UID 2000 app_process. */
+class AndroidDriver(private val session: ShellSession, private val cancellation: Cancellation = Cancellation(), private val trace: RunLog? = null) : DeviceDriver {
+    @Volatile private var visual: VisualFrame? = null
+    @Volatile private var visualFingerprint: String? = null
+    fun invalidateVisual() { visual = null; visualFingerprint = null }
+    override fun observe(): Screen {
+        cancellation.check()
+        val controls = WukongService.instance
+        val started = android.os.SystemClock.elapsedRealtime()
+        controls?.onMain { controls.hideControls() }
+        try {
+            val screen = (session.request("observe") as JSONObject).toScreen()
+            if (screen.fingerprint != visualFingerprint) { visual = null; visualFingerprint = null }
+            return screen.copy(visual = visual).also {
+                trace?.record("device_observation", JSONObject().put("package", it.packageName).put("nodeCount", it.nodes.size).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
+            }
+        } catch (e: Exception) {
+            trace?.record("observation_error", JSONObject().put("message", e.message).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
+            throw e
+        }
+        finally { controls?.onMain { if (!TaskRuntime.stopRequested) controls.showControls() } }
+    }
+    override fun execute(action: Action, expected: Screen): String {
+        cancellation.check()
+        if (action is Action.Wait) {
+            Thread.sleep(action.milliseconds)
+            trace?.record("device_result", JSONObject().put("action", JSONObject().put("kind", "wait").put("milliseconds", action.milliseconds)).put("result", "等待完成"))
+            return "等待完成"
+        }
+        val started = android.os.SystemClock.elapsedRealtime()
+        trace?.record("device_action", JSONObject().put("action", action.toJson()).put("package", expected.packageName))
+        val controls = WukongService.instance
+        controls?.onMain { controls.hideControls() }
+        try {
+            cancellation.check()
+            if (action is Action.Screenshot || action is Action.Ocr) {
+                val packet = session.request("capture", JSONObject().put("package", expected.packageName).put("fingerprint", expected.fingerprint)) as JSONObject
+                val jpeg = packet.getString("jpeg")
+                val bytes = Base64.decode(jpeg, Base64.NO_WRAP)
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: error("截图解码失败")
+                val lines = ScreenOcr.recognize(session.appContext, bitmap)
+                cancellation.check()
+                val frame = VisualFrame(packet.getString("captureId"), packet.getInt("width"), packet.getInt("height"), lines, if (action is Action.Screenshot) jpeg else null)
+                visual = frame; visualFingerprint = expected.fingerprint
+                val result = JSONObject().put("captureId", frame.id).put("coordinateSystem", "normalized_0_1000")
+                    .put("width", frame.width).put("height", frame.height).put("lines", JSONArray(lines.map { JSONObject().put("text", it.text).put("bounds", it.bounds.toJson()) }))
+                trace?.record("device_result", JSONObject().put("action", action.toJson()).put("captureId", frame.id).put("lineCount", lines.size).put("ocrEngine", ScreenOcr.ENGINE)
+                    .put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
+                return result.toString()
+            }
+            val result = session.request("execute", JSONObject().put("action", action.toJson())
+                .put("package", expected.packageName).put("fingerprint", expected.fingerprint)) as String
+            visual = null; visualFingerprint = null
+            Thread.sleep(650)
+            trace?.record("device_result", JSONObject().put("action", action.toJson()).put("result", result).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
+            return result
+        } catch (e: Exception) {
+            if (e.message?.startsWith("截图已过期") == true) invalidateVisual()
+            trace?.record("device_error", JSONObject().put("action", action.toJson()).put("message", e.message).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
+            throw e
+        } finally { controls?.onMain { if (!TaskRuntime.stopRequested) controls.showControls() } }
+    }
+}
+
+fun Bounds.toJson() = JSONObject().put("left", left).put("top", top).put("right", right).put("bottom", bottom)
