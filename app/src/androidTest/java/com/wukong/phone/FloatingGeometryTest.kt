@@ -41,6 +41,12 @@ class FloatingGeometryTest {
         ui { val p=panel();val lp=p.layoutParams as WindowManager.LayoutParams;value=listOf(p.width,p.previewHeight,lp.x,lp.y) }
         return value
     }
+    private fun assertEvenFooter() {
+        val home=panel().findViewById<View>(R.id.virtual_preview_home);val grip=panel().findViewById<View>(R.id.virtual_preview_resize)
+        val back=(home.parent as android.view.ViewGroup).getChildAt(0)
+        assertTrue("Manual footer uses equal-width targets",kotlin.math.abs(back.width-home.width)<=1&&kotlin.math.abs(home.width-grip.width)<=1)
+        assertTrue("Manual icons have equal center spacing",kotlin.math.abs((home.left+home.width/2-back.left-back.width/2)-(grip.left+grip.width/2-home.left-home.width/2))<=1)
+    }
     @Test fun resizeMovePersistAndHomeReturnsFromAnotherPageInTheLauncherTask() {
         assumeTrue(!TaskRuntime.active);assertTrue(Settings.canDrawOverlays(context))
         val prefs=context.getSharedPreferences("floating_preview",0)
@@ -103,7 +109,9 @@ class FloatingGeometryTest {
                 VirtualScreenState.control(true);await { VirtualScreenState.manual }
             }
             ui {
-                val p=panel();val bitmap=android.graphics.Bitmap.createBitmap(p.width,p.height,android.graphics.Bitmap.Config.ARGB_8888)
+                val p=panel()
+                assertEvenFooter()
+                val bitmap=android.graphics.Bitmap.createBitmap(p.width,p.height,android.graphics.Bitmap.Config.ARGB_8888)
                 p.draw(android.graphics.Canvas(bitmap))
                 java.io.File(context.filesDir,"floating-preview-resized.png").outputStream().use { bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,it) };bitmap.recycle()
                 // Resize beyond both bounds: controls must stay visible and inside the display.
@@ -114,10 +122,11 @@ class FloatingGeometryTest {
                 val p=panel();assertTrue(p.width<=context.resources.displayMetrics.widthPixels)
                 assertTrue(p.height<=context.resources.displayMetrics.heightPixels)
                 assertTrue(p.findViewById<View>(R.id.virtual_preview_home).isShown)
+                assertEvenFooter()
                 drag(p.findViewById(R.id.virtual_preview_resize),-5000f,-5000f)
             }
             i.waitForIdleSync()
-            ui { assertEquals(WukongUi.dp(context,208),panel().width);assertTrue(panel().findViewById<View>(R.id.virtual_preview_home).isShown) }
+            ui { assertEquals(WukongUi.dp(context,208),panel().width);assertTrue(panel().findViewById<View>(R.id.virtual_preview_home).isShown);assertEvenFooter() }
         } finally {
             ui { VirtualScreenState.stop(context);main.finish() }
             VirtualScreenState.enabled(context,enabled)

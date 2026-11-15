@@ -208,7 +208,7 @@ abstract class WorkspaceActivity : LocalizedActivity() {
         while(drawerView.headerCount>0)drawerView.removeHeaderView(drawerView.getHeaderView(0))
         drawerView.addHeaderView(column().apply {
             setPadding(dp(24),dp(40),dp(24),dp(24))
-            addView(text("Wukong",24f,true)); addView(text(getString(R.string.chat_personal_agent),13f,muted=true))
+            addView(text(getString(R.string.app_name),24f,true).apply { id=R.id.drawer_brand_name }); addView(text(getString(R.string.chat_personal_agent),13f,muted=true))
         })
         val recent=conversations.read().filter { it.turns.isNotEmpty() }
         drawerView.menu.add(0,R.id.chat_new,0,R.string.chat_new).setIcon(R.drawable.ic_compose)
@@ -311,7 +311,7 @@ abstract class WorkspaceActivity : LocalizedActivity() {
         appHeader.removeAllViews(); appHeader.setPadding(dp(12),dp(8),dp(12),dp(8))
         appHeader.addView(iconButton(R.drawable.ic_menu,R.string.chat_menu) { showDrawer() }.apply { id=R.id.chat_menu },LinearLayout.LayoutParams(dp(48),dp(48)))
         appHeader.addView(column().apply {
-            addView(text("Wukong",19f,true)); addView(text(getString(R.string.chat_personal_agent),11f,muted=true))
+            addView(text(getString(R.string.app_name),19f,true).apply { id=R.id.brand_name }); addView(text(getString(R.string.chat_personal_agent),11f,muted=true))
         },LinearLayout.LayoutParams(0,-2,1f).apply { marginStart=dp(8) })
         appHeader.addView(iconButton(R.drawable.ic_compose,R.string.chat_new) { newConversation() }.apply { id=R.id.chat_new },LinearLayout.LayoutParams(dp(48),dp(48)))
     }

@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 
 /** Observations and mutations are performed by the separate UID 2000 app_process. */
-class AndroidDriver(private val session: ShellSession, private val cancellation: Cancellation = Cancellation(), private val trace: RunLog? = null, private val control: ExecutionControl? = null) : DeviceDriver {
+class AndroidDriver(private val session: ShellSession, private val cancellation: Cancellation = Cancellation(), private val trace: RunLog? = null, private val control: ExecutionControl? = null, private val taskEvidence:TaskEvidence?=null) : DeviceDriver {
     @Volatile private var visual: VisualFrame? = null
     @Volatile private var visualFingerprint: String? = null
     fun invalidateVisual() { visual = null; visualFingerprint = null }
@@ -28,6 +28,7 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
             // Shell reads TYPE_APPLICATION windows; overlays need no UI-thread hide/show for node reads.
             val screen = settler.observe(::readNow, cancellation::check)
             if (screen.fingerprint != visualFingerprint) { visual = null; visualFingerprint = null }
+            taskEvidence?.read(screen)
             return screen.copy(visual = visual).also {
                 trace?.record("device_observation", JSONObject().put("package", it.packageName).put("nodeCount", it.nodes.size)
                     .put("durationMs", android.os.SystemClock.elapsedRealtime() - started)
@@ -65,7 +66,11 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
             return "等待完成"
         }
         val started = android.os.SystemClock.elapsedRealtime()
-        trace?.record("device_action", JSONObject().put("action", action.toJson()).put("package", expected.packageName))
+        taskEvidence?.read(expected)
+        trace?.record("device_action", JSONObject().put("action", action.toJson()).put("package", expected.packageName).apply {
+            val targetId=when(action) { is Action.Tap->action.nodeId;is Action.Input->action.nodeId;is Action.Scroll->action.nodeId;else->null }
+            expected.nodes.firstOrNull { it.id==targetId }?.let { put("target",it.withContextJson(expected)) }
+        })
         val controls = WukongService.instance
         controls?.onMain { controls.hideControls() }
         try {
@@ -85,8 +90,12 @@ class AndroidDriver(private val session: ShellSession, private val cancellation:
                     .put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
                 return result.toString()
             }
-            val result = session.request("execute", JSONObject().put("action", action.toJson())
-                .put("package", expected.packageName).put("fingerprint", expected.fingerprint)) as String
+            val request=JSONObject().put("action",action.toJson()).put("package",expected.packageName).put("fingerprint",expected.fingerprint)
+            if(expected.interactionFingerprint.isNotBlank()&&!SensitiveActions.requiresApproval(action,expected)&&
+                action !is Action.TapAt&&action !is Action.LongPress&&action !is Action.Swipe)
+                request.put("interactionFingerprint",expected.interactionFingerprint)
+            val result = session.request("execute",request) as String
+            taskEvidence?.accepted(action,expected)
             visual = null; visualFingerprint = null
             trace?.record("device_result", JSONObject().put("action", action.toJson()).put("result", result).put("durationMs", android.os.SystemClock.elapsedRealtime() - started))
             return result

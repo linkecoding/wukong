@@ -53,7 +53,7 @@ class ShellSession(context: Context, val displayId: Int = 0) : AutoCloseable {
     override fun close() { client.request("finishTask", JSONObject().put("taskId", id)) }
 }
 
-fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fingerprint"), getJSONArray("nodes").toNodes(), uiRevision = optLong("uiRevision", 0), uiQuietMillis = optLong("uiQuietMs", Long.MAX_VALUE), uiEvents = optBoolean("uiEvents"), truncated = optBoolean("truncated"))
+fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fingerprint"), getJSONArray("nodes").toNodes(), uiRevision = optLong("uiRevision", 0), uiQuietMillis = optLong("uiQuietMs", Long.MAX_VALUE), uiEvents = optBoolean("uiEvents"), truncated = optBoolean("truncated"), interactionFingerprint = optString("interactionFingerprint"))
 private fun JSONArray.toNodes() = (0 until length()).map { index -> getJSONObject(index).let {
     UiNode(it.getInt("id"), it.getString("text"), it.getBoolean("editable"), it.getBoolean("clickable"), it.getBoolean("scrollable"), it.getBoolean("sensitive"), it.optJSONObject("bounds")?.toBounds(),
         it.optString("resourceId"), it.optString("className"), if (it.isNull("parentId")) null else it.getInt("parentId"),

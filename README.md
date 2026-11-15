@@ -95,7 +95,7 @@ The interface uses cream, moss and pale apricot. The conversation is home; a nat
 - [Architecture](docs/architecture.md) · [Agent integration plan](docs/agent-integration.md)
 - [Visual tools and virtual display](docs/visual-virtual.md)
 - [On-device OCR comparison](docs/ocr-v6-comparison.md) · [Native trimming and 16 KB validation](docs/ocr-native-trimming.md)
-- [Autonomy and logs](docs/autonomy-logs.md) · [Validation notes](docs/validation.md)
+- [Autonomy and logs](docs/autonomy-logs.md) · [Validation notes](docs/validation.md) · [Real-app validation](docs/real-world-validation.md)
 - [Third-party licenses and rebuild instructions](docs/third-party.md)
 - [Brand assets and introduction copy](docs/brand/README.md)
 

@@ -82,7 +82,8 @@ object TaskRuntime {
         val turnId = try { threadId?.let { conversations.begin(it, taskGoal.trim(), trace?.name) } } catch (error: Exception) { busy.set(false); throw error }
         conversationId = threadId; conversationTurnId = turnId
         val startedAt = android.os.SystemClock.elapsedRealtime()
-        val model = ChatModel(settings, apps, trace, conversationContext = priorContext)
+        val taskEvidence=TaskEvidence()
+        val model = ChatModel(settings, apps, trace, conversationContext = priorContext,taskEvidence=taskEvidence)
         goal = taskGoal.trim(); appLabel = "整机任务"
         cancellation = token; client = model; stopRequested = false
         synchronized(timeline) { timeline.clear() }
@@ -103,7 +104,7 @@ object TaskRuntime {
                     for (attempt in 0 until 40) { token.check(); if (WukongService.instance != null) break; Thread.sleep(50) }
                     val controls = WukongService.instance ?: error("无法启动任务控制条")
                     controls.onMain { controls.showControls() }
-                    val driver = AndroidDriver(session, token, trace, control)
+                    val driver = AndroidDriver(session, token, trace, control,taskEvidence)
                     activeDriver = driver
                     fun observeStartup(): Screen = try { driver.observe() } catch (error: IllegalStateException) {
                         // An empty virtual display has no snapshot to authorize normal Home execution.
@@ -119,8 +120,16 @@ object TaskRuntime {
                     val followUp = priorContext != null && JSONArray(priorContext).length() > 0
                     if (control.epoch == 0L && (!followUp || initialPackage != null)) {
                         try {
-                            val startScreen = observeStartup()
-                            if (control.epoch == 0L) driver.execute(initialPackage?.let { Action.Launch(it) } ?: Action.Home, startScreen)
+                            for(attempt in 0 until 6) {
+                                token.check();control.awaitAgent(token)
+                                val startScreen=observeStartup()
+                                if(control.epoch!=0L)break
+                                try { driver.execute(initialPackage?.let { Action.Launch(it) } ?: Action.Home,startScreen);break }
+                                catch(error:IllegalStateException) {
+                                    if(error.message?.startsWith("界面已更新，本次操作未执行")!=true||attempt==5)throw error
+                                    trace?.record("startup_navigation_rejected",JSONObject().put("attempt",attempt+1).put("reason","snapshot_changed_before_injection"))
+                                }
+                            }
                         } catch (error: IllegalStateException) { if (control.epoch == 0L) throw error }
                     }
                     var ready = false
@@ -141,7 +150,7 @@ object TaskRuntime {
                         try { request.answer.get(120, TimeUnit.SECONDS).also { trace?.record("approval_result", JSONObject().put("allowed", it)) } }
                         catch (_: java.util.concurrent.TimeoutException) { false }
                         finally { pending = null; notifyChanged() }
-                    }, control = control, completionVerifier = CompletionVerifier(model::verifyCompletion), scriptRunner = scripts).run(goal, token) { value ->
+                    }, maxSteps=50,control = control, completionVerifier = CompletionVerifier(model::verifyCompletion), scriptRunner = scripts).run(goal, token) { value ->
                         trace?.record("agent_event", JSONObject().put("step", value.step).put("phase", value.phase.name).put("message", value.message))
                         publish(value)
                     }

@@ -13,3 +13,6 @@ class ScriptApprovalRejected : IllegalStateException("已拒绝操作，脚本�
 
 /** Structured diagnostic JSON is also readable by the planner after a partial cell. */
 class ScriptCallFailure(val diagnostic: String, cause: Exception) : IllegalStateException(diagnostic, cause)
+
+/** Explicit proof that execution did not reach a device injection. */
+class ActionNotExecuted(message:String,val staleSnapshot:Boolean=false,cause:Exception?=null):IllegalStateException(message,cause)

@@ -6,10 +6,11 @@ data class NodeSelector(
     val resourceId: String? = null, val className: String? = null,
     val editable: Boolean? = null, val clickable: Boolean? = null, val scrollable: Boolean? = null,
     val enabled: Boolean? = null, val checked: Boolean? = null, val selected: Boolean? = null,
-    val ancestorResourceId: String? = null,
+    val ancestorResourceId: String? = null, val nearText: String? = null,
 ) {
     fun validate() {
-        require(listOf(textContains, textEquals, resourceId, className, ancestorResourceId).all { it == null || it.isNotBlank() && it.length <= 300 }) { "查询文字须为 1–300 字" }
+        require(listOf(textContains, textEquals, resourceId, className, ancestorResourceId,nearText).all { it == null || it.isNotBlank() && it.length <= 300 }) { "查询文字须为 1–300 字" }
+        require(nearText==null||textContains!=null||textEquals!=null||resourceId!=null||className!=null) { "nearText requires a target text/resourceId/class selector" }
         require(textContains == null || textEquals == null) { "文字包含和精确匹配只能选择一个" }
     }
     fun matches(node: UiNode, nodes: Map<Int, UiNode>): Boolean {
@@ -53,7 +54,23 @@ object Conditions {
     fun find(screen: Screen, selector: NodeSelector): List<UiNode> {
         selector.validate()
         val nodes = screen.nodes.associateBy { it.id }
-        return screen.nodes.filter { selector.matches(it, nodes) }
+        val candidates=screen.nodes.filter { selector.matches(it,nodes) }
+        val anchor=selector.nearText ?: return candidates
+        fun lineage(node:UiNode):List<Int> {
+            val ids=mutableListOf<Int>();var current:UiNode?=node
+            while(current!=null&&current.id !in ids) {
+                if(current.scrollable||Regex("ScrollView|RecyclerView|ViewPager|GridView|ListView").containsMatchIn(current.className))break
+                ids+=current.id;current=nodes[current.parentId]
+            };return ids
+        }
+        val anchors=screen.nodes.filter { it.text.contains(anchor,ignoreCase=true) }.map(::lineage)
+        val scored=candidates.mapNotNull { target ->
+            val path=lineage(target)
+            val score=anchors.mapNotNull { other -> path.mapIndexedNotNull { index,id -> other.indexOf(id).takeIf { it>=0 }?.let { it+index } }.minOrNull() }.minOrNull()
+            score?.let { target to it }
+        }
+        val closest=scored.minOfOrNull { it.second } ?: return emptyList()
+        return scored.filter { it.second==closest }.map { it.first }
     }
     fun evaluate(screen: Screen, conditions: List<ScreenCondition>, matchAll: Boolean): ConditionReport {
         validate(conditions)
@@ -123,3 +140,26 @@ class Inspector(
 enum class TaskOutcome { SUCCESS, INCOMPLETE }
 data class CompletionCheck(val verified: Boolean, val detail: String)
 fun interface CompletionVerifier { fun verify(goal: String, summary: String, screen: Screen, history: List<Turn>): CompletionCheck }
+
+/** Resolve a visible label to its nearest clickable container, never to an arbitrary ancestor. */
+object TapTargets {
+    fun find(screen:Screen,selector:NodeSelector):List<UiNode> {
+        val byId=screen.nodes.associateBy { it.id }
+        return Conditions.find(screen,selector).mapNotNull { label ->
+            if(label.clickable||!label.enabled)return@mapNotNull label
+            var parent=label.parentId;val visited=mutableSetOf<Int>();var target:UiNode?=null
+            while(parent!=null&&visited.add(parent)) {
+                val node=byId[parent] ?: break
+                val box=node.bounds;val child=label.bounds
+                if(node.scrollable||Regex("ScrollView|RecyclerView|ViewPager|GridView|ListView").containsMatchIn(node.className))break
+                if(node.clickable) {
+                    if(box!=null&&child!=null&&box.contains((child.left+child.right)/2,(child.top+child.bottom)/2))target=node
+                    break
+                }
+                if(node.resourceId==selector.ancestorResourceId)break
+                parent=node.parentId
+            }
+            target
+        }.distinctBy { it.id }
+    }
+}

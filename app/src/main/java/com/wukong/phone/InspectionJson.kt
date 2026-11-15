@@ -4,27 +4,37 @@ import com.wukong.core.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-internal fun UiNode.toJson() = JSONObject().put("id", id).put("text", text).apply { if (editable && rawText != null) put("rawText", rawText) }.put("resourceId", resourceId).put("className", className)
+internal fun UiNode.toJson() = JSONObject().put("id", id).put("text", text).apply { if (rawText != null) put("rawText", rawText) }.put("resourceId", resourceId).put("className", className)
     .put("parentId", parentId ?: JSONObject.NULL).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable)
     .put("enabled", enabled).put("checked", checked ?: JSONObject.NULL).put("selected", selected).put("bounds", bounds?.toJson() ?: JSONObject.NULL)
+
+internal fun UiNode.withContextJson(screen:Screen)=toJson().also { json ->
+    if(clickable&&text.isBlank()) {
+        var level=listOf(id);val labels=mutableListOf<String>()
+        repeat(3) {
+            val children=screen.nodes.filter { it.parentId in level };labels+=children.map { it.text }.filter { it.isNotBlank() };level=children.filter { !it.clickable }.map { it.id }
+        }
+        if(labels.isNotEmpty())json.put("childLabels",JSONArray(labels.distinct().take(8).map { it.take(120) }))
+    }
+}
 
 internal fun JSONObject.requireKeys(vararg allowed: String) {
     val unknown = keys().asSequence().filter { it !in allowed }.toList()
     require(unknown.isEmpty()) { "Unknown argument(s): ${unknown.joinToString()}; allowed: ${allowed.joinToString()}" }
 }
 internal fun JSONObject.toSelector(): NodeSelector {
-    requireKeys("textContains", "textEquals", "resourceId", "className", "editable", "clickable", "scrollable", "enabled", "checked", "selected", "ancestorResourceId")
+    requireKeys("textContains", "textEquals", "resourceId", "className", "editable", "clickable", "scrollable", "enabled", "checked", "selected", "ancestorResourceId", "nearText")
     return NodeSelector(
     textContains = optionalString("textContains"), textEquals = optionalString("textEquals"), resourceId = optionalString("resourceId"),
     className = optionalString("className"), editable = optionalBoolean("editable"), clickable = optionalBoolean("clickable"), scrollable = optionalBoolean("scrollable"),
-    enabled = optionalBoolean("enabled"), checked = optionalBoolean("checked"), selected = optionalBoolean("selected"), ancestorResourceId = optionalString("ancestorResourceId"),
+    enabled = optionalBoolean("enabled"), checked = optionalBoolean("checked"), selected = optionalBoolean("selected"), ancestorResourceId = optionalString("ancestorResourceId"),nearText=optionalString("nearText"),
 ).also { it.validate() }
 }
 private fun JSONObject.optionalString(key: String): String? = if (!has(key)) null else get(key).let { require(it is String) { "$key must be a string" }; it }
 private fun JSONObject.optionalBoolean(key: String): Boolean? = if (!has(key)) null else get(key).let { require(it is Boolean) { "$key must be a boolean" }; it }
 internal fun NodeSelector.toJson() = JSONObject().apply {
     mapOf("textContains" to textContains, "textEquals" to textEquals, "resourceId" to resourceId, "className" to className, "editable" to editable,
-        "clickable" to clickable, "scrollable" to scrollable, "enabled" to enabled, "checked" to checked, "selected" to selected, "ancestorResourceId" to ancestorResourceId)
+        "clickable" to clickable, "scrollable" to scrollable, "enabled" to enabled, "checked" to checked, "selected" to selected, "ancestorResourceId" to ancestorResourceId,"nearText" to nearText)
         .forEach { (key, value) -> if (value != null) put(key, value) }
 }
 internal fun ScreenCondition.toJson() = JSONObject().put("state", state.name.lowercase()).put("minCount", minCount).apply {
@@ -46,20 +56,20 @@ internal fun JSONObject.toConditions(): List<ScreenCondition> {
 internal fun ConditionReport.toJson(): JSONObject = JSONObject().put("state", state.name.lowercase()).put("package", screen.packageName)
     .put("fingerprint", screen.fingerprint).put("sourceTruncated", screen.truncated).put("checks", JSONArray(checks.map {
         JSONObject().put("condition", it.condition.toJson()).put("state", it.state.name.lowercase()).put("totalMatches", it.totalMatches)
-            .put("matches", JSONArray(it.matches.map { node -> node.toJson() })).put("matchesTruncated", it.totalMatches > it.matches.size)
+            .put("matches", JSONArray(it.matches.map { node -> node.withContextJson(screen) })).put("matchesTruncated", it.totalMatches > it.matches.size)
     }))
 internal fun InspectionResult.toJson() = JSONObject().put("package", screen.packageName).put("fingerprint", screen.fingerprint)
     .put("sourceTruncated", screen.truncated).put("elapsedMs", elapsedMillis).put("samples", samples).put("timedOut", timedOut).apply {
         val checked = report
         if (checked != null) put("verification", checked.toJson()) else {
-            put("nodes", JSONArray(nodes.map { it.toJson() })).put("totalMatches", totalMatches).put("offset", offset)
+            put("nodes", JSONArray(nodes.map { it.withContextJson(screen) })).put("totalMatches", totalMatches).put("offset", offset)
             put("hasMore", offset + nodes.size < totalMatches)
         }
     }
 
 internal object InspectionSchemas {
     fun selector() = JSONObject().put("type", "object").put("additionalProperties", false).put("properties", JSONObject().apply {
-        for (key in listOf("textContains", "textEquals", "resourceId", "className", "ancestorResourceId")) put(key, JSONObject().put("type", "string").put("minLength", 1).put("maxLength", 300))
+        for (key in listOf("textContains", "textEquals", "resourceId", "className", "ancestorResourceId", "nearText")) put(key, JSONObject().put("type", "string").put("minLength", 1).put("maxLength", 300))
         for (key in listOf("editable", "clickable", "scrollable", "enabled", "checked", "selected")) put(key, JSONObject().put("type", "boolean"))
     })
     fun conditions() = JSONObject().put("type", "array").put("minItems", 1).put("maxItems", 5).put("items", JSONObject()

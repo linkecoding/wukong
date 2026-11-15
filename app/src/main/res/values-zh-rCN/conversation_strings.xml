@@ -36,4 +36,9 @@
     <string name="preview_connection_lost">连接已中断</string>
     <string name="preview_resize">调整浮窗大小</string>
     <string name="preview_resize_hint">拖动右下角调整大小</string>
+    <string name="execution_close">关闭执行选项</string>
+    <string name="execution_choose_app">选择起始应用</string>
+    <string name="execution_search_apps">搜索应用</string>
+    <string name="execution_app_scope">仅决定起点，后续可切换应用</string>
+    <string name="status_check_calculations">正在核对结果中的计算</string>
 </resources>

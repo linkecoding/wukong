@@ -19,7 +19,7 @@ data class Bounds(val left: Int, val top: Int, val right: Int, val bottom: Int) 
 data class OcrLine(val text: String, val bounds: Bounds)
 data class VisualFrame(val id: String, val width: Int, val height: Int, val lines: List<OcrLine>, val jpegBase64: String? = null)
 data class Observation(val settled: Boolean, val samples: Int, val elapsedMillis: Long, val uiEvents: Boolean = false)
-data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null, val observation: Observation? = null, val uiRevision: Long = 0, val uiQuietMillis: Long = Long.MAX_VALUE, val uiEvents: Boolean = false, val truncated: Boolean = false)
+data class Screen(val packageName: String, val fingerprint: String, val nodes: List<UiNode>, val visual: VisualFrame? = null, val observation: Observation? = null, val uiRevision: Long = 0, val uiQuietMillis: Long = Long.MAX_VALUE, val uiEvents: Boolean = false, val truncated: Boolean = false, val interactionFingerprint: String = "")
 
 sealed interface Action {
     /** Local model parse rejection: validated into feedback, never sent to a device. */
@@ -157,6 +157,7 @@ class Agent(
                         }
                         override fun execute(action: Action, expected: Screen): String {
                             guard()
+                            var executionStarted=false
                             try {
                                 require(action !is Action.Script && action !is Action.Finish) { "脚本不能嵌套执行或直接宣告任务完成" }
                                 validate(action, expected)
@@ -176,8 +177,14 @@ class Agent(
                                 }
                                 guard()
                                 event(Phase.RUNNING, action.label())
+                                executionStarted=true
                                 return driver.execute(action, expected).also { guard(); remember(Turn(expected, action, it)) }
-                            } catch (error: Exception) { aborted = true; throw error }
+                            } catch (error: Exception) {
+                                if(error is InterruptedException||error is ScriptApprovalRejected||control.epoch!=epoch) { aborted=true;throw error }
+                                val stale=error.message?.startsWith("界面已更新，本次操作未执行")==true||error.message?.startsWith("截图已过期")==true
+                                if(!executionStarted||stale)throw ActionNotExecuted(error.message.orEmpty(),stale,error)
+                                aborted=true;throw error
+                            }
                         }
                     }
                     event(Phase.RUNNING, action.label())
@@ -198,6 +205,12 @@ class Agent(
                     try {
                         require(action.summary.isNotBlank() && action.summary.length <= 2000) { "模型返回的结果无效" }
                         if (action.outcome == TaskOutcome.INCOMPLETE) return event(Phase.FAILED, action.summary)
+                        ArithmeticClaims.mismatch(action.summary)?.let { detail ->
+                            remember(Turn(screen,action,"结果说明的算术校验未通过：$detail 没有重放任何设备操作。"))
+                            if(++completionRetries>=3)return event(Phase.FAILED,"结果说明的计算无法核实：$detail")
+                            event(Phase.RUNNING,"正在核对结果中的计算")
+                            return@repeat
+                        }
                         event(Phase.RUNNING, "正在核对任务完成证据")
                         var fresh = driver.observe()
                         cancellation.check()
@@ -206,7 +219,9 @@ class Agent(
                         require(fresh.nodes.none { node -> node.sensitive }) { "检测到受保护输入，请手动处理" }
                         var verdict = if (action.evidence.isNotEmpty()) {
                             val report = driver.verify(action.evidence, fresh)
-                            CompletionCheck(report.state == CheckState.MET, "当前页面条件：${report.state}；${report.checks.map { it.state }}")
+                            if(report.state==CheckState.MET&&completionVerifier!=null)
+                                completionVerifier.verify(goal,action.summary,fresh,history.takeLast(8))
+                            else CompletionCheck(report.state == CheckState.MET, "当前页面条件：${report.state}；${report.checks.map { it.state }}")
                         } else if (completionVerifier != null) {
                             // Visual/semantic completion needs fresh evidence, not a cached old image.
                             driver.execute(Action.Screenshot, fresh)
@@ -217,7 +232,7 @@ class Agent(
                             require(fresh.nodes.none { node -> node.sensitive }) { "检测到受保护输入，请手动处理" }
                             completionVerifier.verify(goal, action.summary, fresh, history.takeLast(8))
                         } else CompletionCheck(false, "缺少完成证据，请提供与任务目标对应的页面条件")
-                        if (action.evidence.isEmpty() && completionVerifier != null) {
+                        if (completionVerifier != null) {
                             val afterReview = driver.observe()
                             if (afterReview.packageName != fresh.packageName || afterReview.fingerprint != fresh.fingerprint) {
                                 verdict = CompletionCheck(false, "复核期间页面发生变化，请核对最新结果")

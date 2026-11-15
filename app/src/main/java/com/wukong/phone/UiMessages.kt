@@ -5,6 +5,7 @@ import android.content.Context
 /** Translate presentation of known engine statuses; never rewrite protocol messages. */
 object UiMessages {
     private val resources = mapOf(
+        "正在核对结果中的计算" to R.string.status_check_calculations,
         "操作未执行，正在重新观察并调整" to R.string.onboarding_action_replan,
         "先开启无线调试，再配对悟空" to R.string.status_01,
         "已找到本机配对端口，可从通知栏输入配对码" to R.string.status_02,

@@ -224,4 +224,33 @@ class JsRuntimeTest {
         }
     }
 
+    @Test fun staleUnexecutedSelectorIsResolvedAgainWithoutReplayingAcceptedInput() {
+        var reads=0;var attempts=0;val injected=mutableListOf<Int>()
+        val changing=object:ScriptHost {
+            override fun observe():Screen {
+                reads++;val id=if(attempts==0)1 else 2
+                return Screen("demo.app","page-$id",listOf(UiNode(id,"继续",clickable=true,resourceId="demo.app:id/continue")))
+            }
+            override fun execute(action:Action,expected:Screen):String {
+                if(attempts++==0)throw ActionNotExecuted("界面已更新，本次操作未执行",true)
+                injected+=(action as Action.Tap).nodeId;return "accepted"
+            }
+        }
+        JsSession(context,Cancellation(),ExecutionControl()).use { js ->
+            js.run("wukong.tap(wukong.id('demo.app:id/continue')); return true;",changing)
+            assertEquals(2,attempts);assertEquals(listOf(2),injected);assertTrue(reads>=2)
+        }
+    }
+    @Test fun aKnownValidationRejectionIsNotReportedAsUnknownInjection() {
+        val rejecting=object:ScriptHost {
+            override fun observe()=Screen("demo.app","a",listOf(UiNode(1,"按钮",clickable=true)))
+            override fun execute(action:Action,expected:Screen):String=throw ActionNotExecuted("Rejected before injection")
+        }
+        JsSession(context,Cancellation(),ExecutionControl()).use { js ->
+            val failure=runCatching { js.run("wukong.tap('按钮');",rejecting) }.exceptionOrNull() as ScriptCallFailure
+            assertFalse(JSONObject(failure.diagnostic).getBoolean("accepted"))
+            assertEquals("INVALID_ARGUMENT",JSONObject(failure.diagnostic).getString("code"))
+        }
+    }
+
 }

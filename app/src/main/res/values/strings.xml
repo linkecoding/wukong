@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Wukong</string>
+    <string name="app_name">Wukong</string>
     <string name="setup_saved_success">Test passed. Configuration saved.</string>
     <string name="setup_next_phone">Continue to phone setup</string>
     <string name="export_run">Export this run</string>

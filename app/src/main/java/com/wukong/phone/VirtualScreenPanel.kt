@@ -98,7 +98,7 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
                 textSize=11f;isAllCaps=false;minimumWidth=0;minWidth=0;setPadding(0,0,0,0)
             }
             if(row.childCount<2)manualInputs+=view
-            row.addView(view,LayoutParams(0,dp(48),1f).apply { marginEnd=dp(4) })
+            row.addView(view,LayoutParams(0,dp(48),1f).apply { marginEnd=if(compact)0 else dp(4) })
         }
         button(context.getString(R.string.ui_back)) { VirtualScreenState.input(JSONObject().put("kind", "back")) }
         button(context.getString(R.string.ui_home)) { VirtualScreenState.input(JSONObject().put("kind", "home")) }
@@ -176,6 +176,9 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false,
             row.getChildAt(0).visibility=if(VirtualScreenState.manual) VISIBLE else GONE
             row.getChildAt(1).visibility=if(VirtualScreenState.manual) VISIBLE else GONE
             row.getChildAt(2).visibility=if(VirtualScreenState.manual) GONE else VISIBLE
+            val grip=row.getChildAt(3);val params=grip.layoutParams as LayoutParams
+            val width=if(VirtualScreenState.manual)0 else dp(48);val weight=if(VirtualScreenState.manual)1f else 0f
+            if(params.width!=width||params.weight!=weight)grip.layoutParams=params.apply { this.width=width;this.weight=weight }
         }
         manualText?.visibility=if(VirtualScreenState.manual) VISIBLE else GONE
         stopButton?.visibility=if(TaskRuntime.active) VISIBLE else GONE

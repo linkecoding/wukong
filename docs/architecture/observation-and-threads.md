@@ -36,9 +36,9 @@ A quiet tree is not a completed network request. A loading indicator can stay un
 
 ## Changes during a decision
 
-Exact execution-time checks remain. Old node IDs and capture IDs are never replayed against a new snapshot.
+Execution-time snapshot checks remain. A second interaction fingerprint normalizes only digits in non-interactive fractional stopwatch counters for ordinary node/navigation actions. Plain clock times, control labels/states, bounds, node order and window topology remain exact. Captures, coordinate actions and sensitive actions retain full-fingerprint validation. Old IDs are never replayed against unrelated snapshots.
 
-A positively identified pre-injection stale failure is now returned as an unexecuted tool result to the model. The next turn observes again and plans from the fresh state. Up to six consecutive stale replans are allowed, within the overall 30-round budget. Unknown/ambiguous execution failures are not automatically retried. If the UI changes while waiting for approval, the old approval is invalidated and the task replans; consequential actions require new approval.
+A positively identified pre-injection stale failure is now returned as an unexecuted tool result to the model. The next turn observes again and plans from the fresh state. Up to six consecutive stale replans are allowed, within the Android App's 50-round budget (core default: 30). Script selector calls may re-resolve only a proven unexecuted stale target, bounded by four attempts and the original timeout; they do not replay accepted effects or a whole cell. Unknown/ambiguous execution failures are not automatically retried. If the UI changes while waiting for approval, the old approval is invalidated and the task replans; consequential actions require new approval.
 
 ## App thread inventory
 
@@ -89,3 +89,5 @@ The task loop now also exposes read-only query/wait/verify tools on the same wor
 ## Embedded QuickJS workflow threads
 
 A lazy task-local JsSession now binds an isolated Android service on the first script. Its Binder callbacks enqueue work for the existing App task worker; phone API/approval work does not move to the App main thread. The isolated process adds one `wukong-quickjs` worker plus Android Binder/framework threads; no extra engine compiler/GC worker pool. Native input remains in the existing shell process. See [JS runtime](javascript-runtime.md).
+
+Task-local bounded readings and accepted-action receipts, plus basic arithmetic completion checks, run on the existing agent worker. They add no background thread. See [real-app validation](../real-world-validation.md).

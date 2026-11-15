@@ -79,4 +79,25 @@ class CompletionTest {
         assertEquals(Phase.FAILED, result.phase); assertTrue(driver.actions.isEmpty())
     }
 
+    @Test fun matchingPageConditionCannotBypassSummaryReview() {
+        val driver=Driver(screen);var decisions=0;var reviews=0
+        val condition=ScreenCondition(packageName=screen.packageName)
+        val result=Agent(Model { _,_,_ ->
+            decisions++;Action.Finish(if(decisions==1)"Wrong reported number" else "Correct reported number",evidence=listOf(condition))
+        },driver,approval,completionVerifier=CompletionVerifier { _,summary,_,_ ->
+            reviews++;CompletionCheck(summary=="Correct reported number","Check the reported values")
+        }).run("Read the result accurately",Cancellation()) {}
+        assertEquals(Phase.COMPLETED,result.phase);assertEquals(2,reviews);assertEquals(2,decisions)
+        assertTrue("Native conditions need no extra capture",driver.actions.isEmpty())
+    }
+
+    @Test fun inconsistentArithmeticCannotPassEvenIfTheSemanticReviewerWouldAgree() {
+        val driver=Driver(screen);var decisions=0;var reviews=0
+        val result=Agent(Model { _,_,history ->
+            if(++decisions==1)Action.Finish("(128×3+59×2)×0.85=484.3",evidence=listOf(ScreenCondition(packageName=screen.packageName)))
+            else { assertTrue(history.last().result.contains("426.7"));Action.Finish("需要重新核对算式",TaskOutcome.INCOMPLETE) }
+        },driver,approval,completionVerifier=CompletionVerifier { _,_,_,_ -> reviews++;CompletionCheck(true,"would incorrectly agree") }).run("核对计算",Cancellation()) {}
+        assertEquals(Phase.FAILED,result.phase);assertEquals(0,reviews);assertTrue(driver.actions.isEmpty())
+    }
+
 }

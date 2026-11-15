@@ -21,7 +21,7 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
         try { return dispatch(method, args) }
         catch (error: Exception) {
             if (error is InterruptedException || error is ScriptApprovalRejected || error is ScriptCallFailure) throw error
-            val detail = JSONObject().put("code", if (error is ApiFailure) error.code else if (injected) "OUTCOME_UNKNOWN" else if (error is IllegalArgumentException || error is org.json.JSONException) "INVALID_ARGUMENT" else "CANCELLED")
+            val detail = JSONObject().put("code", if (error is ApiFailure) error.code else if(error is ActionNotExecuted) { if(error.staleSnapshot) "STALE_TARGET" else "INVALID_ARGUMENT" } else if (injected) "OUTCOME_UNKNOWN" else if (error is IllegalArgumentException || error is org.json.JSONException) "INVALID_ARGUMENT" else "CANCELLED")
                 .put("method", method).put("message", error.message.orEmpty().take(300)).put("step", calls)
                 .put("elapsedMs", SystemClock.elapsedRealtime() - started).put("attempts", attempts)
                 .put("accepted", if (accepted) true else if (injected) "unknown" else false).put("verified", "unknown")
@@ -131,7 +131,9 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
         val start = SystemClock.elapsedRealtime()
         while (true) {
             val screen = observe(); attempts++
-            val matches = Conditions.find(screen, selector)
+            val matches = if(method=="tap") TapTargets.find(screen,selector) else Conditions.find(screen,selector)
+            if(method=="tap"&&matches.isEmpty()&&Conditions.find(screen,selector).any { it.selected&&!it.clickable })
+                throw ApiFailure("NOT_ACTIONABLE","The matching label is already selected and has no clickable button/row. Do not tap its scrolling container; choose a different navigation route.")
             if (matches.size > 1) throw ApiFailure("AMBIGUOUS_TARGET", "Matched ${matches.size} targets; refine the selector")
             val node = matches.singleOrNull()
             if (node != null && !screen.truncated) {
@@ -148,7 +150,10 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
                         "input", "setText" -> Action.Input(node.id, args.getString("text"))
                         else -> Action.Scroll(node.id, args.optBoolean("forward", true))
                     }
-                    val result = executeOn(action, screen)
+                    val result=try { executeOn(action,screen) } catch(error:ActionNotExecuted) {
+                        if(error.staleSnapshot&&attempts<4&&SystemClock.elapsedRealtime()-start<timeout)continue
+                        throw error
+                    }
                     if (method == "setText" || method == "setChecked") {
                         // Read-only reconciliation: never repeat a possibly accepted input.
                         val verifyStart = SystemClock.elapsedRealtime()
@@ -172,7 +177,7 @@ internal class JsPhone(private val host: ScriptHost, private val guard: () -> Un
     private fun pause(ms: Long) { guard(); Thread.sleep(ms); guard() }
     private fun executeOn(action: Action, screen: Screen): JSONObject {
         injected = true
-        val result = host.execute(action, screen)
+        val result=try { host.execute(action,screen) } catch(error:ActionNotExecuted) { injected=false;throw error }
         accepted = true; acceptedCount++
         completed += JSONObject().put("step", calls).put("action", action.javaClass.simpleName).put("accepted", true)
         return JSONObject().put("accepted", result)

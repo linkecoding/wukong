@@ -257,8 +257,14 @@ public final class Main {
     private Bitmap captureDisplay() { return targetDisplay.get() == 0 ? automation.takeScreenshot() : virtualScreen == null ? null : virtualScreen.capture(); }
 
     private void verifySnapshot(JSONObject request, Tree tree) throws Exception {
-        if (!tree.json.getString("fingerprint").equals(request.getString("fingerprint")) || !tree.json.getString("package").equals(request.getString("package")))
-            throw new IllegalArgumentException("界面已更新，本次操作未执行");
+        if (!tree.json.getString("package").equals(request.getString("package"))) throw new IllegalArgumentException("界面已更新，本次操作未执行");
+        if (tree.json.getString("fingerprint").equals(request.getString("fingerprint"))) return;
+        String kind=request.optJSONObject("action")==null ? "" : request.getJSONObject("action").optString("kind");
+        // Only fractional stopwatch counter text in non-interactive nodes may differ. Node order, window identity,
+        // bounds, states and all actionable labels are still identical. Captures stay exact.
+        if (Arrays.asList("tap","input","scroll","home","back","launch").contains(kind) && request.has("interactionFingerprint") &&
+            tree.json.getString("interactionFingerprint").equals(request.getString("interactionFingerprint"))) return;
+        throw new IllegalArgumentException("界面已更新，本次操作未执行");
     }
 
     private void execute(JSONObject action, Tree tree, String taskId) throws Exception {
@@ -425,6 +431,19 @@ public final class Main {
             long[] change = uiChanges.snapshot(relevant, SystemClock.uptimeMillis());
             tree.json = new JSONObject().put("package", pkg).put("fingerprint", hash.toString()).put("nodes", nodes)
                 .put("uiEvents", true).put("uiRevision", change[0]).put("uiQuietMs", change[1]).put("truncated", tree.truncated);
+            JSONArray interactionNodes=new JSONArray();
+            for(int i=0;i<nodes.length();i++) {
+                JSONObject value=new JSONObject(nodes.getJSONObject(i).toString());
+                String text=value.optString("text");
+                if(!value.optBoolean("clickable")&&!value.optBoolean("editable")&&!value.optBoolean("scrollable")&&
+                    (text.matches("(?s).*\\d[:：]\\d{2}[.,]\\d.*")||text.matches("(?is).*\\d[.,]\\d+\\s*(秒|milliseconds?|seconds?).*"))) {
+                    value.put("text",text.replaceAll("[0-9０-９]","#"));value.put("rawText",value.optString("rawText").replaceAll("[0-9０-９]","#"));
+                }
+                interactionNodes.put(value);
+            }
+            byte[] interaction=MessageDigest.getInstance("SHA-256").digest((pkg+"|"+windowSignature.get()+"|"+interactionNodes+"|"+tree.truncated).getBytes(StandardCharsets.UTF_8));
+            StringBuilder interactionHash=new StringBuilder();for(byte b:interaction)interactionHash.append(String.format(Locale.ROOT,"%02x",b));
+            tree.json.put("interactionFingerprint",interactionHash.toString());
             return tree;
         } catch (Exception e) { tree.close(); throw e; }
     }

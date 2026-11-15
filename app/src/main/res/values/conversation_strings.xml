@@ -36,4 +36,9 @@
     <string name="preview_connection_lost">Connection interrupted</string>
     <string name="preview_resize">Resize preview</string>
     <string name="preview_resize_hint">Drag corner to resize</string>
+    <string name="execution_close">Close execution options</string>
+    <string name="execution_choose_app">Starting app</string>
+    <string name="execution_search_apps">Search apps</string>
+    <string name="execution_app_scope">Wukong can switch apps afterward.</string>
+    <string name="status_check_calculations">Checking the reported calculation…</string>
 </resources>

@@ -13,7 +13,7 @@ internal object JsSdk {
     return reply.result;
   };
   const invalid = message => { const e = new Error(stringify({code:'INVALID_ARGUMENT',message})); e.code = 'INVALID_ARGUMENT'; throw e; };
-  const keys = new Set(['textContains','textEquals','resourceId','className','editable','clickable','scrollable','enabled','checked','selected','ancestorResourceId']);
+  const keys = new Set(['textContains','textEquals','resourceId','className','editable','clickable','scrollable','enabled','checked','selected','ancestorResourceId','nearText']);
   const selector = value => {
     if (typeof value === 'string') return {textEquals: value};
     if (!value || typeof value !== 'object' || Array.isArray(value)) return invalid('Expected selector object or exact text; use wukong.id(fullResourceId) for IDs.');
@@ -61,7 +61,7 @@ internal object JsSdk {
   };
   const listeners = new Set();
   const wukong = Object.freeze({
-    id: value => make({resourceId: value}), text: value => make({textEquals: value}),
+    id: value => typeof value === 'number' ? invalid('wukong.id expects a full resourceId string, not a snapshot node number. Use a text/resourceId selector; node numbers belong to phone_action only.') : make({resourceId: value}), text: value => make({textEquals: value}), textEquals: value => make({textEquals: value}),
     textContains: value => make({textContains: value}), select: value => make(value),
     observe: () => invoke('observe'),
     query: (value = {}, options = {}) => query(value, options),
@@ -76,7 +76,7 @@ internal object JsSdk {
     waitGone: (value, options = {}) => invoke('waitUntil', conditionArgs({selector: selector(value), state:'absent'}, options)),
     waitEnabled: (value, options = {}) => invoke('waitUntil', conditionArgs({selector:{...selector(value),enabled:true}}, options)),
     exists: value => { const page = query(value, {limit:1}); return page.totalMatches > 0 ? true : page.sourceTruncated ? null : false; },
-    tap: (value, options = {}) => invoke('tap', {selector: {clickable: true, ...selector(value)}, ...optionsOf(options, ['timeoutMs'])}),
+    tap: (value, options = {}) => invoke('tap', {selector: selector(value), ...optionsOf(options, ['timeoutMs'])}),
     input: (value, text, options = {}) => invoke('input', {selector: {editable: true, ...selector(value)}, text, ...optionsOf(options, ['timeoutMs'])}),
     setText: (value, text, options = {}) => invoke('setText', {selector:{editable:true,...selector(value)},text,...optionsOf(options,['timeoutMs'])}),
     setChecked: (value, checked, options = {}) => invoke('setChecked', {selector:selector(value),checked,...optionsOf(options,['timeoutMs'])}),
