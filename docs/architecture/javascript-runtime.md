@@ -27,11 +27,15 @@ The global API object is `wukong`, for example `wukong.query()` and `wukong.tap(
 
 | API | Behavior |
 | --- | --- |
+| `wukong.id(fullId)` / `text(exactText)` / `textContains(text)` / `select(object)` | Explicit immutable selector plans, combinable with `.enabled(true)`, `.editable(true)`, `.ancestorResourceId(fullId)`; no retained native handles |
+| `wukong.waitAny({success: selectorOrCondition, error: selectorOrCondition}, {timeoutMs})` | Resolve named outcomes from one fresh snapshot per sample; return `key`, `matchedKeys`, `matches`, `timedOut` and full verification evidence. `key=null` on timeout; multiple matches retain insertion order and all names. |
+| `wukong.waitGone(selector, options)` / `waitEnabled(selector, options)` / `exists(selector)` | Bounded structured waiting; exists returns true/false/null (unknown due to incomplete source). Predicate callbacks are rejected explicitly. |
+| `wukong.setText(selector,text,options)` / `setChecked(selector,checked,options)` | Reconcile desired state, skip a correct state, otherwise inject once and verify with fresh reads up to 2s. Failure to verify terminates the cell without replay. |
 | `wukong.observe()` | Compact current snapshot with package, fingerprint, revision, normalized nodes and any current OCR metadata |
 | `wukong.query(selector, {limit, offset})` | Read/filter/page the larger visible source |
 | `wukong.waitUntil(selectorOrConditions, options)` | Freshly resolve conditions without global page-quiet settling |
 | `wukong.verify(selectorOrConditions, options)` | Read current condition evidence, without finishing the task |
-| `wukong.tap(selector)` / `input(selector,text)` / `scroll(selector,forward)` | Freshly resolve a unique target and perform a validated action |
+| `wukong.tap(selector,options)` / `input(selector,text,options)` / `scroll(selector,forward,options)` | Wait read-only for a unique enabled target, then perform one validated action. `timeoutMs` defaults to 3000, range 0–10000; zero samples once. |
 | `wukong.launch(packageName)` / `home()` / `back()` | Navigate within the session's target display |
 | `wukong.ocr()` / `screenshot()` | Current capture ID, local OCR and normalized boxes; raw image bytes are not copied into JS |
 | `wukong.tapAt(x,y,captureId)` / `longPress(x,y,captureId,duration)` / `swipe(x,y,endX,endY,captureId,duration)` | Existing guarded coordinate actions |
@@ -40,18 +44,18 @@ The global API object is `wukong`, for example `wukong.query()` and `wukong.tap(
 | `wukong.events.onChange(callback)` | Register a cell-local change listener; returns an unsubscribe function |
 | `wukong.events.next({after,timeoutMs})` | Wait for relevant revision/package/fingerprint changes, return an event and synchronously dispatch registered listeners |
 
-Selectors/conditions share [the query tool contracts](condition-tools.md). A string is an exact text selector. Query returns a page object (`nodes`, `totalMatches`, `hasMore`, `sourceTruncated`, fingerprint). Prefer `page.nodes.map(...)`; `.map`, `.filter`, `.find`, `.length` and iteration are also provided as non-enumerable conveniences, preserving the metadata when returning/serializing the page. A numeric query second argument is shorthand for `{limit: n}`. Wait/verify accept a selector, a condition object, an array of selectors/conditions, or the full `{conditions,matchAll,timeoutMs}` form. A target action adds its capability filter (`clickable`, `editable`, or `scrollable`), requires one match on a complete source, and never guesses among duplicates. Targets are selectors, not durable node handles. The shell still checks the full fingerprint immediately before mutation.
+Selectors/conditions share [the query tool contracts](condition-tools.md). A string is an exact text selector. Query returns a page object (`nodes`, `totalMatches`, `hasMore`, `sourceTruncated`, fingerprint). Prefer `page.nodes.map(...)`; `.map`, `.filter`, `.find`, `.length` and iteration are also provided as non-enumerable conveniences, preserving the metadata when returning/serializing the page. A numeric query second argument is shorthand for `{limit: n}`. Wait/verify accept a selector, a condition object, an array of selectors/conditions, or the full `{conditions,matchAll,timeoutMs}` form. A target action adds its capability filter (`clickable`, `editable`, or `scrollable`), requires one match on a complete source, and never guesses among duplicates. Text `text` keeps its existing combined label/value/hint semantics for compatibility. Editable nodes additionally expose `rawText` (protected inputs stay redacted), which state-setting uses for exact value comparison. Use stable IDs for desired-state operations; a selector that matches only the previous value cannot verify the new state. Unknown selector/option fields and incorrect value types fail early. Targets are selectors, not durable node handles. The shell still checks the full fingerprint immediately before mutation.
 
 Example for an illustrative app, with placeholder resource IDs:
 
 ```js
 state.keyword = '蓝牙耳机';
-wukong.input({resourceId: 'example.app:id/query'}, state.keyword);
-wukong.tap({resourceId: 'example.app:id/search'});
-const outcome = wukong.waitUntil([
-  {selector: {ancestorResourceId: 'example.app:id/results', textContains: state.keyword}},
-  {selector: {textContains: '网络错误'}}
-], {timeoutMs: 8000});
+wukong.setText(wukong.id('example.app:id/query'), state.keyword);
+wukong.tap(wukong.id('example.app:id/search'), {timeoutMs: 3000});
+const outcome = wukong.waitAny({
+  success: wukong.textContains('查询结果').ancestorResourceId('example.app:id/results'),
+  error: wukong.textContains('网络错误')
+}, {timeoutMs: 8000});
 return outcome;
 ```
 
@@ -72,6 +76,8 @@ Each cell uses a fresh QuickJS runtime/context. Only the explicit `state` object
 - Every mutation crosses the trusted core validator, sensitive-action approval and execution-time snapshot/capture checks. Approval expiry or a changed page invalidates that approval and stops the cell. A human-control epoch change stops the old script; it is not resumed/replayed on handoff.
 - A host error is fatal to the cell even if JS catches the thrown error. This prevents retrying an ambiguous mutation inside a catch/loop. Completed effects remain recorded; the model gets the error and new observations so it can continue from the actual state. User rejection ends the task. No automatic rollback/replay is attempted.
 - If the isolated process dies, that JS session is unusable and is not silently recreated with old script contents. A new task can create a fresh session.
+
+Native call failures include a structured diagnostic in the planner error and `script_call_error` trace: `code`, `method`, `selector` when present, cell-local `step`, `elapsedMs`, `attempts`, `accepted`, `verified`, `acceptedCount`, and the last four completed mutations. Codes distinguish invalid arguments, missing/ambiguous/not-ready targets, incomplete source, cancellation and unknown outcomes. `accepted` is true after a successful host response, false before dispatch, and conservatively `"unknown"` when dispatch throws: legacy driver errors do not establish whether injection occurred. `verified` is independent of acceptance. Partial effects are not rolled back. Wait timeouts remain ordinary read results, not fatal exceptions.
 
 Logs group the script under its model step and record individual API methods/arguments, results (bounded), timing and errors. Script source is a recorded tool argument. API key redaction, retention, disabled-logging behavior and token accounting remain unchanged. Native JS execution itself has no model-token usage; planning/review responses retain their provider-reported usage.
 

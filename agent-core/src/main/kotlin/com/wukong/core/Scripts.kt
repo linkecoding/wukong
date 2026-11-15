@@ -9,4 +9,7 @@ fun interface ScriptRunner {
     val timeoutMillis: Long get() = 60000
     fun run(code: String, host: ScriptHost): String
 }
-internal class ScriptApprovalRejected : IllegalStateException("已拒绝操作，脚本停止")
+class ScriptApprovalRejected : IllegalStateException("已拒绝操作，脚本停止")
+
+/** Structured diagnostic JSON is also readable by the planner after a partial cell. */
+class ScriptCallFailure(val diagnostic: String, cause: Exception) : IllegalStateException(diagnostic, cause)

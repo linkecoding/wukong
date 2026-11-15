@@ -4,17 +4,24 @@ import com.wukong.core.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-internal fun UiNode.toJson() = JSONObject().put("id", id).put("text", text).put("resourceId", resourceId).put("className", className)
+internal fun UiNode.toJson() = JSONObject().put("id", id).put("text", text).apply { if (editable && rawText != null) put("rawText", rawText) }.put("resourceId", resourceId).put("className", className)
     .put("parentId", parentId ?: JSONObject.NULL).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable)
     .put("enabled", enabled).put("checked", checked ?: JSONObject.NULL).put("selected", selected).put("bounds", bounds?.toJson() ?: JSONObject.NULL)
 
-internal fun JSONObject.toSelector() = NodeSelector(
+internal fun JSONObject.requireKeys(vararg allowed: String) {
+    val unknown = keys().asSequence().filter { it !in allowed }.toList()
+    require(unknown.isEmpty()) { "Unknown argument(s): ${unknown.joinToString()}; allowed: ${allowed.joinToString()}" }
+}
+internal fun JSONObject.toSelector(): NodeSelector {
+    requireKeys("textContains", "textEquals", "resourceId", "className", "editable", "clickable", "scrollable", "enabled", "checked", "selected", "ancestorResourceId")
+    return NodeSelector(
     textContains = optionalString("textContains"), textEquals = optionalString("textEquals"), resourceId = optionalString("resourceId"),
     className = optionalString("className"), editable = optionalBoolean("editable"), clickable = optionalBoolean("clickable"), scrollable = optionalBoolean("scrollable"),
     enabled = optionalBoolean("enabled"), checked = optionalBoolean("checked"), selected = optionalBoolean("selected"), ancestorResourceId = optionalString("ancestorResourceId"),
-)
-private fun JSONObject.optionalString(key: String) = if (isNull(key)) null else getString(key)
-private fun JSONObject.optionalBoolean(key: String) = if (isNull(key)) null else getBoolean(key)
+).also { it.validate() }
+}
+private fun JSONObject.optionalString(key: String): String? = if (!has(key)) null else get(key).let { require(it is String) { "$key must be a string" }; it }
+private fun JSONObject.optionalBoolean(key: String): Boolean? = if (!has(key)) null else get(key).let { require(it is Boolean) { "$key must be a boolean" }; it }
 internal fun NodeSelector.toJson() = JSONObject().apply {
     mapOf("textContains" to textContains, "textEquals" to textEquals, "resourceId" to resourceId, "className" to className, "editable" to editable,
         "clickable" to clickable, "scrollable" to scrollable, "enabled" to enabled, "checked" to checked, "selected" to selected, "ancestorResourceId" to ancestorResourceId)
@@ -26,6 +33,8 @@ internal fun ScreenCondition.toJson() = JSONObject().put("state", state.name.low
 internal fun JSONObject.toConditions(): List<ScreenCondition> {
     val array = getJSONArray("conditions")
     return (0 until array.length()).map { index -> array.getJSONObject(index).let {
+        it.requireKeys("selector", "packageName", "state", "minCount")
+        if (it.has("minCount")) require(it.get("minCount") is Number && it.get("minCount").let { n -> (n as Number).toDouble() == n.toInt().toDouble() }) { "minCount must be an integer" }
         ScreenCondition(it.optJSONObject("selector")?.toSelector(), it.optionalString("packageName"), when (it.optString("state", "present")) {
             "present" -> Presence.PRESENT
             "absent" -> Presence.ABSENT

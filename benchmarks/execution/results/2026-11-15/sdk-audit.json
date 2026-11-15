@@ -1,0 +1,415 @@
+{
+  "sourceReport": "report.json",
+  "sourceRevision": "c293ff5-plus-benchmark",
+  "autoJsDocsCommit": "f611dcd45e993ecbcb59a73d7e0f35415e73b6aa",
+  "runs": 12,
+  "jsRuns": 6,
+  "attemptedHostCalls": {
+    "query": 90,
+    "tap": 28,
+    "input": 34,
+    "waitUntil": 13,
+    "sleep": 51,
+    "observe": 1
+  },
+  "completedHostCalls": {
+    "query": 90,
+    "tap": 27,
+    "input": 32,
+    "waitUntil": 13,
+    "sleep": 51,
+    "observe": 1
+  },
+  "hostCallDurationMs": {
+    "query": 5482,
+    "tap": 2439,
+    "input": 2575,
+    "waitUntil": 11815,
+    "sleep": 24151,
+    "observe": 23
+  },
+  "scriptCells": 30,
+  "scriptCellsUsingManualLoops": 11,
+  "scriptCellsUsingSleep": 16,
+  "scriptCellsReferencingState": 0,
+  "errors": [
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "type": "script_error",
+      "step": 1,
+      "message": "目标须唯一且页面读取完整，当前匹配 0 个；请补充资源 ID 或所属区域",
+      "traceFile": "traces/04-retry-script_only.jsonl"
+    },
+    {
+      "case": "wizard",
+      "mode": "TOOLS_ONLY",
+      "repetition": 1,
+      "type": "device_error",
+      "step": 5,
+      "message": "界面已更新，本次操作未执行",
+      "traceFile": "traces/08-wizard-tools_only.jsonl"
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "type": "script_error",
+      "step": 1,
+      "message": "目标须唯一且页面读取完整，当前匹配 0 个；请补充资源 ID 或所属区域",
+      "traceFile": "traces/11-batch-script_only.jsonl"
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "type": "script_error",
+      "step": 4,
+      "message": "目标控件尚未启用，请等待可操作状态",
+      "traceFile": "traces/11-batch-script_only.jsonl"
+    }
+  ],
+  "timedOutCalls": [
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 3,
+      "method": "waitUntil",
+      "durationMs": 8013,
+      "result": {
+        "package": "com.wukong.phone",
+        "fingerprint": "4a90a972e1172c01756c53c8112b5108e16858d69c2154cacf46030742d41f03",
+        "sourceTruncated": false,
+        "elapsedMs": 8011,
+        "samples": 35,
+        "timedOut": true,
+        "verification": {
+          "state": "not_met",
+          "package": "com.wukong.phone",
+          "fingerprint": "4a90a972e1172c01756c53c8112b5108e16858d69c2154cacf46030742d41f03",
+          "sourceTruncated": false,
+          "checks": [
+            {
+              "condition": {
+                "state": "present",
+                "minCount": 1,
+                "selector": {
+                  "textContains": "件商品",
+                  "resourceId": "com.wukong.phone:id/benchmark_result"
+                }
+              },
+              "state": "not_met",
+              "totalMatches": 0,
+              "matches": [],
+              "matchesTruncated": false
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cells": [
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 1,
+      "characters": 461,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 2,
+      "characters": 530,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 3,
+      "characters": 356,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 4,
+      "characters": 571,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 5,
+      "characters": 416,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 1,
+      "characters": 641,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 2,
+      "characters": 541,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 3,
+      "characters": 407,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 4,
+      "characters": 639,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 5,
+      "characters": 354,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 6,
+      "characters": 661,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 7,
+      "characters": 533,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "wizard",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 1,
+      "characters": 559,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "wizard",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 0,
+      "step": 2,
+      "characters": 663,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "wizard",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 1,
+      "characters": 817,
+      "manualLoop": false,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "wizard",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 2,
+      "characters": 251,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "wizard",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 3,
+      "characters": 717,
+      "manualLoop": false,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "wizard",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 4,
+      "characters": 209,
+      "manualLoop": false,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 1,
+      "characters": 418,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 2,
+      "characters": 592,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 3,
+      "characters": 383,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 4,
+      "characters": 295,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 5,
+      "characters": 580,
+      "manualLoop": false,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "retry",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 6,
+      "characters": 251,
+      "manualLoop": false,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 1,
+      "characters": 482,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 2,
+      "characters": 85,
+      "manualLoop": false,
+      "sleep": false,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 3,
+      "characters": 458,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 4,
+      "characters": 1025,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 5,
+      "characters": 606,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    },
+    {
+      "case": "batch",
+      "mode": "SCRIPT_ONLY",
+      "repetition": 1,
+      "step": 6,
+      "characters": 480,
+      "manualLoop": true,
+      "sleep": true,
+      "state": false
+    }
+  ]
+}

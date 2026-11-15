@@ -10,6 +10,7 @@ data class UiNode(
     val bounds: Bounds? = null,
     val resourceId: String = "", val className: String = "", val parentId: Int? = null,
     val enabled: Boolean = true, val checked: Boolean? = null, val selected: Boolean = false,
+    val rawText: String? = null,
 )
 
 data class Bounds(val left: Int, val top: Int, val right: Int, val bottom: Int) {

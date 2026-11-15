@@ -73,16 +73,16 @@ class InspectionFlowTest {
                     com.wukong.phone.script.JsSession(c, Cancellation(), control, trace).use { scripts ->
                         val code = """
                             state.keyword = '蓝牙耳机';
-                            wukong.waitUntil({resourceId:'android:id/button1', enabled:true});
-                            wukong.input({resourceId:'android:id/edit'}, state.keyword);
-                            wukong.tap({resourceId:'android:id/button1'});
+                            wukong.setText(wukong.id('android:id/edit'), state.keyword);
+                            if (!wukong.setText(wukong.id('android:id/edit'), state.keyword).noOp) throw new Error('Repeated input');
+                            wukong.tap(wukong.id('android:id/button1'), {timeoutMs:2000});
                             const before = wukong.observe();
                             let events = 0;
                             const unsubscribe = wukong.events.onChange(() => events++);
                             wukong.events.next({after:before,timeoutMs:2000});
                             unsubscribe();
-                            const ready = wukong.waitUntil({textContains:'蓝牙耳机，找到 3 件商品'});
-                            if (ready.verification.state !== 'met') throw new Error('结果未出现');
+                            const ready = wukong.waitAny({success:wukong.textContains('蓝牙耳机，找到 3 件商品'),error:wukong.textContains('查询失败')});
+                            if (ready.key !== 'success') throw new Error('结果未出现');
                             state.events = events;
                             return wukong.query({textContains:'蓝牙耳机，找到 3 件商品'});
                         """.trimIndent()

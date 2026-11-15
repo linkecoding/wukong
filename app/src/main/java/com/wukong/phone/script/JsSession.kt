@@ -12,6 +12,7 @@ import com.wukong.core.Cancellation
 import com.wukong.core.ExecutionControl
 import com.wukong.core.ScriptHost
 import com.wukong.core.ScriptRunner
+import com.wukong.core.ScriptCallFailure
 import com.wukong.phone.RunLog
 import org.json.JSONObject
 import java.util.concurrent.CompletableFuture
@@ -77,7 +78,7 @@ class JsSession(context: Context, private val cancellation: Cancellation, privat
                 guard()
                 val call = calls.poll(40, TimeUnit.MILLISECONDS) ?: continue
                 val reply = try { JSONObject().put("ok", true).put("result", phone.call(call.method, JSONObject(call.arguments))) }
-                    catch (error: Exception) { fatal = error; JSONObject().put("ok", false).put("error", error.message.orEmpty().take(1000)) }
+                    catch (error: Exception) { fatal = error; JSONObject().put("ok", false).put("error", if (error is ScriptCallFailure) JSONObject(error.diagnostic) else error.message.orEmpty().take(1000)) }
                 call.answer.complete(reply.toString())
                 if (fatal != null) throw fatal
             }
@@ -95,7 +96,7 @@ class JsSession(context: Context, private val cancellation: Cancellation, privat
             return value
         } catch (error: Exception) {
             state = "{}"
-            trace?.record("script_error", JSONObject().put("message", error.message.orEmpty().take(2000)).put("durationMs", SystemClock.elapsedRealtime() - started).put("calls", phone.calls))
+            trace?.record("script_error", JSONObject().put("message", error.message.orEmpty().take(2000)).put("durationMs", SystemClock.elapsedRealtime() - started).put("calls", phone.calls).apply { if (error is ScriptCallFailure) put("diagnostic", JSONObject(error.diagnostic)) })
             throw error
         } finally {
             synchronized(gate) {

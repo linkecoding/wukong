@@ -57,7 +57,7 @@ fun JSONObject.toScreen(): Screen = Screen(getString("package"), getString("fing
 private fun JSONArray.toNodes() = (0 until length()).map { index -> getJSONObject(index).let {
     UiNode(it.getInt("id"), it.getString("text"), it.getBoolean("editable"), it.getBoolean("clickable"), it.getBoolean("scrollable"), it.getBoolean("sensitive"), it.optJSONObject("bounds")?.toBounds(),
         it.optString("resourceId"), it.optString("className"), if (it.isNull("parentId")) null else it.getInt("parentId"),
-        it.optBoolean("enabled", true), if (it.isNull("checked")) null else it.getBoolean("checked"), it.optBoolean("selected"))
+        it.optBoolean("enabled", true), if (it.isNull("checked")) null else it.getBoolean("checked"), it.optBoolean("selected"), if (it.isNull("rawText")) null else it.getString("rawText"))
 } }
 fun JSONObject.toBounds() = Bounds(getInt("left"), getInt("top"), getInt("right"), getInt("bottom"))
 fun Action.toJson(): JSONObject = JSONObject().apply {

@@ -92,4 +92,110 @@ class JsRuntimeTest {
         }
     }
 
+    @Test fun explicitSelectorsAndNamedOutcomesKeepSnapshotEvidence() {
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            assertEquals("one", js.run("return wukong.waitAny({success:wukong.text('absent'),error:wukong.text('结果就绪')}).fingerprint;", host))
+            val outcome = JSONObject(js.run("return wukong.waitAny({success:wukong.text('absent'),error:wukong.text('结果就绪')});", host))
+            assertEquals("error", outcome.getString("key")); assertFalse(outcome.getBoolean("timedOut"))
+            assertEquals("结果就绪", outcome.getJSONArray("matches").getJSONObject(0).getString("text"))
+            assertEquals("true", js.run("return wukong.exists(wukong.select({enabled:true}).text('结果就绪'));", host))
+            assertEquals("false", js.run("return wukong.exists(wukong.text('absent'));", host))
+            val timeout = JSONObject(js.run("return wukong.waitAny({missing:wukong.text('absent')},{timeoutMs:200});", host))
+            assertTrue(timeout.getBoolean("timedOut")); assertTrue(timeout.isNull("key"))
+            val unknownHost = object : ScriptHost {
+                override fun observe() = host.observe().copy(truncated = true)
+                override fun execute(action: Action, expected: Screen): String = error("No mutation")
+            }
+            assertEquals("null", js.run("return wukong.exists(wukong.text('absent'));", unknownHost))
+            val missing = JSONObject(js.run("return wukong.waitGone(wukong.text('absent'),{timeoutMs:200});", unknownHost))
+            assertEquals("unknown", missing.getJSONObject("verification").getString("state"))
+        }
+    }
+    @Test fun malformedSelectorsOptionsAndPredicatesFailBeforeHostMutation() {
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            for (code in listOf(
+                "wukong.query({recourceId:'demo:id/value'});",
+                "wukong.query(wukong.text('x'),{offest:1});",
+                "wukong.tap(wukong.text('x'),{timeuotMs:1});",
+                "wukong.waitUntil(()=>true);",
+                "wukong.query({enabled:'true'});",
+                "wukong.waitUntil({conditions:[{textEquals:'x'}],timeuotMs:100});"
+            )) assertNotNull(code, runCatching { js.run(code, host) }.exceptionOrNull())
+            val wrongType = runCatching { js.run("wukong.tap(wukong.text('结果就绪'),{timeoutMs:'3000'});", host) }.exceptionOrNull()
+            assertTrue(wrongType?.message.orEmpty().contains("INVALID_ARGUMENT"))
+        }
+    }
+    @Test fun actionsWaitForReadinessAndDesiredStatesAreNotAppliedTwice() {
+        var reads = 0; var injections = 0; var value = "old"; var checked = true
+        val changing = object : ScriptHost {
+            override fun observe(): Screen {
+                reads++
+                return Screen("demo.app", "f$reads", listOf(
+                    UiNode(1, "$value hint", editable = true, resourceId = "demo.app:id/input", rawText = value),
+                    UiNode(2, "Continue", clickable = true, enabled = reads >= 3, resourceId = "demo.app:id/next"),
+                    UiNode(3, "Opt in", clickable = true, checked = checked, resourceId = "demo.app:id/check")
+                ))
+            }
+            override fun execute(action: Action, expected: Screen): String {
+                injections++
+                when (action) { is Action.Input -> value = action.text; is Action.Tap -> if (action.nodeId == 3) checked = !checked; else -> error("Unexpected action") }
+                return "ok"
+            }
+        }
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            js.run("wukong.tap(wukong.id('demo.app:id/next').enabled(true),{timeoutMs:1000});", changing)
+            assertEquals(1, injections); assertTrue(reads >= 3)
+            assertEquals("true", js.run("return wukong.setText(wukong.id('demo.app:id/input'),'new').verified;", changing))
+            assertEquals("true", js.run("return wukong.setText(wukong.id('demo.app:id/input'),'new').noOp;", changing))
+            assertEquals("true", js.run("return wukong.setChecked(wukong.id('demo.app:id/check'),false).verified;", changing))
+            assertEquals("true", js.run("return wukong.setChecked(wukong.id('demo.app:id/check'),false).noOp;", changing))
+            assertEquals(3, injections); assertEquals("new", value); assertFalse(checked)
+        }
+    }
+    @Test fun duplicateTargetsFailWithoutInputAndPartialEffectsAreReported() {
+        var injections = 0
+        val duplicate = object : ScriptHost {
+            override fun observe() = Screen("demo.app", "f", listOf(UiNode(1,"Same",clickable=true), UiNode(2,"Same",clickable=true)))
+            override fun execute(action: Action, expected: Screen): String { injections++; return "ok" }
+        }
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            val error = runCatching { js.run("wukong.tap(wukong.text('Same'));", duplicate) }.exceptionOrNull() as ScriptCallFailure
+            val detail = JSONObject(error.diagnostic)
+            assertEquals("AMBIGUOUS_TARGET", detail.getString("code")); assertFalse(detail.getBoolean("accepted")); assertEquals(0, injections)
+            val partial = object : ScriptHost {
+                override fun observe() = Screen("demo.app", "f", listOf(UiNode(1,"Ready",clickable=true)))
+                override fun execute(action: Action, expected: Screen): String { injections++; return "ok" }
+            }
+            val failure = runCatching { js.run("wukong.tap('Ready'); wukong.tap('Missing',{timeoutMs:0});", partial) }.exceptionOrNull() as ScriptCallFailure
+            val report = JSONObject(failure.diagnostic)
+            assertEquals("NOT_FOUND", report.getString("code")); assertEquals(1, report.getInt("acceptedCount"))
+            assertEquals(1, report.getJSONArray("completed").length()); assertEquals(1, injections)
+        }
+    }
+    @Test fun acceptedButUnverifiedStateStopsWithoutRepeatingTheMutation() {
+        var injections = 0
+        val unchanged = object : ScriptHost {
+            override fun observe() = Screen("demo.app", "f", listOf(UiNode(1,"Old hint",editable=true,resourceId="demo.app:id/input",rawText="Old")))
+            override fun execute(action: Action, expected: Screen): String { injections++; return "ok" }
+        }
+        JsSession(context, Cancellation(), ExecutionControl()).use { js ->
+            val failure = runCatching { js.run("try { wukong.setText(wukong.id('demo.app:id/input'),'New'); } catch(e) {} wukong.home();", unchanged) }.exceptionOrNull() as ScriptCallFailure
+            val report = JSONObject(failure.diagnostic)
+            assertEquals("OUTCOME_UNKNOWN", report.getString("code")); assertTrue(report.getBoolean("accepted")); assertEquals(1, injections)
+        }
+    }
+    @Test fun takeoverDuringReadinessWaitStopsBeforeInjection() {
+        val control = ExecutionControl(); var injections = 0
+        val disabled = object : ScriptHost {
+            override fun observe() = Screen("demo.app", "f", listOf(UiNode(1,"Wait",clickable=true,enabled=false)))
+            override fun execute(action: Action, expected: Screen): String { injections++; return "ok" }
+        }
+        JsSession(context, Cancellation(), control).use { js ->
+            val thread = Thread { Thread.sleep(200); control.pause(true) }.apply { start() }
+            try { assertNotNull(runCatching { js.run("wukong.tap('Wait',{timeoutMs:5000});", disabled) }.exceptionOrNull()) }
+            finally { thread.join(); control.pause(false) }
+            assertEquals(0, injections)
+        }
+    }
+
 }

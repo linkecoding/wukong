@@ -464,7 +464,7 @@ public final class Main {
             Rect bounds = new Rect(); node.getBoundsInScreen(bounds);
             signature.append('|').append(parentId).append(':').append(node.isCheckable()).append(':').append(node.getViewIdResourceName()).append(':').append(node.getClassName()).append(':').append(bounds.toShortString()).append(':').append(text).append(':').append(clickable).append(editable).append(scrollable).append(':').append(node.isEnabled()).append(':').append(node.isChecked()).append(':').append(node.isSelected());
             int id = output.length() + 1; tree.nodes.put(id, node); currentParent = id;
-            output.put(new JSONObject().put("id", id).put("text", text).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable).put("sensitive", sensitive)
+            output.put(new JSONObject().put("id", id).put("text", text).put("rawText", sensitive ? "[受保护内容]" : node.getText() == null ? "" : node.getText().toString().substring(0, Math.min(300, node.getText().length()))).put("editable", editable).put("clickable", clickable).put("scrollable", scrollable).put("sensitive", sensitive)
                 .put("resourceId", node.getViewIdResourceName() == null ? "" : node.getViewIdResourceName()).put("className", String.valueOf(node.getClassName()))
                 .put("parentId", parentId == null ? JSONObject.NULL : parentId).put("enabled", node.isEnabled())
                 .put("checked", node.isCheckable() ? node.isChecked() : JSONObject.NULL).put("selected", node.isSelected())
