@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.view.WindowInsets
 import android.widget.*
 import org.json.JSONObject
 import java.util.concurrent.Executors
@@ -48,17 +47,12 @@ class SetupActivity : LocalizedActivity() {
         val scroll = ScrollView(this).apply { addView(body); isFillViewport = true }
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
         actionBar = ui.column().apply {
+            id = R.id.setup_actions
             setPadding(ui.dp(24), ui.dp(12), ui.dp(24), ui.dp(12))
             background = WukongUi.shape(this@SetupActivity, R.color.surface, 0)
         }
         root.addView(actionBar)
-        root.setOnApplyWindowInsetsListener { v, insets ->
-            if (android.os.Build.VERSION.SDK_INT >= 30) {
-                val bars = insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime())
-                v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-            }
-            insets
-        }
+        PageInsets.bind(root, scroll, actionBar)
         setContentView(root)
         WirelessActivation.listen(changed)
         discovery = WirelessDiscovery(this) { pairing, port ->

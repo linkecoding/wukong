@@ -39,7 +39,7 @@ System sans-serif: regular body, medium buttons, bold headings, upright througho
 
 ## Interaction
 
-Native ripple feedback and immediate focus indication. No decorative motion; no custom animation dependent on motion preferences. Disabled actions have native disabled state plus distinct text and fill. Task phases, failure, manual takeover, and approval are expressed in text as well as color. The stop action appears during a task. Sensitive approval semantics remain unchanged.
+Page footers stay fixed at the viewport bottom and are naturally covered by the keyboard. Only the scrollable form avoids the keyboard; footer visibility stays unchanged. Native ripple feedback and immediate focus indication. No decorative motion; no custom animation dependent on motion preferences. Disabled actions have native disabled state plus distinct text and fill. Task phases, failure, manual takeover, and approval are expressed in text as well as color. The stop action appears during a task. Sensitive approval semantics remain unchanged.
 
 ## Language and voice
 

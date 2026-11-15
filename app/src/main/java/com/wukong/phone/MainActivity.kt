@@ -14,7 +14,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
-import android.view.WindowInsets
 import android.widget.*
 import com.wukong.core.Phase
 import org.json.JSONObject
@@ -65,16 +64,6 @@ class MainActivity : LocalizedActivity() {
         taskOptionsOpen = savedInstanceState?.getBoolean("task_options", false) ?: false
         selectedPackage = savedInstanceState?.getString("package") ?: TaskDraftStore(this).packageName()
         root = column().apply { setBackgroundColor(color(R.color.paper)) }
-        root.setOnApplyWindowInsetsListener { view, insets ->
-            if (android.os.Build.VERSION.SDK_INT >= 30) {
-                val bars = insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.ime())
-                view.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-            } else {
-                @Suppress("DEPRECATION")
-                view.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop, insets.systemWindowInsetRight, insets.systemWindowInsetBottom)
-            }
-            insets
-        }
         appHeader = row()
         showBrandHeader()
         root.addView(appHeader)
@@ -86,8 +75,9 @@ class MainActivity : LocalizedActivity() {
         }.apply { orientation = LinearLayout.VERTICAL; setPadding(dp(24), dp(16), dp(24), dp(32)) }
         pageScroll.addView(body, FrameLayout.LayoutParams(-1, -2, Gravity.CENTER_HORIZONTAL))
         root.addView(pageScroll, LinearLayout.LayoutParams(-1, 0, 1f))
-        root.addView(View(this).apply { setBackgroundColor(color(R.color.line)) }, LinearLayout.LayoutParams(-1, dp(1)))
-        val navigation = row().apply { setPadding(dp(12), dp(4), dp(12), dp(4)); setBackgroundColor(color(R.color.surface)) }
+        val navigationDivider = View(this).apply { setBackgroundColor(color(R.color.line)) }
+        root.addView(navigationDivider, LinearLayout.LayoutParams(-1, dp(1)))
+        val navigation = row().apply { id = R.id.main_navigation; setPadding(dp(12), dp(4), dp(12), dp(4)); setBackgroundColor(color(R.color.surface)) }
         listOf(Triple(0, R.string.ui_tasks, R.drawable.ic_nav_tasks), Triple(1, R.string.ui_history, R.drawable.ic_nav_history),
             Triple(2, R.string.ui_settings, R.drawable.ic_nav_settings)).forEach { (index, label, icon) ->
             val item = button(getString(label), primary = false) { navigate(index) }.apply {
@@ -99,6 +89,7 @@ class MainActivity : LocalizedActivity() {
             navigation.addView(item, LinearLayout.LayoutParams(0, -2, 1f))
         }
         root.addView(navigation)
+        PageInsets.bind(root, pageScroll, navigation)
         setContentView(root)
         if (android.os.Build.VERSION.SDK_INT >= 33) onBackInvokedDispatcher.registerOnBackInvokedCallback(0) { detailBack?.invoke() ?: finish() }
         TaskRuntime.listen(listener)
