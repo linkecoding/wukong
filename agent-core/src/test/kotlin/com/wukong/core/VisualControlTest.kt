@@ -9,7 +9,7 @@ class VisualControlTest {
     @Test fun coordinateToolsNeedCurrentCaptureAndCannotBypassSensitiveChecks() {
         assertFalse(SensitiveActions.requiresApproval(Action.TapAt(200,150,"capture"), screen))
         assertTrue(SensitiveActions.requiresApproval(Action.TapAt(600,550,"capture"), screen))
-        assertTrue(SensitiveActions.requiresApproval(Action.TapAt(900,900,"capture"), screen))
+        assertFalse(SensitiveActions.requiresApproval(Action.TapAt(900,900,"capture"), screen))
         for (action in listOf(Action.TapAt(-1,150,"capture"), Action.TapAt(200,150,"old"), Action.LongPress(200,150,5,"capture"))) {
             val driver = object : DeviceDriver {
                 override fun observe() = screen

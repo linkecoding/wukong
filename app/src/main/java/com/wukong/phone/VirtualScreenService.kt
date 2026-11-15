@@ -89,7 +89,7 @@ class VirtualScreenService : LocalizedService() {
         }
     }
     internal fun updateOverlay() {
-        val visible = !closed && !VirtualScreenState.foreground && VirtualScreenState.displayId > 0 && Settings.canDrawOverlays(this)
+        val visible = !closed && !VirtualScreenState.foreground && !VirtualScreenState.floatingDismissed && VirtualScreenState.displayId > 0 && Settings.canDrawOverlays(this)
         if (!visible) { hideOverlay(); return }
         if (overlay != null) return
         // A Service's default resources can follow the virtual display's config.
@@ -111,6 +111,7 @@ class VirtualScreenService : LocalizedService() {
         try { manager.addView(panel, params); overlay = panel; overlayManager = manager }
         catch (error: Exception) { VirtualScreenState.message = error.message ?: getString(R.string.ui_could_not_show_floating_preview) }
     }
+    internal fun closeFloatingPreview() { VirtualScreenState.dismissFloatingPreview(); hideOverlay() }
     private fun hideOverlay() { overlay?.let { runCatching { overlayManager?.removeView(it) } }; overlay = null; overlayManager = null }
     override fun onDestroy() {
         closed = true; polling?.cancel(false); hideOverlay()

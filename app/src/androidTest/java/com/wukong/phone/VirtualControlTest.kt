@@ -1,6 +1,8 @@
 package com.wukong.phone
 
 import android.content.Intent
+import android.view.View
+import android.view.inspector.WindowInspector
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.wukong.core.Phase
@@ -40,6 +42,17 @@ class VirtualControlTest {
             }
             await { VirtualScreenState.manual }
             assertTrue(TaskRuntime.active); assertEquals(Phase.PAUSED,TaskRuntime.event.phase)
+            instrumentation.runOnMainSync { activity.moveTaskToBack(true) }
+            await { VirtualScreenState.service!!.floatingVisible }
+            instrumentation.runOnMainSync {
+                val close = WindowInspector.getGlobalWindowViews().firstNotNullOfOrNull { it.findViewById<View>(R.id.virtual_preview_close) }
+                assertNotNull(close); close!!.performClick()
+            }
+            await { !VirtualScreenState.service!!.floatingVisible }
+            assertTrue("Closing the preview must not stop an active task", TaskRuntime.active)
+            assertEquals(id, VirtualScreenState.displayId); assertTrue(VirtualScreenState.manual)
+            instrumentation.runOnMainSync { context.startActivity(Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)) }
+            await { VirtualScreenState.foreground }
             ShellClient(context).request("manualInput",JSONObject().put("kind","home"))
             Thread.sleep(600)
             assertTrue("接管期间 Agent 不能结束或继续执行",TaskRuntime.active)

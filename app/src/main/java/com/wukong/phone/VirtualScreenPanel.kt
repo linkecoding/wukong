@@ -17,7 +17,20 @@ class VirtualScreenPanel(context: Context, private val compact: Boolean = false)
     var onDrag: ((Float, Float) -> Unit)? = null
     init {
         orientation = VERTICAL; setPadding(dp(8), dp(8), dp(8), dp(8)); background = WukongUi.shape(context, R.color.surface, 16, R.color.line)
-        status.textSize = if (compact) 11f else 14f; status.setTextColor(context.getColor(R.color.ink)); addView(status)
+        status.textSize = if (compact) 11f else 14f; status.setTextColor(context.getColor(R.color.ink))
+        if (compact) {
+            val header = LinearLayout(context).apply { gravity = android.view.Gravity.CENTER_VERTICAL }
+            header.addView(status, LayoutParams(0, -2, 1f))
+            header.addView(ImageButton(context).apply {
+                id = R.id.virtual_preview_close
+                setImageResource(R.drawable.ic_close); contentDescription = context.getString(R.string.ui_close_floating_preview)
+                background = WukongUi.shape(context, R.color.paper, 12)
+                setPadding(dp(12), dp(12), dp(12), dp(12))
+                imageTintList = android.content.res.ColorStateList.valueOf(context.getColor(R.color.ink))
+                setOnClickListener { VirtualScreenState.service?.closeFloatingPreview() }
+            }, LayoutParams(dp(48), dp(48)))
+            addView(header)
+        } else addView(status)
         if (compact) {
             var lastX = 0f; var lastY = 0f
             status.setOnTouchListener { _, event ->

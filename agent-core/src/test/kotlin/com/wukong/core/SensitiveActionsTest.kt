@@ -25,13 +25,41 @@ class SensitiveActionsTest {
     }
 
     @Test fun consequentialButtonsAndTheirConfirmationPagesRequireApproval() {
-        for (text in listOf("立即支付", "删除文件", "Delete", "清空回收站", "发送", "发布", "权限设置")) {
+        for (text in listOf("立即支付", "删除文件", "Delete", "清空回收站", "清除数据", "恢复出厂设置", "确认转账", "卸载应用")) {
             assertTrue(text, SensitiveActions.requiresApproval(Action.Tap(1), screen(text)))
         }
         assertTrue(SensitiveActions.requiresApproval(Action.Tap(1), screen("确定", "永久删除文件，不可恢复")))
         assertTrue(SensitiveActions.requiresApproval(Action.Tap(1), screen("继续", "付款金额 100 元")))
         assertTrue(SensitiveActions.requiresApproval(Action.Tap(1), screen("", "确认转账")))
         assertFalse(SensitiveActions.requiresApproval(Action.Tap(1), screen("搜索", "删除的文件")))
+    }
+
+    @Test fun routineCommunicationPermissionsAndSettingsAreAlreadyAuthorized() {
+        for (text in listOf("发送", "发布", "分享", "上传", "允许", "授权", "安装", "开启", "权限设置", "安全设置", "退出登录", "订阅频道", "删除文字", "清空输入框", "支付方式", "付款记录", "删除文件的方法", "Transfer files", "Payment settings", "Send", "Allow")) {
+            assertFalse(text, SensitiveActions.requiresApproval(Action.Tap(1), screen(text)))
+        }
+        assertFalse(SensitiveActions.requiresApproval(Action.Input(1, "100"), screen("转账金额")))
+        assertFalse(SensitiveActions.requiresApproval(Action.Tap(1), screen("允许", "请允许相机权限")))
+        assertFalse(SensitiveActions.requiresApproval(Action.Tap(1), screen("确定", "安全设置：通知权限")))
+        assertFalse(SensitiveActions.requiresApproval(Action.Tap(1), screen("确定", "删除文件的方法")))
+    }
+
+    @Test fun coordinateApprovalUsesTheLocalTargetRatherThanUnrelatedPageWords() {
+        val state = Screen("demo.app", "one", listOf(
+            UiNode(1,"支付、删除、权限设置",bounds=Bounds(0,0,1000,1000)),
+            UiNode(2,"发送",clickable=true,bounds=Bounds(100,100,300,200)),
+            UiNode(3,"立即支付",clickable=true,bounds=Bounds(500,500,800,600))
+        ))
+        assertFalse(SensitiveActions.requiresApproval(Action.TapAt(200,150,"c"), state))
+        assertTrue(SensitiveActions.requiresApproval(Action.TapAt(600,550,"c"), state))
+        assertFalse(SensitiveActions.requiresApproval(Action.TapAt(900,900,"c"), state))
+        assertFalse(SensitiveActions.requiresApproval(Action.Swipe(200,200,200,800,350,"c"), state))
+        assertTrue(SensitiveActions.requiresApproval(Action.Swipe(200,200,800,200,350,"c"), screen("滑动确认支付")))
+        val nested = Screen("demo.app", "one", listOf(UiNode(1,"",clickable=true,bounds=Bounds(100,100,400,200)), UiNode(2,"立即支付",parentId=1,bounds=Bounds(180,130,320,170))))
+        assertTrue(SensitiveActions.requiresApproval(Action.Tap(1), nested))
+        assertTrue(SensitiveActions.requiresApproval(Action.TapAt(110,110,"c"), nested))
+        val dialog = screen("", "永久删除文件，不可恢复")
+        assertTrue(SensitiveActions.requiresApproval(Action.TapAt(900,900,"c"), dialog))
     }
 
     @Test fun refusingPaymentDoesNotExecute() {

@@ -20,7 +20,7 @@ The app follows your **system language** by default (Chinese or English, with En
 
 - **Work across apps.** Launch apps, read UI elements, enter text, scroll, and navigate system screens. The starting app is optional.
 - **See beyond UI elements.** Screenshots, on-device PP-OCRv6 tiny OCR, coordinate taps, long presses, and swipes supplement structured UI automation.
-- **Watch and take over.** Run on the main display or a virtual display. Its preview is embedded in Wukong and floats when Wukong goes into the background. Manual takeover pauses the agent; handing back control triggers a fresh observation.
+- **Watch and take over.** Run on the main display or a virtual display. Its preview is embedded in Wukong and floats when Wukong goes into the background. Close the floating preview without stopping the task; return to Wukong and leave again to show it. Manual takeover pauses the agent; handing back control triggers a fresh observation.
 - **Bring your own model.** Connect a tool-calling Chat Completions compatible endpoint. Configure any HTTPS base URL or an exact request URL. Thinking is off by default where supported; models that require thinking are identified in the UI.
 - **Program short workflows.** The model can use embedded QuickJS JavaScript for loops, conditions, UI-change listeners and phone operations, with explicit selectors, named outcome waits and desired-state setters. Each action retains local approvals and takeover checks. See [the JS runtime](docs/architecture/javascript-runtime.md).
 - **Wait for results and verify outcomes.** Query matching controls or regions, wait for result/error conditions, and check fresh evidence before reporting success. See [query and verification behavior](docs/architecture/condition-tools.md).
@@ -47,7 +47,7 @@ Android 10 can use the development USB activation script, but cannot use the bui
 
 ## You stay in control
 
-Routine actions run automatically. Actions identified as sensitive—such as payment, deletion, sending or publishing, and security authorization—require local confirmation. This detection is heuristic and cannot recognize every sensitive control. Stop controls remain available; actions already accepted by Android cannot be undone. Passwords, verification codes, and device unlock require manual handling.
+Routine actions run automatically. Only payments/transfers and destructive operations such as deleting files, erasing app data or resetting the device require local confirmation. Sending, publishing, sharing and routine permission changes proceed autonomously when needed for your task. This detection is heuristic and cannot recognize every sensitive control. Stop controls remain available; actions already accepted by Android cannot be undone. Passwords, verification codes, and device unlock require manual handling.
 
 OCR runs locally, but **model inference uses your configured provider**. Task goals, app lists, and relevant UI text are sent to that provider; using the screenshot tool also sends the captured image. This is not a fully offline agent. API keys and ADB identities are encrypted with Android Keystore. History and logs stay on the device; logs omit API keys and full screenshots / UI trees. The app retains up to 30 history entries and 20 logs of up to 512 KB each.
 

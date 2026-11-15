@@ -16,7 +16,7 @@
     <string name="ui_no_apps_available">没有可操作的应用</string>
     <string name="ui_your_task">你想做什么</string>
     <string name="ui_e_g_open_settings_and_tell_me_the_android_version">例如：搜索无线耳机，告诉我前几条结果</string>
-    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_your_app">普通操作自动执行；支付、删除等敏感操作需你确认，可随时停止。</string>
+    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_your_app">普通操作自动执行；仅支付、删除数据等高危操作需确认，可随时停止。</string>
     <string name="ui_run_task">开始任务</string>
     <string name="ui_stop_task">停止当前任务</string>
     <string name="ui_activity">执行记录</string>
@@ -144,7 +144,7 @@
     <string name="ui_stop_assistant">结束助手</string>
     <string name="ui_wukong_tasks">悟空任务</string>
     <string name="ui_wukong_task_controls">悟空任务控制</string>
-    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_approval">普通操作自动执行，敏感操作需确认；可随时停止</string>
+    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_approval">普通操作自动执行；仅支付、删除数据等高危操作需确认，可随时停止。</string>
     <string name="ui_stop">停止</string>
     <string name="ui_allow_once">允许一次</string>
     <string name="ui_decline">拒绝</string>
@@ -219,7 +219,7 @@
     <string name="status_51">模型未按要求完成工具调用测试，没有执行设备动作</string>
     <string name="device_controls">设备与控制</string>
     <string name="language_system">跟随系统</string>
-    <string name="ui_brief_approval">敏感操作前，会向你确认。</string>
+    <string name="ui_brief_approval">仅支付、删除数据等高危操作需要确认。</string>
     <string name="ui_brief_logs">记录工具调用和 Token 用量，仅保存在本机。</string>
     <string name="ui_show_details">查看详情</string>
     <string name="ui_hide_details">收起详情</string>
@@ -258,4 +258,5 @@
     <string name="ui_inspection_result">查询与条件结果</string>
     <string name="ui_completion_verification">任务完成验证</string>
     <string name="ui_script_execution">JS 短流程</string>
+    <string name="ui_close_floating_preview">关闭悬浮预览</string>
 </resources>

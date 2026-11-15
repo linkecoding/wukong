@@ -16,7 +16,7 @@
     <string name="ui_no_apps_available">No apps available</string>
     <string name="ui_your_task">Your task</string>
     <string name="ui_e_g_open_settings_and_tell_me_the_android_version">e.g. Open Settings and tell me the Android version</string>
-    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_your_app">Routine actions run automatically. Sensitive actions need your approval. Stop anytime.</string>
+    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_your_app">Routine actions run automatically. Only payments and destructive operations need approval. Stop anytime.</string>
     <string name="ui_run_task">Run task</string>
     <string name="ui_stop_task">Stop task</string>
     <string name="ui_activity">Activity</string>
@@ -144,7 +144,7 @@
     <string name="ui_stop_assistant">Stop assistant</string>
     <string name="ui_wukong_tasks">Wukong tasks</string>
     <string name="ui_wukong_task_controls">Wukong task controls</string>
-    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_approval">Routine actions run automatically. Sensitive actions need approval. Stop anytime.</string>
+    <string name="ui_routine_actions_run_automatically_sensitive_actions_need_approval">Routine actions run automatically. Only payments and destructive operations need approval. Stop anytime.</string>
     <string name="ui_stop">Stop</string>
     <string name="ui_allow_once">Allow once</string>
     <string name="ui_decline">Decline</string>
@@ -219,7 +219,7 @@
     <string name="status_51">The model did not complete the tool-call test. No device action was performed.</string>
     <string name="device_controls">Device &amp; controls</string>
     <string name="language_system">Follow system</string>
-    <string name="ui_brief_approval">Sensitive actions ask for confirmation.</string>
+    <string name="ui_brief_approval">Only payments and destructive operations ask for confirmation.</string>
     <string name="ui_brief_logs">Tool calls and token usage, saved on this phone.</string>
     <string name="ui_show_details">Inspect details</string>
     <string name="ui_hide_details">Hide details</string>
@@ -248,4 +248,5 @@
     <string name="ui_inspection_result">Query / condition result</string>
     <string name="ui_completion_verification">Completion verification</string>
     <string name="ui_script_execution">JavaScript workflow</string>
+    <string name="ui_close_floating_preview">Close floating preview</string>
 </resources>

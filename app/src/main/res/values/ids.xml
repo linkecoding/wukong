@@ -16,4 +16,5 @@
     <item name="model_page_menu" type="id"/>
     <item name="main_navigation" type="id"/>
     <item name="setup_actions" type="id"/>
+    <item name="virtual_preview_close" type="id" />
 </resources>

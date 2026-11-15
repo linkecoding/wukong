@@ -111,11 +111,11 @@ class MainActivity : LocalizedActivity() {
     override fun onResume() { super.onResume();
         val expectedLanguage = Locale.forLanguageTag(UiLanguage.effectiveCode(this)).language
         if (resources.configuration.locales[0].language != expectedLanguage) { recreate(); return }
-        VirtualScreenState.foreground(true); refreshShell(); if (tab == 0 && ::status.isInitialized) updateTask()
+        refreshShell(); if (tab == 0 && ::status.isInitialized) updateTask()
         else if (tab == 2 && detailBack == null) { body.removeAllViews(); settingsPage() } }
     override fun onStop() {
         if (tab == 0 && ::goalInput.isInitialized) draft = goalInput.text.toString()
-        VirtualScreenState.foreground(false); super.onStop()
+        super.onStop()
     }
     override fun onNewIntent(intent: Intent) { super.onNewIntent(intent); refreshShell() }
     override fun onSaveInstanceState(out: Bundle) {

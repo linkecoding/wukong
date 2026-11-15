@@ -34,6 +34,9 @@ object UiLanguage {
 }
 
 abstract class LocalizedActivity : Activity() {
+    override fun onStart() { super.onStart(); VirtualScreenState.activityStarted(this) }
+    override fun onStop() { VirtualScreenState.activityStopped(this); super.onStop() }
+    override fun onDestroy() { VirtualScreenState.activityStopped(this); super.onDestroy() }
     override fun attachBaseContext(newBase: Context) = super.attachBaseContext(UiLanguage.wrap(newBase))
 }
 
