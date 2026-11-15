@@ -65,7 +65,7 @@ object WukongUi {
             setPadding(dp(context, 12), dp(context, 10), dp(context, 12), dp(context, 10))
         }
         override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getView(position, convertView, parent)).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; gravity = android.view.Gravity.END or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END }
-        override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent)).apply { gravity = android.view.Gravity.END or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END }
+        override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent)).apply { gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START }
     }
 
     fun actionRow(context: Context, label: String, icon: Int? = null, action: () -> Unit) = button(context, label, false, action).apply {

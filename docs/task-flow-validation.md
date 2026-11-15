@@ -31,7 +31,7 @@ Screenshots document the tested Pixel 6. Other Android/vendor behaviors and app-
 
 ## Interaction polish and single-run export
 
-- Spinner values and dropdown items align to the trailing edge. Setup/connection back actions use a 48 dp arrow-only button with an accessible label.
+- Selected spinner values align to the trailing edge; expanded dropdown items retain leading alignment. Setup/connection back actions use a 48 dp arrow-only button with an accessible label.
 - A successful model test saves settings and stays on the model screen. A visible success message confirms it; edits invalidate the result. First-time setup requires an explicit Continue action after testing. Returning to Settings updates the model summary.
 - Dialogs share a cream surface, 24 dp corners, a distinct title, muted body text, consistent spacing and 48 dp actions.
 - Task and connection-run menus export one immutable ZIP snapshot containing manifest.json and events.jsonl. Export reads the complete bounded log beyond the 1,000-event UI preview. Known API keys and structured credential fields are redacted; arbitrary task text still needs user review.
