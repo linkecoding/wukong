@@ -245,4 +245,14 @@
     <string name="ui_completed">已完成</string>
     <string name="ui_usage_note">仅累计服务商返回的用量，缺失部分不估算。</string>
     <string name="ui_preparation">准备阶段</string>
+    <string name="setup_saved_success">测试通过，配置已保存。</string>
+    <string name="setup_next_phone">继续连接手机</string>
+    <string name="export_run">导出本次日志</string>
+    <string name="export_title">导出运行日志</string>
+    <string name="export_description">包含任务内容、工具调用、结果和 token 用量。分享前请检查内容，API key 已隐藏，不包含截图。</string>
+    <string name="export_save">保存文件</string>
+    <string name="export_share">分享</string>
+    <string name="export_saved">日志已保存</string>
+    <string name="export_missing">本次日志已不存在。</string>
+    <string name="export_failed">日志导出失败</string>
 </resources>

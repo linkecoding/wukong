@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name" translatable="false">Wukong</string>
+    <string name="setup_saved_success">Test passed. Configuration saved.</string>
+    <string name="setup_next_phone">Continue to phone setup</string>
+    <string name="export_run">Export this run</string>
+    <string name="export_title">Export run log</string>
+    <string name="export_description">Includes task content, tool calls, results and token usage. Review before sharing. API keys are hidden. No screenshots are included.</string>
+    <string name="export_save">Save file</string>
+    <string name="export_share">Share</string>
+    <string name="export_saved">Log saved</string>
+    <string name="export_missing">This run log is no longer available.</string>
+    <string name="export_failed">Unable to export log</string>
 </resources>

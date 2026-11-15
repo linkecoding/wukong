@@ -41,6 +41,7 @@ android {
     packaging { resources.excludes += setOf("META-INF/versions/9/OSGI-INF/MANIFEST.MF") }
 }
 dependencies {
+    implementation("androidx.core:core:1.15.0")
     implementation(project(":agent-core"))
     implementation(project(":adb-transport"))
     implementation("org.conscrypt:conscrypt-android:2.9.0")

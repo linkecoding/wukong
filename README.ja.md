@@ -10,6 +10,8 @@
 
 <p align="center"><img src="docs/images/onboarding/home-en.png" width="320" alt="Wukong Android task interface" /></p>
 
+問題の報告には **History > タスク > 右上メニュー > Export this run** から ZIP を保存・共有できます。`events.jsonl` と `manifest.json` に実行イベント、アプリ・Android バージョン、端末モデル、イベント数を収録します。スクリーンショットやモデル設定の認証情報は含みません。タスク内容やツール引数・結果は共有前に確認してください。接続診断からも個別にエクスポートできます。
+
 ## 主な機能
 
 - アプリの起動、UI 要素の読み取り、文字入力、スクロール、画面間の移動。

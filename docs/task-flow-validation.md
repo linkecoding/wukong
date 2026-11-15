@@ -28,3 +28,15 @@ New history entries retain the exact trace filename and an explicit association-
 - Debug/release builds and app/shell lint passed. Production source keeps the current version number; this work does not rewrite an existing release tag.
 
 Screenshots document the tested Pixel 6. Other Android/vendor behaviors and app-specific virtual-display restrictions still need broader coverage.
+
+## Interaction polish and single-run export
+
+- Spinner values and dropdown items align to the trailing edge. Setup/connection back actions use a 48 dp arrow-only button with an accessible label.
+- A successful model test saves settings and stays on the model screen. A visible success message confirms it; edits invalidate the result. First-time setup requires an explicit Continue action after testing. Returning to Settings updates the model summary.
+- Dialogs share a cream surface, 24 dp corners, a distinct title, muted body text, consistent spacing and 48 dp actions.
+- Task and connection-run menus export one immutable ZIP snapshot containing manifest.json and events.jsonl. Export reads the complete bounded log beyond the 1,000-event UI preview. Known API keys and structured credential fields are redacted; arbitrary task text still needs user review.
+- Save uses the system document picker; Share grants temporary read access through a narrow FileProvider cache path. Cached snapshots expire after seven days. Cancellation leaves source logs unchanged. Missing logs report an error. Pending save filenames survive activity recreation.
+
+Validation: 12 initial physical Pixel 6 tests passed. After the final changes, 8 targeted tests passed, including a real provider test that remains on the configuration page, editing after success, an archive of 1,008 events, nested credential redaction, exact-run isolation, content-URI reading, missing-log behavior, canceling the export dialog, onboarding, history and bilingual width previews. An actual system document-picker save produced a readable ZIP with all 21 events of the selected task. Debug/release builds and lint passed.
+
+The updated screen review passed with 53 fresh ADB captures, including both languages of the export dialog. The system share sheet opened with a readable ZIP attachment and was dismissed without selecting a recipient. Signed release verification, ZIP alignment and all six arm64 native-library 16 KB checks passed.

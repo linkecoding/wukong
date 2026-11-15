@@ -21,6 +21,7 @@ class SetupActivity : LocalizedActivity() {
     private var connected = false
     private var checking = false
     private var submitting = false
+    private var testedSettings: ModelSettings? = null
     private var phoneStatus: TextView? = null
     private var job: Future<*>? = null
     private var client: ChatModel? = null
@@ -117,6 +118,11 @@ class SetupActivity : LocalizedActivity() {
             val candidate = try { view.candidate() } catch (e: Exception) {
                 view.message.text = UiMessages.text(this, e.message.orEmpty()); return@button
             }
+            if (!modelOnly && candidate == testedSettings) { stage = Stage.PHONE; render(); checkConnection(); return@button }
+            (getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager)
+                .hideSoftInputFromWindow(view.windowToken, 0)
+            view.clearFocus()
+            view.message.setTextColor(getColor(R.color.muted))
             submitting = true; view.setBusy(true); next.isEnabled = false; view.message.setText(R.string.setup_testing)
             val trace = RunLogStore(this).start("connection_test", getString(R.string.ui_model_tool_call_test), candidate)
             val activeClient = ChatModel(candidate, trace = trace); client = activeClient
@@ -128,13 +134,24 @@ class SetupActivity : LocalizedActivity() {
                     submitting = false; view.setBusy(false); next.isEnabled = true
                     result.fold(onSuccess = {
                         runCatching { SettingsStore(this).save(candidate) }.fold(onSuccess = {
-                            if (modelOnly) { setResult(RESULT_OK); finish() }
-                            else { stage = Stage.PHONE; render(); checkConnection() }
+                            testedSettings = candidate
+                            setResult(RESULT_OK)
+                            view.message.setText(R.string.setup_saved_success)
+                            view.message.setTextColor(getColor(R.color.success))
+                            view.message.post { view.message.requestRectangleOnScreen(android.graphics.Rect(0, 0, view.message.width, view.message.height), false) }
+                            if (!modelOnly) next.setText(R.string.setup_next_phone)
                         }, onFailure = { view.message.text = UiMessages.text(this, it.message.orEmpty()) })
                     }, onFailure = { view.message.text = getString(R.string.setup_test_failed) + "\n" + UiMessages.text(this, it.message.orEmpty()) })
                 }
             }
         }.apply { id = R.id.setup_primary }
+        view.onChanged = {
+            if (testedSettings != null && view.candidate(false) != testedSettings) {
+                testedSettings = null
+                view.message.text = ""; view.message.setTextColor(getColor(R.color.muted))
+                next.setText(if (modelOnly) R.string.setup_test_save else R.string.setup_test_continue)
+            }
+        }
         ui.add(actionBar, next)
     }
     private fun checkConnection() {

@@ -38,14 +38,34 @@ object WukongUi {
         }
     }
 
+    fun dialog(context: Context) = object : android.app.AlertDialog.Builder(context, R.style.Theme_Wukong_Dialog) {
+        override fun setTitle(titleId: Int): android.app.AlertDialog.Builder = setTitle(context.getText(titleId))
+        override fun setTitle(title: CharSequence?): android.app.AlertDialog.Builder {
+            setCustomTitle(android.widget.TextView(context).apply {
+                text = title; textSize = 20f; setTextColor(context.getColor(R.color.ink))
+                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+                setPadding(dp(context, 24), dp(context, 24), dp(context, 24), dp(context, 4))
+            })
+            return this
+        }
+        override fun create(): android.app.AlertDialog = super.create().also { dialog ->
+            dialog.create()
+            dialog.findViewById<android.widget.TextView>(android.R.id.message)?.apply {
+                textSize = 15f; setTextColor(context.getColor(R.color.muted))
+                setLineSpacing(dp(context, 4).toFloat(), 1f)
+                setPadding(paddingLeft, dp(context, 8), paddingRight, dp(context, 8))
+            }
+        }
+    }
+
     fun choiceAdapter(context: Context, labels: List<String>) = object : android.widget.ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, labels) {
         private fun style(view: android.view.View) = (view as android.widget.TextView).apply {
             textSize = 15f; setTextColor(context.getColor(R.color.ink))
             minimumHeight = dp(context, 48)
             setPadding(dp(context, 12), dp(context, 10), dp(context, 12), dp(context, 10))
         }
-        override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getView(position, convertView, parent)).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END }
-        override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent))
+        override fun getView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getView(position, convertView, parent)).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; gravity = android.view.Gravity.END or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END }
+        override fun getDropDownView(position: Int, convertView: android.view.View?, parent: android.view.ViewGroup) = style(super.getDropDownView(position, convertView, parent)).apply { gravity = android.view.Gravity.END or android.view.Gravity.CENTER_VERTICAL; textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END }
     }
 
     fun actionRow(context: Context, label: String, icon: Int? = null, action: () -> Unit) = button(context, label, false, action).apply {

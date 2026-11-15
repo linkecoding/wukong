@@ -10,6 +10,7 @@
 
 The app follows your **system language** by default (Chinese or English, with English as the fallback). Settings also offers manual language selection. Project introductions are also available in Japanese.
 
+
 <p align="center">
   <img src="docs/images/onboarding/home-en.png" width="280" alt="Wukong task interface" />
   <img src="docs/images/onboarding/model-en.png" width="280" alt="Model provider setup" />
@@ -21,7 +22,7 @@ The app follows your **system language** by default (Chinese or English, with En
 - **See beyond UI elements.** Screenshots, on-device PP-OCRv6 tiny OCR, coordinate taps, long presses, and swipes supplement structured UI automation.
 - **Watch and take over.** Run on the main display or a virtual display. Its preview is embedded in Wukong and floats when Wukong goes into the background. Manual takeover pauses the agent; handing back control triggers a fresh observation.
 - **Bring your own model.** Connect a tool-calling Chat Completions compatible endpoint. Configure any HTTPS base URL or an exact request URL. Thinking is off by default where supported; models that require thinking are identified in the UI.
-- **Inspect each task.** Open a history card to see its result, provider-reported token usage and grouped execution timeline. Expand an event for the recorded tool arguments and results. Optional logs remain on the phone.
+- **Inspect each task.** Open a history card to see its result, provider-reported token usage and grouped execution timeline. Expand an event for the recorded tool arguments and results. Optional logs remain on the phone. Save or share one run as a ZIP from its top-right menu.
 
 Wukong includes wireless ADB pairing and its execution engine. **No root, enabled AccessibilityService, or companion app is required.** The app remains a normal Android app; user-authorized wireless debugging starts an `app_process` shell process (UID 2000).
 
@@ -49,6 +50,8 @@ Routine actions run automatically. Actions identified as sensitive—such as pay
 OCR runs locally, but **model inference uses your configured provider**. Task goals, app lists, and relevant UI text are sent to that provider; using the screenshot tool also sends the captured image. This is not a fully offline agent. API keys and ADB identities are encrypted with Android Keystore. History and logs stay on the device; logs omit API keys and full screenshots / UI trees. The app retains up to 30 history entries and 20 logs of up to 512 KB each.
 
 Virtual-display previews currently update at about 3 fps. Protected content and apps with multi-display or single-task restrictions may not work independently on both displays.
+
+To report a problem, open **History > task > top-right menu > Export this run**. Save or share the ZIP containing `events.jsonl` and `manifest.json` (app/Android versions, device model and event count). It excludes screenshots and credentials from model configuration. Task text and tool arguments/results may still contain private information; review before sharing. Connection diagnostics support the same single-run export.
 
 ## Build
 

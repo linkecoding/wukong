@@ -17,10 +17,11 @@ class RunLogStore(context: Context, private val namespace: String = "") {
         set(value) { preferences.edit().putBoolean("enabled", value).apply() }
 
     fun files(): List<File> = synchronized(lock) { directory.listFiles()?.filter { it.extension == "jsonl" }?.sortedByDescending { it.name }.orEmpty() }
-    fun read(name: String): List<JSONObject> = synchronized(lock) {
+    fun read(name: String, maxEvents: Int = 1000): List<JSONObject> = synchronized(lock) {
         require(name.matches(Regex("[0-9]+-[a-f0-9-]+\\.jsonl")))
+        require(maxEvents in 1..20000)
         val file = File(directory, name)
-        if (!file.exists()) emptyList() else file.useLines { lines -> lines.take(1000).mapNotNull { runCatching { JSONObject(it) }.getOrNull() }.toList() }
+        if (!file.exists()) emptyList() else file.useLines { lines -> lines.take(maxEvents).mapNotNull { runCatching { JSONObject(it) }.getOrNull() }.toList() }
     }
     fun delete(name: String) = synchronized(lock) {
         require(name.matches(Regex("[0-9]+-[a-f0-9-]+\\.jsonl")))

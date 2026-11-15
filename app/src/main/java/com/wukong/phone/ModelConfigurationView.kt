@@ -10,6 +10,7 @@ import android.widget.*
 
 /** Presets never carry a key to a different provider. Advanced endpoint paths remain unrestricted. */
 class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLayout(context) {
+    var onChanged: (() -> Unit)? = null
     private val ui = SetupViews(context)
     val providerPicker = Spinner(context).apply { id = R.id.provider_picker; minimumHeight = ui.dp(52) }
     val key = ui.field(context.getString(R.string.ui_stored_encrypted_on_this_device), saved?.apiKey.orEmpty(), true).apply { id = R.id.model_key }
@@ -59,14 +60,21 @@ class ModelConfigurationView(context: Context, saved: ModelSettings?) : LinearLa
                 val next = ModelPresets.all[position].id
                 if (firstSelection && next == chosen) { firstSelection = false; return }
                 firstSelection = false
-                if (next != chosen) applyPreset(next, true)
+                if (next != chosen) { applyPreset(next, true); onChanged?.invoke() }
             }
         }
         model.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { updateCapability() }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { updateCapability(); onChanged?.invoke() }
             override fun afterTextChanged(s: Editable?) = Unit
         })
+        for (field in listOf(key, endpoint)) field.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { onChanged?.invoke() }
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
+        fullEndpoint.setOnCheckedChangeListener { _, _ -> onChanged?.invoke() }
+        thinking.setOnCheckedChangeListener { _, _ -> onChanged?.invoke() }
     }
     private fun applyPreset(next: String, clearKey: Boolean) {
         chosen = next

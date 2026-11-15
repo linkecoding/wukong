@@ -43,6 +43,8 @@ class MainActivity : LocalizedActivity() {
     private val activationListener: () -> Unit = { if (!WirelessActivation.busy) refreshShell() }
     private var detailBack: (() -> Unit)? = null
     private var tab = 0
+    private var pendingExport: String? = null
+    private var exporting = false
     private var draft = ""
     private var selectedPackage: String? = null
     private var apps = emptyList<Pair<String, String>>()
@@ -52,10 +54,12 @@ class MainActivity : LocalizedActivity() {
     private var shellStatus = ""
     private val backendExecutor = Executors.newSingleThreadExecutor()
     private val navigationButtons = mutableListOf<Button>()
-    private val listener: () -> Unit = { if (tab == 0 && ::status.isInitialized) updateTask() }
+    private val listener: () -> Unit = { if (tab == 0 && ::status.isInitialized) updateTask()
+        else if (tab == 2 && detailBack == null) { body.removeAllViews(); settingsPage() } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        pendingExport = savedInstanceState?.getString("pending_export")
         shellStatus = getString(R.string.ui_checking_the_execution_engine)
         draft = savedInstanceState?.getString("draft") ?: TaskDraftStore(this).goal()
         taskOptionsOpen = savedInstanceState?.getBoolean("task_options", false) ?: false
@@ -116,7 +120,8 @@ class MainActivity : LocalizedActivity() {
     override fun onResume() { super.onResume();
         val expectedLanguage = Locale.forLanguageTag(UiLanguage.effectiveCode(this)).language
         if (resources.configuration.locales[0].language != expectedLanguage) { recreate(); return }
-        VirtualScreenState.foreground(true); refreshShell(); if (tab == 0 && ::status.isInitialized) updateTask() }
+        VirtualScreenState.foreground(true); refreshShell(); if (tab == 0 && ::status.isInitialized) updateTask()
+        else if (tab == 2 && detailBack == null) { body.removeAllViews(); settingsPage() } }
     override fun onStop() {
         if (tab == 0 && ::goalInput.isInitialized) draft = goalInput.text.toString()
         VirtualScreenState.foreground(false); super.onStop()
@@ -125,6 +130,7 @@ class MainActivity : LocalizedActivity() {
     override fun onSaveInstanceState(out: Bundle) {
         if (tab == 0 && ::goalInput.isInitialized) draft = goalInput.text.toString()
         out.putBoolean("task_options", taskOptionsOpen); out.putString("draft", draft); out.putString("package", selectedPackage); out.putInt("tab", tab)
+        out.putString("pending_export", pendingExport)
         super.onSaveInstanceState(out)
     }
     override fun onDestroy() {
@@ -289,7 +295,7 @@ class MainActivity : LocalizedActivity() {
             addView(parameter.apply { setSingleLine(false); minLines = 2; maxLines = 4; gravity = Gravity.TOP
                 inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE })
         }
-        val dialog = AlertDialog.Builder(this).setTitle(template.title).setView(inputContainer)
+        val dialog = WukongUi.dialog(this).setTitle(template.title).setView(inputContainer)
             .setPositiveButton(R.string.sample_use, null).setNegativeButton(R.string.ui_cancel, null).create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
@@ -394,7 +400,7 @@ class MainActivity : LocalizedActivity() {
     }
     private fun clearLogs(name: String? = null, after: () -> Unit) {
         if (TaskRuntime.active && name == null) { errorDialog(getString(R.string.setup_stop_first)); return }
-        AlertDialog.Builder(this).setTitle(if (name == null) R.string.ui_clear_run_logs else R.string.ui_delete_this_log)
+        WukongUi.dialog(this).setTitle(if (name == null) R.string.ui_clear_run_logs else R.string.ui_delete_this_log)
             .setMessage(R.string.ui_this_deletes_the_run_logs_saved_on_this_device)
             .setPositiveButton(R.string.ui_clear) { _, _ -> if (name == null) RunLogStore(this).clear() else RunLogStore(this).delete(name); after() }
             .setNegativeButton(R.string.ui_cancel, null).show()
@@ -446,7 +452,7 @@ class MainActivity : LocalizedActivity() {
         preferences.addView(logging); section(R.string.ui_group_preferences, preferences)
         val data = panel(0)
         data.addView(settingRow(getString(R.string.ui_data_permissions), icon = R.drawable.ic_shield) {
-            AlertDialog.Builder(this).setTitle(R.string.ui_data_permissions)
+            WukongUi.dialog(this).setTitle(R.string.ui_data_permissions)
                 .setMessage(getString(R.string.ui_wireless_pairing_and_the_execution_engine_are_built_in_activate_o) + "\n\n" + getString(R.string.ui_your_goal_app_list_and_relevant_ui_text_are_sent_to_your_model_pr))
                 .setPositiveButton(R.string.ui_got_it, null).show()
         })
@@ -455,7 +461,7 @@ class MainActivity : LocalizedActivity() {
         section(R.string.ui_group_data, data)
         body.addView(button(getString(R.string.ui_clear_model_configuration), false) {
             if (TaskRuntime.active) { errorDialog(getString(R.string.setup_stop_first)); return@button }
-            AlertDialog.Builder(this).setTitle(R.string.ui_clear_model_configuration).setMessage(R.string.ui_clear_model_confirm)
+            WukongUi.dialog(this).setTitle(R.string.ui_clear_model_configuration).setMessage(R.string.ui_clear_model_confirm)
                 .setPositiveButton(R.string.ui_clear) { _, _ -> store.clear(); navigate(2) }.setNegativeButton(R.string.ui_cancel, null).show()
         }.apply { setTextColor(color(R.color.danger)) }.spaced(24, 0))
     }
@@ -471,7 +477,7 @@ class MainActivity : LocalizedActivity() {
             PopupMenu(this, anchor).apply {
                 menu.add(R.string.ui_clear_logs).setOnMenuItemClickListener { clearLogs { navigate(1) }; true }
                 menu.add(R.string.ui_clear_history).setOnMenuItemClickListener {
-                    AlertDialog.Builder(this@MainActivity).setTitle(R.string.ui_clear_task_history).setMessage(R.string.ui_this_cannot_be_undone)
+                    WukongUi.dialog(this@MainActivity).setTitle(R.string.ui_clear_task_history).setMessage(R.string.ui_this_cannot_be_undone)
                         .setPositiveButton(R.string.ui_clear) { _, _ -> HistoryStore(this@MainActivity).clear(); navigate(1) }.setNegativeButton(R.string.ui_cancel, null).show(); true
                 }
             }.show()
@@ -499,7 +505,7 @@ class MainActivity : LocalizedActivity() {
         body.removeAllViews(); pageScroll.scrollTo(0, 0); detailBack = { navigate(1) }
         val logName = RunLogStore(this).forTask(record)
         toolbar(getString(R.string.ui_task_detail), back = { navigate(1) }, menu = if (logName == null) null else { anchor ->
-            PopupMenu(this, anchor).apply { menu.add(R.string.ui_delete_this_log).setOnMenuItemClickListener { clearLogs(logName) { taskDetail(record) }; true } }.show()
+            runLogMenu(anchor, logName) { taskDetail(record) }
         })
         val summary = panel()
         summary.addView(statusBadge(record.phase), LinearLayout.LayoutParams(-2, -2))
@@ -530,9 +536,75 @@ class MainActivity : LocalizedActivity() {
     private fun logDetail(name: String) {
         body.removeAllViews(); pageScroll.scrollTo(0, 0); detailBack = { logsPage() }
         toolbar(getString(R.string.ui_connection_diagnostics), back = { logsPage() }, menu = { anchor ->
-            PopupMenu(this, anchor).apply { menu.add(R.string.ui_delete_this_log).setOnMenuItemClickListener { clearLogs(name) { logsPage() }; true } }.show()
+            runLogMenu(anchor, name) { logsPage() }
         })
         renderRunLog(name)
+    }
+    private fun runLogMenu(anchor: View, name: String, afterDelete: () -> Unit) {
+        PopupMenu(this, anchor).apply {
+            menu.add(R.string.export_run).setOnMenuItemClickListener {
+                WukongUi.dialog(this@MainActivity).setTitle(R.string.export_title).setMessage(R.string.export_description)
+                    .setPositiveButton(R.string.export_save) { _, _ -> exportLog(name, false) }
+                    .setNeutralButton(R.string.export_share) { _, _ -> exportLog(name, true) }
+                    .setNegativeButton(android.R.string.cancel, null).show()
+                true
+            }
+            menu.add(R.string.ui_delete_this_log).setOnMenuItemClickListener { clearLogs(name, afterDelete); true }
+        }.show()
+    }
+    private fun exportLog(name: String, share: Boolean) {
+        if (exporting) return
+        exporting = true
+        backendExecutor.execute {
+            val exporter = RunLogExporter(this)
+            val result = runCatching { exporter.create(name) }
+            runOnUiThread {
+                exporting = false
+                if (isDestroyed || isFinishing) return@runOnUiThread
+                result.fold(onSuccess = { file ->
+                    runCatching {
+                        if (share) {
+                            val uri = exporter.uri(file)
+                            val send = Intent(Intent.ACTION_SEND).setType("application/zip")
+                                .putExtra(Intent.EXTRA_STREAM, uri)
+                                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                .apply { clipData = android.content.ClipData.newRawUri("Run log", uri) }
+                            startActivity(Intent.createChooser(send, getString(R.string.export_title)))
+                        } else {
+                            pendingExport = file.name
+                            @Suppress("DEPRECATION")
+                            startActivityForResult(Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE)
+                                .setType("application/zip").putExtra(Intent.EXTRA_TITLE, file.name), 710)
+                        }
+                    }.onFailure { pendingExport = null; exportFailure(it) }
+                }, onFailure = { exportFailure(it) })
+            }
+        }
+    }
+    @Deprecated("Uses the system document picker result")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != 710) return
+        val file = RunLogExporter(this).cached(pendingExport)
+        pendingExport = null
+        if (resultCode != RESULT_OK) return
+        val destination = data?.data
+        if (file == null || destination == null) { exportFailure(IllegalStateException(getString(R.string.export_missing))); return }
+        backendExecutor.execute {
+            val result = runCatching {
+                contentResolver.openOutputStream(destination, "w")?.use { output -> file.inputStream().use { it.copyTo(output) } }
+                    ?: error(getString(R.string.export_failed))
+            }
+            runOnUiThread {
+                if (!isDestroyed && !isFinishing) result.fold(
+                    onSuccess = { Toast.makeText(this, R.string.export_saved, Toast.LENGTH_SHORT).show() },
+                    onFailure = { exportFailure(it) })
+            }
+        }
+    }
+    private fun exportFailure(error: Throwable) {
+        WukongUi.dialog(this).setTitle(R.string.export_failed)
+            .setMessage(UiMessages.text(this, error.message.orEmpty())).setPositiveButton(android.R.string.ok, null).show()
     }
     private fun renderRunLog(name: String) {
         val records = RunLogStore(this).read(name)
@@ -594,7 +666,7 @@ class MainActivity : LocalizedActivity() {
         "RUNNING" -> getString(R.string.ui_working); "AWAITING_APPROVAL" -> getString(R.string.ui_waiting_for_approval); "COMPLETED" -> getString(R.string.ui_result_received)
         "FAILED" -> getString(R.string.ui_task_failed); "CANCELLED" -> getString(R.string.ui_task_stopped); else -> getString(R.string.ui_ready_for_a_task)
     }
-    private fun errorDialog(message: String) { AlertDialog.Builder(this).setTitle(getString(R.string.ui_one_more_thing)).setMessage(UiMessages.text(this, message)).setPositiveButton(getString(R.string.ui_got_it), null).show() }
+    private fun errorDialog(message: String) { WukongUi.dialog(this).setTitle(getString(R.string.ui_one_more_thing)).setMessage(UiMessages.text(this, message)).setPositiveButton(getString(R.string.ui_got_it), null).show() }
     private fun column() = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
     private fun row() = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
     private fun text(value: String, size: Float = 16f, bold: Boolean = false, muted: Boolean = false) = TextView(this).apply {

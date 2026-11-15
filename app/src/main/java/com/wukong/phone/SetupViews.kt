@@ -30,12 +30,14 @@ internal class SetupViews(val context: Context) {
         if (secret) isSaveEnabled = false
     }
     fun back(parent: LinearLayout, action: () -> Unit) {
-        parent.addView(button(R.string.setup_back, action = action).apply {
+        parent.addView(WukongUi.button(context, "", false, action).apply {
+            contentDescription = context.getString(R.string.setup_back)
+            setPadding(dp(14), dp(14), dp(14), dp(14))
             setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_back, 0, 0, 0)
             compoundDrawableTintList = android.content.res.ColorStateList.valueOf(context.getColor(R.color.muted))
-            compoundDrawablePadding = dp(8)
+            compoundDrawablePadding = 0
             background = WukongUi.feedback(context, R.color.paper)
-        }, LinearLayout.LayoutParams(-2, dp(48)).apply { bottomMargin = dp(12) })
+        }, LinearLayout.LayoutParams(dp(48), dp(48)).apply { bottomMargin = dp(12) })
     }
     fun add(parent: LinearLayout, view: View, top: Int = 0, bottom: Int = 12) {
         parent.addView(view, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(top); bottomMargin = dp(bottom) })

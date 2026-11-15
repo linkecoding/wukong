@@ -1,6 +1,14 @@
 [
   {
     "date": "2026-11-15",
+    "scope": "app interaction polish",
+    "macrostructure": "Workbench / task-linked history",
+    "theme": "Cream, moss, pale apricot",
+    "enrichment": "none",
+    "brief": "Trailing-aligned choices, arrow-only back, persistent model test result, consistent dialogs and single-run diagnostic export"
+  },
+  {
+    "date": "2026-11-15",
     "scope": "native task flow",
     "macrostructure": "Task composer / history detail / grouped settings",
     "theme": "custom",

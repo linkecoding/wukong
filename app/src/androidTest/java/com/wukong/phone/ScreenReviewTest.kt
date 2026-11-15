@@ -55,6 +55,16 @@ class ScreenReviewTest {
                 if (views().any { it.tag == "history-entry" }) {
                     i.runOnMainSync { views().first { it.tag == "history-entry" }.performClick() }
                     page("$lang-task-detail")
+                    if (views().any { it.id == R.id.page_menu }) {
+                        i.runOnMainSync { a!!.findViewById<View>(R.id.page_menu).performClick() }; i.waitForIdleSync()
+                        i.runOnMainSync {
+                            val list = WindowInspector.getGlobalWindowViews().flatMap { all(it) }.filterIsInstance<ListView>().last()
+                            val index = (0 until list.adapter.count).single { list.adapter.getItem(it).toString() == a!!.getString(R.string.export_run) }
+                            list.performItemClick(list.getChildAt(index), index, list.adapter.getItemId(index))
+                        }; shot("$lang-export-dialog")
+                        i.runOnMainSync { WindowInspector.getGlobalWindowViews().flatMap { all(it) }.filterIsInstance<Button>().single { it.text.toString() == a!!.getString(android.R.string.cancel) }.performClick() }
+                    }
+
                     if (views().any { it.tag == "run-event" }) {
                         i.runOnMainSync {
                             views().first { it.tag == "run-event" }.performClick()
