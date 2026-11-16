@@ -6,7 +6,7 @@
 
 **Wukong** is a personal AI agent for Android that turns a natural-language goal into actions across your phone, with requests, task cards, live previews and results in one conversation. Bring your own model, watch each step, and take over whenever you need to.
 
-**[v0.0.2](https://github.com/linkecoding/wukong/releases/tag/v0.0.2) · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. The current source also includes a [Wukong skill and local configuration page](docs/agent-integration.md) for delegating tasks from other agents; this addition is not in the original v0.0.2 APKs. MCP remains planned.
+**[v0.0.2](https://github.com/linkecoding/wukong/releases/tag/v0.0.2) · Early preview · Android first.** Core flows have been tested on a Pixel 6; device compatibility and complete real-world tasks need broader validation. The current source also includes a [Wukong skill and local configuration page](docs/agent-integration.md): prefer the App, or run the on-phone planner without installation through local ADB/WebUSB, with scrcpy video; this addition is not in the original v0.0.2 APKs. MCP remains planned.
 
 The app follows your **system language** by default (Chinese or English, with English as the fallback). Settings also offers manual language selection. Project introductions are also available in Japanese.
 

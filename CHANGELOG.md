@@ -4,6 +4,10 @@ Changes are grouped by source version. A section here does not mean its APK has 
 
 ## Unreleased
 
+- Prefer the installed App, then local-ADB app_process, then browser WebUSB. The standalone DEX runtime needs no App installation and keeps planning/model requests on Android.
+- Persist standalone model settings with Android Keystore/AES-GCM across runtime restarts and transport changes.
+- Replace webpage JPEG polling with pinned scrcpy H.264/WebCodecs video and guarded manual control. Standalone advertises native tools/screenshots; App-only OCR and isolated QuickJS are not offered there.
+
 - Add a portable Wukong skill, dependency-free Python companion, and English/Chinese local setup page. External agents delegate complete tasks to the phone’s configured execution model.
 - Add ADB-authorized task receipts, idempotent submission, virtual-screen preview, takeover/handoff, cancellation, and per-run log export. Existing phone approvals remain in force.
 - Keep an already-awake phone screen on during active tasks and release the timed wake lock when execution ends.

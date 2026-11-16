@@ -24,7 +24,7 @@ const words = {
     provider: "Provider",
     platform: "Get an API key ↗",
     keyNote:
-      "Sent to the phone and encrypted there. Never returned to this page.",
+      "Sent only to the phone. Encrypted with Android Keystore, including standalone mode.",
     model: "Model name",
     fetchModels: "Fetch models",
     advanced: "Advanced",
@@ -35,9 +35,10 @@ const words = {
     save: "Test & save to phone",
     live: "On your phone",
     empty: "The execution screen appears here.",
-    previewNote: "Take over using the floating window on your phone.",
+    previewNote:
+      "Take over to interact with the video. The App also offers a floating window.",
     boundary:
-      "Closing this page keeps the task running. Payments and destructive actions still require confirmation on the phone.",
+      "Closing this page keeps the task running. Payments and destructive actions require your confirmation.",
     local: "Local connection · ADB authorized · No cloud relay",
     close: "Close companion",
     ready: "Connected",
@@ -57,7 +58,7 @@ const words = {
     retry:
       "Connection interrupted. Querying the same task ID; do not submit a duplicate.",
     unsubmitted: "No receipt found yet. Retry with the same task ID.",
-    manual: "Paused · use the phone floating window",
+    manual: "Paused · interact with the video or your phone",
     step: "Step",
     unknown: "Saved model",
     phases: {
@@ -95,7 +96,8 @@ const words = {
       "手机使用这个模型执行任务，外部 Agent 只需提交目标。API 用量由模型服务商计费。",
     provider: "服务商",
     platform: "获取 API Key ↗",
-    keyNote: "传到手机后加密保存，不会回传到网页。",
+    keyNote:
+      "密钥仅传到手机。App 与免安装模式都会用 Android Keystore 加密保存。",
     model: "模型名称",
     fetchModels: "获取模型列表",
     advanced: "高级设置",
@@ -106,9 +108,8 @@ const words = {
     save: "测试并保存到手机",
     live: "手机执行画面",
     empty: "任务执行画面会显示在这里。",
-    previewNote: "接管后，通过手机悬浮窗操作。",
-    boundary:
-      "关闭网页后任务会继续。支付、删除文件等高危操作仍需在手机上确认。",
+    previewNote: "接管后可直接操作视频；App 模式也可使用手机悬浮窗。",
+    boundary: "关闭网页后任务会继续。支付、删除文件等高危操作仍需你确认。",
     local: "本机连接 · ADB 授权 · 无云端中转",
     close: "关闭连接网页",
     ready: "已连接",
@@ -126,7 +127,7 @@ const words = {
     notConnected: "连接已断开",
     retry: "连接中断，正在查询原任务，请勿重复提交。",
     unsubmitted: "暂未找到任务回执，可使用原任务 ID 重试。",
-    manual: "已暂停，请使用手机悬浮窗操作",
+    manual: "已暂停，可操作视频画面或手机",
     step: "第",
     unknown: "已有配置",
     phases: {
@@ -158,6 +159,12 @@ let savedModel = null,
   frameUrl = null,
   closed = false,
   refreshing = false;
+let backendStatus = null,
+  usbConnection = null,
+  refreshTimer = null,
+  videoStream = null,
+  videoDisplay = null,
+  videoStarting = false;
 let taskId = sessionStorage.getItem("wukong.task");
 const terminal = new Set(["COMPLETED", "FAILED", "CANCELLED", "INTERRUPTED"]);
 function t(key) {
@@ -320,7 +327,9 @@ function renderTask(value) {
   const finished = terminal.has(value.phase);
   $("run").disabled = !finished;
   $("takeover").hidden =
-    finished || value.display !== "virtual" || value.phase === "PAUSED";
+    finished ||
+    value.phase === "PAUSED" ||
+    (value.display !== "virtual" && backendStatus?.backend !== "standalone");
   $("resume").hidden = finished || value.phase !== "PAUSED";
   $("stop").hidden = finished;
   $("logs").disabled = !finished;
@@ -332,7 +341,29 @@ function renderTask(value) {
     li.append(small, document.createTextNode(event.message));
     $("events").append(li);
   }
-  if (value.phase === "AWAITING_APPROVAL") notice(t("approval"));
+  const standalone = backendStatus?.backend === "standalone";
+  const webManual = !!videoStream;
+  $("approval-controls").hidden = !(
+    standalone &&
+    value.phase === "AWAITING_APPROVAL" &&
+    value.pendingApproval
+  );
+  $("approval-message").textContent = value.pendingApproval?.message || "";
+  $("manual-controls").hidden = !(webManual && value.phase === "PAUSED");
+  if (standalone && value.phase === "PAUSED")
+    notice(
+      language === "zh"
+        ? "已暂停，可直接操作右侧画面；手机主屏也可以手动接管。"
+        : "Paused. Interact with the preview, or use your phone.",
+    );
+  else if (value.phase === "AWAITING_APPROVAL")
+    notice(
+      standalone
+        ? language === "zh"
+          ? "请在这里确认本次高危操作。"
+          : "Confirm this sensitive action here."
+        : t("approval"),
+    );
   else if (value.phase === "PAUSED") notice(t("manual"));
   else notice("");
 }
@@ -373,6 +404,7 @@ for (const action of ["stop", "takeover", "resume"])
     const button = $(action);
     button.disabled = true;
     try {
+      if (action === "resume" && videoStream) await videoStream.idle();
       renderTask(await api(`/v1/tasks/${taskId}/${action}`, {}));
     } catch (error) {
       notice(error.message, true);
@@ -395,6 +427,7 @@ $("logs").onclick = async () => {
 };
 $("close").onclick = async () => {
   try {
+    if (videoStream) await videoStream.close();
     await api("/session/close", {});
     closed = true;
     $("connection").textContent = t("notConnected");
@@ -406,7 +439,8 @@ $("close").onclick = async () => {
   }
 };
 async function refresh() {
-  if (closed || refreshing || document.hidden) return;
+  if (closed || refreshing || document.hidden || backendStatus?.needsUsb)
+    return;
   refreshing = true;
   try {
     if (taskId) {
@@ -416,20 +450,67 @@ async function refresh() {
         if (!retryId) notice(error.message, true);
       }
     }
-    try {
-      const blob = await api("/v1/preview");
-      const next = URL.createObjectURL(blob);
-      $("preview").src = next;
-      $("preview").hidden = false;
-      $("preview-empty").hidden = true;
-      if (frameUrl) URL.revokeObjectURL(frameUrl);
-      frameUrl = next;
-      $("frame-status").textContent =
-        current?.phase === "PAUSED" ? words[language].phases.PAUSED : "";
-    } catch {
+    const status = await api("/v1/status");
+    backendStatus = status;
+    const target =
+      $("display").value === "physical" ? 0 : status.virtualDisplayId;
+    if (target === 0 && $("display").value === "virtual") {
       $("preview").hidden = true;
       $("preview-empty").hidden = false;
+      return;
     }
+    if (
+      target >= 0 &&
+      (!videoStream || videoDisplay !== target) &&
+      !videoStarting
+    ) {
+      videoStarting = true;
+      try {
+        if (videoStream) await videoStream.close();
+        videoStream = null;
+        const { startVideo } = await import("/video.js");
+        videoStream = await startVideo({
+          api,
+          adb: usbConnection?.adb,
+          displayId: target,
+          canvas: $("preview"),
+          fetchStream: (signal) =>
+            fetch("/v1/video/stream", {
+              headers: { Authorization: "Bearer " + token },
+              signal,
+            }).then((response) => {
+              if (!response.ok) throw new Error("Video request failed");
+              return response;
+            }),
+          canInput: () => current?.phase === "PAUSED",
+          onSize: (w, h) => {
+            $("preview").width = w;
+            $("preview").height = h;
+          },
+          onError: (error) => {
+            notice(error.message, true);
+            const failed = videoStream;
+            videoStream = null;
+            videoDisplay = null;
+            failed?.close().catch(() => {});
+          },
+        });
+        videoDisplay = target;
+        $("preview").hidden = false;
+        $("preview-empty").hidden = true;
+      } catch (error) {
+        notice(error.message, true);
+        $("preview").hidden = true;
+        $("preview-empty").hidden = false;
+      } finally {
+        videoStarting = false;
+      }
+    }
+    $("frame-status").textContent = videoStream ? "scrcpy · H.264" : "";
+  } catch (error) {
+    $("connection").textContent = t("notConnected");
+    notice(error.message, true);
+    $("run").disabled = true;
   } finally {
     refreshing = false;
   }
@@ -438,7 +519,25 @@ async function init() {
   translate();
   try {
     const status = await api("/v1/status");
-    $("connection").textContent = t("ready");
+    backendStatus = status;
+    $("usb-panel").hidden = !status.needsUsb;
+    if (status.needsUsb) {
+      $("connection").textContent =
+        language === "zh" ? "等待 USB 连接" : "Waiting for USB";
+      $("usb-connect").textContent =
+        language === "zh" ? "通过 USB 连接手机" : "Connect phone via USB";
+      $("usb-note").textContent =
+        language === "zh"
+          ? "打开 USB 调试，选择手机，并在手机上允许调试。无需安装悟空 App。"
+          : "Enable USB debugging, select your phone, and allow debugging on the phone. No App installation required.";
+      $("run").disabled = true;
+      return;
+    }
+    $("run").disabled = false;
+    $("connection").textContent =
+      t("ready") +
+      " · " +
+      (status.backend === "standalone" ? "app_process" : "App");
     populate(status.model);
     if (status.protocol !== 1)
       throw new Error("Unsupported companion protocol");
@@ -452,11 +551,105 @@ async function init() {
     else if (!status.engineReady) notice(t("engine"), true);
     else if (!status.overlayReady) notice(t("overlay"), true);
     await refresh();
-    setInterval(refresh, 1200);
+    if (!refreshTimer) refreshTimer = setInterval(refresh, 1200);
   } catch (error) {
     $("connection").textContent = t("notConnected");
     notice(error.message, true);
     $("run").disabled = true;
   }
 }
+$("usb-connect").onclick = async () => {
+  const button = $("usb-connect");
+  button.disabled = true;
+  try {
+    const { connectUsb } = await import("/webusb.js");
+    usbConnection = await connectUsb({
+      api,
+      expectedSerial: backendStatus?.expectedSerial,
+      notify: (value) => ($("usb-status").textContent = value),
+    });
+    await init();
+  } catch (error) {
+    $("usb-status").textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+};
+for (const [button, allowed] of [
+  ["approve-once", true],
+  ["decline", false],
+])
+  $(button).onclick = async () => {
+    if (!current?.pendingApproval) return;
+    try {
+      renderTask(
+        await api(`/v1/tasks/${taskId}/approve`, {
+          id: current.pendingApproval.id,
+          allowed,
+        }),
+      );
+    } catch (error) {
+      notice(error.message, true);
+    }
+  };
+let pointerStart = null;
+$("preview").onpointerdown = (event) => {
+  if (!$("manual-controls").hidden) {
+    event.preventDefault();
+    pointerStart = {
+      x: event.clientX,
+      y: event.clientY,
+      at: performance.now(),
+    };
+    $("preview").setPointerCapture(event.pointerId);
+  }
+};
+$("preview").onpointerup = async (event) => {
+  if (!pointerStart) return;
+  const start = pointerStart;
+  pointerStart = null;
+  const image = $("preview"),
+    box = image.getBoundingClientRect();
+  const scale = Math.min(box.width / image.width, box.height / image.height);
+  const w = image.width * scale,
+    h = image.height * scale,
+    left = box.left + (box.width - w) / 2,
+    top = box.top + (box.height - h) / 2;
+  function point(x, y) {
+    if (x < left || x > left + w || y < top || y > top + h) return null;
+    return {
+      x: Math.round(((x - left) / w) * 1000),
+      y: Math.round(((y - top) / h) * 1000),
+    };
+  }
+  const a = point(start.x, start.y),
+    b = point(event.clientX, event.clientY);
+  if (!a || !b) return;
+  try {
+    await videoStream.input({
+      taskId,
+      kind: "gesture",
+      x: a.x,
+      y: a.y,
+      endX: b.x,
+      endY: b.y,
+      duration: Math.max(
+        60,
+        Math.min(2000, Math.round(performance.now() - start.at)),
+      ),
+    });
+  } catch (error) {
+    notice(error.message, true);
+  }
+};
+for (const kind of ["back", "home"])
+  $("manual-" + kind).onclick = () =>
+    videoStream
+      .input({ taskId, kind })
+      .catch((error) => notice(error.message, true));
+$("manual-send").onclick = () =>
+  videoStream
+    .input({ taskId, kind: "text", text: $("manual-text").value })
+    .then(() => ($("manual-text").value = ""))
+    .catch((error) => notice(error.message, true));
 init();

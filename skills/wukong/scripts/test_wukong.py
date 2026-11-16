@@ -64,9 +64,9 @@ class CompanionWebTest(unittest.TestCase):
         self.assertEqual({'key': 'entered-on-page'}, self.phone.calls[0][2])
     def test_only_task_scoped_controls_are_exposed(self):
         task = '/v1/tasks/67d9fbe4-8ac2-4b1d-8b04-7ac3323d3672'
-        for action in ('stop', 'takeover', 'resume'):
+        for action in ('stop', 'takeover', 'resume', 'approve', 'input'):
             self.assertTrue(wukong.route_allowed('POST', task + '/' + action))
-        for action in ('approve', 'shell', 'input', 'tap'):
+        for action in ('shell', 'tap'):
             self.assertFalse(wukong.route_allowed('POST', task + '/' + action))
         self.assertFalse(wukong.route_allowed('GET', '/v1/tasks'))
     def test_background_reconnect_closes_a_stale_phone_bridge(self):

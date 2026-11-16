@@ -70,3 +70,7 @@ shell 失联会返回连接错误，App 不会改用无障碍或尝试在普通 
 ## External agent task delegation
 
 The current source bundles `skills/wukong`: a local Python companion and configuration webpage submit goal/UUID requests through an ADB-forwarded, authenticated App task API. The phone’s configured model runs the existing TaskRuntime, including QuickJS, local approvals and virtual-display controls. This is separate from the private shell protocol; neither the model API key nor shell credential is returned to external agents. See [Agent companion](agent-integration.md). Original v0.0.2 release binaries predate this addition.
+
+## Standalone phone planner and scrcpy
+
+When an enabled App is absent, the skill pushes a DEX-only JAR and starts `StandaloneMain` through ADB or WebUSB. The process runs the shared Agent/ChatModel/verification policy on Android; desktop code never calls the execution model. Encrypted model configuration uses the shell UID’s Android Keystore and survives runtime restart. The App retains its isolated QuickJS/OCR; standalone omits unsupported tools. Web preview uses a pinned scrcpy server and browser WebCodecs, rather than JPEG polling. See [the three transport paths](agent-integration.md).

@@ -29,10 +29,16 @@ jobs:
       - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
       - name: Test and package companion skill
         run: |
-          python3 -m unittest discover -s skills/wukong/scripts -p test_wukong.py
+          python3 -m unittest discover -s skills/wukong/scripts -p 'test_*.py'
+          npm ci --prefix tooling/webusb
+          npm run typecheck --prefix tooling/webusb
+          npm run build --prefix tooling/webusb
+          python3 scripts/skill-notices.py
+          python3 scripts/prepare-scrcpy.py
+          python3 scripts/build-skill-runtime.py
           python3 scripts/package-skill.py --output dist/wukong-skill.zip
       - name: Build, test and lint
-        run: ./gradlew --no-daemon -PtargetAbi=arm64-v8a :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :shell-runtime:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
+        run: ./gradlew --no-daemon -PtargetAbi=arm64-v8a :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :shell-runtime:lintDebug :standalone-runtime:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wukong-debug

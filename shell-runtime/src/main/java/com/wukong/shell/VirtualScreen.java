@@ -32,7 +32,7 @@ final class VirtualScreen implements AutoCloseable {
     private static Context shellContext;
     private static HandlerThread contextEvents;
 
-    private static synchronized Context context() throws Exception {
+    static synchronized Context context() throws Exception {
         if (shellContext != null) return shellContext;
         if (contextEvents == null) { contextEvents = new HandlerThread("wukong-system-context"); contextEvents.start(); }
         FutureTask<Context> initialize = new FutureTask<>(() -> {

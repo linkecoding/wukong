@@ -97,6 +97,12 @@ internal object RemoteTasks {
         task.optString("logName").takeIf { it.isNotBlank() && it != "null" }
             ?: ConversationStore(c).get(task.getString("conversationId"))?.turns?.lastOrNull()?.logName
     }
+    fun virtualHome(c: Context, id: String): JSONObject = synchronized(lock) {
+        get(c,id)
+        check(activeId==id&&TaskRuntime.active&&TaskRuntime.displayId>0&&VirtualScreenState.manual) { "Take over this virtual task first" }
+        VirtualScreenState.input(JSONObject().put("kind","home"))
+        get(c,id)
+    }
     fun stopOwned() { if (activeId != null) TaskRuntime.stop() }
     /** Keep compact ID/hash tombstones so archiving old details never allows duplicate execution. */
     private fun compact(c: Context) {

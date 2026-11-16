@@ -44,6 +44,16 @@ public final class Main {
     private final Map<String, Integer> taskDisplays = new ConcurrentHashMap<>();
     private final ThreadLocal<Integer> targetDisplay = ThreadLocal.withInitial(() -> 0);
     private VirtualScreen virtualScreen;
+    private boolean standalone;
+    public static android.content.Context shellContext() throws Exception { return VirtualScreen.context(); }
+    public static void startStandalone(int port, String token) throws Exception {
+        if (android.os.Process.myUid() != 2000) throw new SecurityException("Requires shell UID");
+        Main runtime = new Main(token); runtime.standalone = true; runtime.serve(port);
+    }
+    private String virtualHome() throws Exception {
+        if (!standalone) return command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
+        return command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-a", "android.settings.SETTINGS");
+    }
     private static final Pattern PACKAGE = Pattern.compile("[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)+");
     private static final Pattern SENSITIVE = Pattern.compile("密码|验证码|支付口令|password|passcode|one.time.code|\\botp\\b", Pattern.CASE_INSENSITIVE);
 
@@ -119,6 +129,18 @@ public final class Main {
     private Object dispatch(JSONObject request) throws Exception {
         targetDisplay.set(0);
         String method = request.getString("method");
+        if (method.equals("deviceState")) {
+            android.content.Context c = VirtualScreen.context();
+            return new JSONObject().put("interactive", c.getSystemService(android.os.PowerManager.class).isInteractive())
+                .put("locked", c.getSystemService(android.app.KeyguardManager.class).isKeyguardLocked());
+        }
+        if (method.equals("apps")) {
+            android.content.pm.PackageManager pm = VirtualScreen.context().getPackageManager();
+            JSONArray result = new JSONArray(); Set<String> seen = new HashSet<>();
+            for (android.content.pm.ResolveInfo info : pm.queryIntentActivities(new android.content.Intent(android.content.Intent.ACTION_MAIN).addCategory(android.content.Intent.CATEGORY_LAUNCHER), 0))
+                if (seen.add(info.activityInfo.packageName)) result.put(new JSONObject().put("package", info.activityInfo.packageName).put("name", info.loadLabel(pm).toString()));
+            return result;
+        }
         if (method.equals("status")) return new JSONObject().put("uid", android.os.Process.myUid()).put("protocol", 2).put("engine", "app_process").put("uiEvents", true).put("inspection", true);
         if (method.startsWith("virtual") || method.equals("setControl") || method.equals("manualInput")) {
             synchronized (deviceLock) { return virtualRequest(method, request); }
@@ -148,7 +170,7 @@ public final class Main {
                 for (AccessibilityWindowInfo window : all.get(targetDisplay.get(), Collections.emptyList()))
                     if (window.getType() == AccessibilityWindowInfo.TYPE_APPLICATION) return new JSONObject().put("recovered", false);
                 checkTask(taskId);
-                String result = command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
+                String result = virtualHome();
                 if (result.contains("Error:")) throw new IllegalStateException("无法恢复虚拟桌面");
                 frames.remove(taskId);
                 return new JSONObject().put("recovered", true);
@@ -197,7 +219,7 @@ public final class Main {
             if (virtualScreen == null) virtualScreen = new VirtualScreen();
             virtualScreen.ownerId = request.optString("ownerId");
             targetDisplay.set(virtualScreen.id);
-            command("/system/bin/am", "start", "--display", String.valueOf(virtualScreen.id), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
+            virtualHome();
             return virtualScreen.status(false);
         }
         if (method.equals("virtualStop")) {
@@ -229,7 +251,7 @@ public final class Main {
         String kind = request.getString("kind");
         if (kind.equals("back")) { key(KeyEvent.KEYCODE_BACK); return "accepted"; }
         if (kind.equals("home")) {
-            String result = command("/system/bin/am", "start", "--display", String.valueOf(virtualScreen.id), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity");
+            String result = virtualHome();
             if (result.contains("Error:")) throw new IllegalStateException("无法返回虚拟桌面");
             return "accepted";
         }
@@ -309,7 +331,7 @@ public final class Main {
                 break;
             case "home":
                 if (targetDisplay.get() == 0) success = key(KeyEvent.KEYCODE_HOME);
-                else success = !command("/system/bin/am", "start", "--display", String.valueOf(targetDisplay.get()), "-f", "0x14000000", "-n", "com.wukong.phone/.VirtualHomeActivity").contains("Error:");
+                else success = !virtualHome().contains("Error:");
                 break;
             case "back": success = key(KeyEvent.KEYCODE_BACK); break;
             case "launch":

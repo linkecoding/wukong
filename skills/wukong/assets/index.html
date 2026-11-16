@@ -28,6 +28,15 @@
             Delegate the goal. Wukong handles the steps on your phone.
           </p>
         </div>
+        <section id="usb-panel" hidden>
+          <h2>WebUSB</h2>
+          <p id="usb-note">
+            Connect your phone directly. Enable USB debugging and allow the
+            connection on the phone.
+          </p>
+          <button id="usb-connect" type="button">Connect phone</button>
+          <p id="usb-status" role="status"></p>
+        </section>
         <form id="task-form">
           <label for="goal" data-i="goalLabel">What would you like done?</label
           ><textarea
@@ -67,6 +76,13 @@
             ><button id="stop" class="danger" data-i="stop">Stop</button
             ><button id="logs" class="quiet" data-i="logs">
               Export run log
+            </button>
+          </div>
+          <div id="approval-controls" hidden>
+            <p id="approval-message"></p>
+            <button id="approve-once" type="button">Allow once</button
+            ><button id="decline" type="button" class="secondary">
+              Decline
             </button>
           </div>
           <ol id="events"></ol>
@@ -160,8 +176,8 @@
           <h2 data-i="live">On your phone</h2>
           <span id="frame-status" class="muted"></span>
         </div>
-        <div class="preview">
-          <img id="preview" alt="Virtual display preview" hidden />
+        <div class="preview" id="preview-area">
+          <canvas id="preview" aria-label="scrcpy live video" hidden></canvas>
           <div id="preview-empty">
             <span class="screen-icon" aria-hidden="true">▯</span>
             <p data-i="empty">The execution screen appears here.</p>
@@ -169,6 +185,16 @@
               >Take over using the floating window on your phone.</small
             >
           </div>
+        </div>
+        <div id="manual-controls" hidden>
+          <button id="manual-back" class="secondary" type="button">←</button
+          ><button id="manual-home" class="secondary" type="button">⌂</button
+          ><input id="manual-text" placeholder="Text" maxlength="2000" /><button
+            id="manual-send"
+            type="button"
+          >
+            Input
+          </button>
         </div>
         <p class="monitor-note" data-i="boundary">
           Closing this page keeps the task running. Payments and destructive

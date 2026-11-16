@@ -1,0 +1,1 @@
+<resources><string name="provider_deepseek">DeepSeek</string><string name="provider_qwen">Qwen</string><string name="provider_zhipu">Zhipu</string><string name="provider_kimi">Kimi</string><string name="setup_custom">Custom</string></resources>

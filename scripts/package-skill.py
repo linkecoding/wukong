@@ -8,7 +8,11 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output', type=Path, required=True)
 args = parser.parse_args()
 source = Path(__file__).resolve().parents[1] / 'skills/wukong'
-allowed = {'.md', '.yaml', '.py', '.html', '.css', '.js', '.svg'}
+allowed = {'.md', '.yaml', '.py', '.html', '.css', '.js', '.svg', '.jar', '.json', '.txt'}
+assert source.joinpath('assets/runtime/wukong-runtime.jar').is_file(), 'Run scripts/build-skill-runtime.py first'
+assert source.joinpath('assets/webusb.js').is_file(), 'Run npm ci && npm run build in tooling/webusb first'
+assert source.joinpath('assets/video.js').is_file(), 'Build the video client first'
+assert source.joinpath('assets/runtime/scrcpy-server.jar').is_file(), 'Run scripts/prepare-scrcpy.py first'
 files = sorted(path for path in source.rglob('*') if path.is_file() and path.suffix in allowed and '__pycache__' not in path.parts)
 assert source.joinpath('SKILL.md') in files
 args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -115,11 +115,15 @@ internal class CompanionServer(private val context: Context, private val token: 
                     val receipt = ui { RemoteTasks.start(context, request, target) }
                     respond(socket, 202, receipt)
                 }
-                path.matches(Regex("/v1/tasks/[a-f0-9-]{36}(/(stop|takeover|resume|logs))?")) -> {
+                path.matches(Regex("/v1/tasks/[a-f0-9-]{36}(/(stop|takeover|resume|logs|input))?")) -> {
                     val parts = path.split('/'); val id = parts[3]; val action = parts.getOrNull(4)
                     when {
                         method == "GET" && action == null -> respond(socket, 200, ui { RemoteTasks.get(context, id) })
                         method == "POST" && action in setOf("stop", "takeover", "resume") -> respond(socket, 200, ui { RemoteTasks.control(context, id, action!!) })
+                        method == "POST" && action == "input" -> {
+                            require(request.getString("kind")=="home") { "Use scrcpy for manual touch/text; only virtual Home is routed here" }
+                            respond(socket,200,ui { RemoteTasks.virtualHome(context,id) })
+                        }
                         method == "GET" && action == "logs" -> {
                             val name = ui { RemoteTasks.logName(context, id) } ?: throw NoSuchElementException("No retained log for this task")
                             val file = RunLogExporter(context).create(name)

@@ -33,3 +33,12 @@ signing.properties
 .env
 .env.*
 !.env.example
+
+# Generated, reproducibly packaged skill runtime / browser dependencies
+node_modules/
+/skills/wukong/assets/runtime/
+/skills/wukong/assets/webusb.js
+/skills/wukong/assets/video.js
+
+# Build and distribution artifacts
+/dist/

@@ -38,11 +38,17 @@ jobs:
         run: python3 scripts/prepare-ci-signing.py
       - name: Test and package companion skill
         run: |
-          python3 -m unittest discover -s skills/wukong/scripts -p test_wukong.py
+          python3 -m unittest discover -s skills/wukong/scripts -p 'test_*.py'
+          npm ci --prefix tooling/webusb
+          npm run typecheck --prefix tooling/webusb
+          npm run build --prefix tooling/webusb
+          python3 scripts/skill-notices.py
+          python3 scripts/prepare-scrcpy.py
+          python3 scripts/build-skill-runtime.py
           python3 scripts/package-skill.py --output dist/wukong-skill.zip
       - name: Test and build signed APKs
         run: |
-          ./gradlew --no-daemon :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintRelease :shell-runtime:lintDebug :app:assembleRelease
+          ./gradlew --no-daemon :agent-core:test :shell-runtime:testDebugUnitTest :app:testDebugUnitTest :app:lintRelease :shell-runtime:lintDebug :standalone-runtime:lintDebug :app:assembleRelease
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk "dist/wukong-${GITHUB_REF_NAME}-universal.apk"
           ./gradlew --no-daemon -PtargetAbi=arm64-v8a :app:assembleRelease

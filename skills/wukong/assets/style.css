@@ -274,7 +274,7 @@ small {
   justify-content: center;
   overflow: hidden;
 }
-.preview img {
+.preview canvas {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -443,4 +443,30 @@ summary:hover {
 }
 summary:active {
   opacity: 0.75;
+}
+#usb-panel {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-line);
+  margin-bottom: 24px;
+}
+#manual-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+#manual-text {
+  width: 120px;
+  flex: 1;
+}
+#approval-controls {
+  padding: 16px;
+  background: var(--color-soft-accent);
+  border-radius: var(--radius-input);
+  margin-top: 16px;
+}
+#preview {
+  touch-action: none;
+  user-select: none;
 }

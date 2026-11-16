@@ -10,7 +10,7 @@ import java.net.URL
 enum class PlanningMode { AUTO, TOOLS_ONLY, SCRIPT_ONLY }
 
 /** One bounded tool call per observation; phone actions remain in the trusted execution layer. */
-class ChatModel(private val settings: ModelSettings, private val apps: List<Pair<String, String>> = emptyList(), private val trace: RunLog? = null, private val mode: PlanningMode = PlanningMode.AUTO, private val conversationContext: String? = null, private val taskEvidence:TaskEvidence?=null) : Model {
+class ChatModel(private val settings: ModelSettings, private val apps: List<Pair<String, String>> = emptyList(), private val trace: RunLog? = null, private val mode: PlanningMode = PlanningMode.AUTO, private val conversationContext: String? = null, private val taskEvidence:TaskEvidence?=null, private val availableTools: Set<String>? = null) : Model {
     private var step = 0
     private var visionAvailable = true
     private val completedTools = mutableListOf<Pair<JSONObject, JSONObject>>()
@@ -67,6 +67,7 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         require(calls.length() == 1) { "模型必须每次只返回一个操作" }
         val function = calls.getJSONObject(0).getJSONObject("function")
         val name = function.getString("name")
+        require(availableTools == null || name in availableTools) { "当前执行器未提供这个工具" }
         require(mode != PlanningMode.TOOLS_ONLY || name != "phone_run_js") { "当前模式未提供 JS 工具" }
         require(mode != PlanningMode.SCRIPT_ONLY || name in setOf("phone_run_js", "phone_action")) { "当前模式仅提供 JS 与结束工具" }
         trace?.record("tool_call", JSONObject().put("step", step).put("name", name).put("arguments", runCatching { JSONObject(function.getString("arguments")) }.getOrElse { function.optString("arguments").take(16000) }))
@@ -155,6 +156,7 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
         add("phone_long_press", "Long press normalized screenshot coordinates. duration is milliseconds (400–2000).", coordinates(duration = true), listOf("captureId", "x", "y"))
         return JSONArray((0 until tools.length()).map { tools.getJSONObject(it) }.filter {
             val name = it.getJSONObject("function").getString("name")
+            if (availableTools != null && name !in availableTools) return@filter false
             when (mode) {
                 PlanningMode.AUTO -> true
                 PlanningMode.TOOLS_ONLY -> name != "phone_run_js"
@@ -175,7 +177,8 @@ class ChatModel(private val settings: ModelSettings, private val apps: List<Pair
             ". Conditions: " + InspectionSchemas.conditions().toString() +
             ". waitUntil defaults to ANY, verify defaults to ALL; condition results are in result.verification.state/checks, using met/not_met/unknown. " +
             "When using only one selector, wukong.waitUntil(selector, options) wraps it as a presence condition. Use conditions with selector/state/packageName for advanced cases."
-    }) + if (conversationContext != null) "\nYou are Wukong, the user's personal phone agent in an ongoing conversation. Reply briefly to the current request in the user's language. Give useful findings and relevant caveats; do not list every visible setting, internal node IDs or package names unless requested. Earlier history is context only; never automatically replay a prior task." else ""
+    }) + (if (conversationContext != null) "\nYou are Wukong, the user's personal phone agent in an ongoing conversation. Reply briefly to the current request in the user's language. Give useful findings and relevant caveats; do not list every visible setting, internal node IDs or package names unless requested. Earlier history is context only; never automatically replay a prior task." else "") +
+        (if (availableTools != null) "\nThis standalone runtime provides only the supplied tools. JavaScript and local OCR are unavailable; use native queries, conditions, and screenshots. The task planner and model requests are running on Android. On a virtual display Home returns to the system-settings starting point, not the physical launcher." else "")
 
     fun verifyCompletion(goal: String, summary: String, screen: Screen, history: List<Turn>): CompletionCheck {
         val verdictSchema = JSONObject().put("name", "phone_completion_verdict").put("description", "Evaluate the proposed completion against fresh UI/OCR evidence. Do not execute actions.")
